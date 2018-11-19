@@ -1,23 +1,69 @@
 import React from "react";
+import theme from "./theme";
 import { Router } from "@reach/router";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components/macro";
 import Main from "./routes/Main";
 
+interface FontShape {
+  style: string;
+  weight: string;
+  woff2: string;
+}
+
+const FontFaceName = "Xing Sans";
+const FontFaceDefs = [
+  {
+    style: "normal",
+    weight: "normal",
+    woff2: "/fonts/xing-sans.woff"
+  },
+  {
+    style: "italic",
+    weight: "normal",
+    woff2: "/fonts/xing-sans-italic.woff"
+  },
+  {
+    style: "normal",
+    weight: "bold",
+    woff2: "/fonts/xing-sans-bold.woff"
+  },
+  {
+    style: "italic",
+    weight: "bold",
+    woff2: "/fonts/xing-sans-bold-italic.woff"
+  }
+];
+
+const defineFontFace = (FontFaceDefs: FontShape[]): string[] =>
+  FontFaceDefs.map(
+    FontFaceDef => `
+    @font-face {
+      font-family: ${FontFaceName};
+      src: url(${FontFaceDef.woff2}) format('woff2');
+      font-weight: ${FontFaceDef.weight};
+      font-style: ${FontFaceDef.style};
+    }
+  `
+  );
+
 const GlobalStyle = createGlobalStyle`
+  ${defineFontFace(FontFaceDefs)}
+
   html, body { padding: 0; margin: 0; }
 
   body {
-    font-family:
-      "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    background: #ececec;
+    font-family: ${theme.fontFamily};
+    background: ${theme.colors.contentGrey};
   }
 `;
 
 export default () => (
   <>
     <GlobalStyle />
-    <Router>
-      <Main path="/" />
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Main path="/" />
+      </Router>
+    </ThemeProvider>
   </>
 );
