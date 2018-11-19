@@ -1,0 +1,58 @@
+{
+  "name": "xing-retro-client",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "husky": "1.1.4",
+    "lint-staged": "8.0.5",
+    "prettier": "1.15.2",
+    "typescript": "3.1.6"
+  },
+  "dependencies": {
+    "@reach/router": "1.2.1",
+    "@types/jest": "23.3.9",
+    "@types/node": "10.12.9",
+    "@types/reach__router": "1.2.2",
+    "@types/react": "16.7.6",
+    "@types/react-dom": "16.0.9",
+    "@types/styled-components": "4.1.0",
+    "@types/styled-system": "3.0.8",
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2",
+    "react-scripts": "2.1.1",
+    "styled-components": "4.1.1",
+    "styled-map": "3.2.0-rc.1",
+    "styled-system": "3.1.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css,ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
