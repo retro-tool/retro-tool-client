@@ -1,10 +1,24 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
+import Text from "./Text";
+import { Stage } from "../types";
 
-const HeaderContainer = styled("div")`
+interface Props {
+  stage?: Stage;
+}
+
+const HeaderContainer = styled.div`
   background: white;
 `;
 
-const Header = () => <HeaderContainer>HEADER</HeaderContainer>;
+const Header = ({ stage }: Props) => (
+  <HeaderContainer>
+    <Text>{stage}</Text>
+  </HeaderContainer>
+);
+
+Header.defaultProps = {
+  stage: "initial"
+};
 
 export default Header;
