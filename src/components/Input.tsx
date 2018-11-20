@@ -42,7 +42,7 @@ const Input = styled(Textarea).attrs(
 
 Input.defaultProps = {
   type: "text",
-  fontSize: 1,
+  fontSize: 2,
   fontWeight: 0,
   p: 2,
   placeholder: "Say something"

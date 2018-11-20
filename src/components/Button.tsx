@@ -39,7 +39,7 @@ const Button = styled.span<Props>`
 `;
 
 Button.defaultProps = {
-  fontSize: 1,
+  fontSize: 2,
   fontWeight: 1,
   background: theme.colors.lime,
   pl: 4,

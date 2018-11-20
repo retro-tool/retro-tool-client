@@ -43,7 +43,8 @@ Title.defaultProps = {
   pl: [4, null, null, null, 6],
   pr: [4, null, null, null, 6],
   pt: [2, null, null, null, 3],
-  pb: [2, null, null, null, 3]
+  pb: [2, null, null, null, 3],
+  mb: 3
 };
 
 interface TopicProps {
@@ -53,7 +54,7 @@ interface TopicProps {
 const Topic = ({ title, children }: TopicProps) => (
   <TopicContainer>
     <Title>
-      <Text fontSize={4} pt={1}>
+      <Text fontSize={5} pt={1}>
         {title}
       </Text>
       <Input ml={2} flex="1 1 auto" />

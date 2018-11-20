@@ -1,11 +1,14 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
-import { Text } from "./";
+import { Text, PlusOne } from "./";
 import { space, SpaceProps } from "styled-system";
 import theme from "../theme";
 
 type ItemContainerProps = SpaceProps;
 const ItemContainer = styled.div<ItemContainerProps>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   &:hover:after {
     content: "";
@@ -20,7 +23,7 @@ const ItemContainer = styled.div<ItemContainerProps>`
   ${space};
 `;
 ItemContainer.defaultProps = {
-  p: [4, null, null, null, 6]
+  p: [3, null, null, null, 4]
 };
 
 type ItemProps = {
@@ -29,6 +32,7 @@ type ItemProps = {
 const Item = ({ children }: ItemProps) => (
   <ItemContainer>
     <Text>{children}</Text>
+    <PlusOne />
   </ItemContainer>
 );
 

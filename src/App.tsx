@@ -58,6 +58,10 @@ const GlobalStyle = createGlobalStyle`
     background: ${theme.colors.contentGrey};
     color: ${theme.colors.dark};
   }
+
+  input, textarea, button {
+    font-family: ${theme.fontFamily};
+  }
 `;
 
 export default () => (

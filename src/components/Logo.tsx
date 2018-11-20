@@ -67,7 +67,7 @@ const LogoTitle = styled.h1<LogoTitleProps>`
 `;
 LogoTitle.defaultProps = {
   color: "grey",
-  fontSize: 1,
+  fontSize: 2,
   display: ["none", "inline-block"]
 };
 
