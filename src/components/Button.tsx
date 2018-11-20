@@ -1,5 +1,7 @@
 import styled from "styled-components/macro";
 import {
+  background,
+  BackgroundProps,
   color,
   ColorProps,
   display,
@@ -11,31 +13,23 @@ import {
   lineHeight,
   LineHeightProps,
   space,
-  SpaceProps,
-  variant
+  SpaceProps
 } from "styled-system";
-import { Size } from "../types";
+import theme from "../theme";
 
-const size = variant({
-  key: "text",
-  prop: "size"
-});
-
-export type TextProps = ColorProps &
+type Props = BackgroundProps &
+  ColorProps &
   DisplayProps &
   FontSizeProps &
   FontWeightProps &
   LineHeightProps &
-  SpaceProps & {
-    size?: Size;
-  };
+  SpaceProps;
 
-const Text = styled.div<TextProps>`
-  margin: 0;
-  padding: 0;
+const Button = styled.span<Props>`
+  border-radius: 3px;
+  cursor: pointer;
 
-  ${size};
-
+  ${background};
   ${color};
   ${display};
   ${fontSize};
@@ -44,8 +38,14 @@ const Text = styled.div<TextProps>`
   ${space};
 `;
 
-Text.defaultProps = {
-  size: "base"
+Button.defaultProps = {
+  fontSize: 1,
+  fontWeight: 1,
+  background: theme.colors.lime,
+  pl: 4,
+  pr: 4,
+  pt: 2,
+  pb: 2
 };
 
-export default Text;
+export default Button;

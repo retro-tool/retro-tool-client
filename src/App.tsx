@@ -51,9 +51,12 @@ const GlobalStyle = createGlobalStyle`
 
   html, body { padding: 0; margin: 0; }
 
+  * { box-sizing: border-box; }
+
   body {
     font-family: ${theme.fontFamily};
     background: ${theme.colors.contentGrey};
+    color: ${theme.colors.dark};
   }
 `;
 

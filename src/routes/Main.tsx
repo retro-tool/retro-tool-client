@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../components/Header";
+import { Header, Content } from "../components";
 import { RouteComponentProps } from "@reach/router";
 
 type Props = RouteComponentProps;
@@ -7,6 +7,7 @@ type Props = RouteComponentProps;
 const Main = (props: Props) => (
   <>
     <Header />
+    <Content />
   </>
 );
 
