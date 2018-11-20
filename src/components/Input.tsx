@@ -1,5 +1,7 @@
 import styled from "styled-components/macro";
 import {
+  flex,
+  FlexProps,
   fontSize,
   FontSizeProps,
   fontWeight,
@@ -9,25 +11,33 @@ import {
   space,
   SpaceProps
 } from "styled-system";
+import Textarea from "react-textarea-autosize";
 
-type InputProps = FontSizeProps &
+type InputProps = FlexProps &
+  FontSizeProps &
   FontWeightProps &
   LineHeightProps &
   SpaceProps & {
     placeholder?: string;
   };
 
-const Input = styled.input.attrs(
+const Input = styled(Textarea).attrs(
   (props): InputProps => ({
     placeholder: props.placeholder
   })
 )<InputProps>`
   border: 0;
+  resize: none;
 
+  ${flex};
   ${fontSize};
   ${fontWeight};
   ${lineHeight};
   ${space};
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 Input.defaultProps = {

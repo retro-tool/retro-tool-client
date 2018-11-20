@@ -27,9 +27,9 @@ type ItemProps = {
   children?: ReactNode;
 };
 const Item = ({ children }: ItemProps) => (
-  <Item>
+  <ItemContainer>
     <Text>{children}</Text>
-  </Item>
+  </ItemContainer>
 );
 
 export default Item;

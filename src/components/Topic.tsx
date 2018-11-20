@@ -31,6 +31,7 @@ TopicContainer.defaultProps = {
 type TitleProps = BorderColorProps & BorderBottomProps & SpaceProps;
 const Title = styled.div<TitleProps>`
   display: flex;
+  align-items: flex-start;
 
   ${borderBottom}
   ${borderColor}
@@ -39,7 +40,10 @@ const Title = styled.div<TitleProps>`
 Title.defaultProps = {
   borderColor: "borderGrey",
   borderBottom: "1px solid",
-  p: [4, null, null, null, 6]
+  pl: [4, null, null, null, 6],
+  pr: [4, null, null, null, 6],
+  pt: [2, null, null, null, 3],
+  pb: [2, null, null, null, 3]
 };
 
 interface TopicProps {
@@ -49,8 +53,10 @@ interface TopicProps {
 const Topic = ({ title, children }: TopicProps) => (
   <TopicContainer>
     <Title>
-      <Text size="title">{title}</Text>
-      <Input ml={3} />
+      <Text fontSize={4} pt={1}>
+        {title}
+      </Text>
+      <Input ml={2} flex="1 1 auto" />
     </Title>
     {children}
   </TopicContainer>
