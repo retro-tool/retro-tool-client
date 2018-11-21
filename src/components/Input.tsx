@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components/macro";
 import {
   flex,
@@ -11,21 +12,39 @@ import {
   space,
   SpaceProps
 } from "styled-system";
-import Textarea from "react-textarea-autosize";
+import Textarea, { TextareaAutosizeProps } from "react-textarea-autosize";
 
-type InputProps = FlexProps &
+type InputProps = TextareaAutosizeProps & {
+  placeholder?: string;
+  onSubmit?: (target: any) => void;
+};
+
+const Input = ({ className, placeholder, onKeyDown, onSubmit }: InputProps) => {
+  const HandleOnKeyDown = (evt: any): void => {
+    if (evt.keyCode === 13) {
+      evt.preventDefault();
+      onSubmit && onSubmit(evt.target);
+    }
+  };
+
+  return (
+    <Textarea
+      className={className}
+      placeholder={placeholder}
+      onKeyDown={HandleOnKeyDown}
+    />
+  );
+};
+
+type StyledInputProps = FlexProps &
   FontSizeProps &
   FontWeightProps &
   LineHeightProps &
-  SpaceProps & {
-    placeholder?: string;
-  };
+  SpaceProps &
+  TextareaAutosizeProps &
+  InputProps;
 
-const Input = styled(Textarea).attrs(
-  (props): InputProps => ({
-    placeholder: props.placeholder
-  })
-)<InputProps>`
+const StyledInput = styled(Input)<StyledInputProps>`
   border: 0;
   resize: none;
 
@@ -40,7 +59,7 @@ const Input = styled(Textarea).attrs(
   }
 `;
 
-Input.defaultProps = {
+StyledInput.defaultProps = {
   type: "text",
   fontSize: 2,
   fontWeight: 0,
@@ -48,4 +67,4 @@ Input.defaultProps = {
   placeholder: "Say something"
 };
 
-export default Input;
+export default StyledInput;

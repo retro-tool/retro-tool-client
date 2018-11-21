@@ -51,16 +51,22 @@ interface TopicProps {
   title: string;
   children?: ReactNode;
 }
-const Topic = ({ title, children }: TopicProps) => (
-  <TopicContainer>
-    <Title>
-      <Text fontSize={5} pt={1}>
-        {title}
-      </Text>
-      <Input ml={2} flex="1 1 auto" />
-    </Title>
-    {children}
-  </TopicContainer>
-);
+const onSubmit = (target: any): void => {
+  console.log(target.value);
+};
+
+const Topic = ({ title, children }: TopicProps) => {
+  return (
+    <TopicContainer>
+      <Title>
+        <Text fontSize={4} pt={1}>
+          {title}
+        </Text>
+        <Input ml={2} flex="1 1 auto" onSubmit={onSubmit} />
+      </Title>
+      {children}
+    </TopicContainer>
+  );
+};
 
 export default Topic;
