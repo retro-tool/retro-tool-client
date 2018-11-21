@@ -1,1 +1,1 @@
-export { default as client } from "./client";
+export { client, subscriptionClient } from "./client";

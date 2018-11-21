@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components/macro";
 import { Text, Input } from "./";
 import {
@@ -49,13 +49,18 @@ Title.defaultProps = {
 
 interface TopicProps {
   title: string;
+  subscribeToNewItems: () => {};
   children?: ReactNode;
 }
 const onSubmit = (target: any): void => {
   console.log(target.value);
 };
 
-const Topic = ({ title, children }: TopicProps) => {
+const Topic = ({ title, children, subscribeToNewItems }: TopicProps) => {
+  useEffect(() => {
+    subscribeToNewItems();
+  });
+
   return (
     <TopicContainer>
       <Title>
