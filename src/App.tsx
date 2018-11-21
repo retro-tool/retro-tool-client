@@ -102,7 +102,7 @@ export default () => {
         <ApolloProvider client={subscriptionClient(uuid)}>
           <ApolloHooksProvider client={subscriptionClient(uuid)}>
             <Router>
-              <Main path="/" />
+              <Main path="/:slug" />
             </Router>
           </ApolloHooksProvider>
         </ApolloProvider>

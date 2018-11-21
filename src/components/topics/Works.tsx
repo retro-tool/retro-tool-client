@@ -2,6 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { Item, Topic } from "..";
+import { Slug } from "../../types";
 
 const GET_WORKS_ITEMS = gql`
   query Retro($slug: String!) {
@@ -42,13 +43,17 @@ interface Data {
 }
 
 interface Variables {
-  slug: string;
+  slug: Slug;
 }
 
 class WorksQuery extends Query<Data, Variables> {}
 
-const Works = () => (
-  <WorksQuery query={GET_WORKS_ITEMS} variables={{ slug: "test-slug" }}>
+type WorksProps = {
+  slug: Slug;
+};
+
+const Works = ({ slug }: WorksProps) => (
+  <WorksQuery query={GET_WORKS_ITEMS} variables={{ slug }}>
     {({ subscribeToMore, ...result }) => {
       if (result.loading) return <div>"LOADING"</div>;
       if (result.error) return <div>"ERROR"</div>;
@@ -59,7 +64,7 @@ const Works = () => (
           subscribeToNewItems={() =>
             subscribeToMore({
               document: SUBSCRIBE_WORKS_ITEMS,
-              variables: { slug: "test-slug" },
+              variables: { slug },
               updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
                 // @ts-ignore

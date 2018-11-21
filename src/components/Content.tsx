@@ -18,11 +18,12 @@ ContentContainer.defaultProps = {
 
 interface Props {
   stage?: Stage;
+  slug: string;
 }
-const Content = ({ stage }: Props) => (
+const Content = ({ slug, stage }: Props) => (
   <ContentContainer>
     <Suspense fallback={<div>Loading...</div>}>
-      <Works />
+      <Works slug={slug} />
     </Suspense>
     {/* <Topic title="🤨">
       {[

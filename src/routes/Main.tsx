@@ -1,13 +1,19 @@
 import React from "react";
 import { Header, Content } from "../components";
 import { RouteComponentProps } from "@reach/router";
+import { Slug } from "../types";
 
-type Props = RouteComponentProps;
+interface Props
+  extends RouteComponentProps<{
+    slug: Slug;
+  }> {}
 
 const Main = (props: Props) => (
   <>
     <Header />
-    <Content />
+    {/*
+    // @ts-ignore */}
+    <Content slug={props.slug} />
   </>
 );
 
