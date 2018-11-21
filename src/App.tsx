@@ -2,6 +2,9 @@ import React from "react";
 import theme from "./theme";
 import { Router } from "@reach/router";
 import { createGlobalStyle, ThemeProvider } from "styled-components/macro";
+import { client } from "./services/api";
+import { ApolloProvider } from "react-apollo";
+import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import Main from "./routes/Main";
 
 interface FontShape {
@@ -68,9 +71,13 @@ export default () => (
   <>
     <GlobalStyle />
     <ThemeProvider theme={theme}>
-      <Router>
-        <Main path="/" />
-      </Router>
+      <ApolloProvider client={client}>
+        <ApolloHooksProvider client={client}>
+          <Router>
+            <Main path="/" />
+          </Router>
+        </ApolloHooksProvider>
+      </ApolloProvider>
     </ThemeProvider>
   </>
 );

@@ -15,7 +15,8 @@
     "skipLibCheck": false,
     "strict": true,
     "target": "es5",
-    "lib": ["es6", "dom", "esnext"]
+    "noImplicitAny": false,
+    "lib": ["dom", "esnext"]
   },
   "include": ["src"]
 }
