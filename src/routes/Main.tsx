@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Header, Content } from "../components";
 import { RouteComponentProps } from "@reach/router";
 import { Slug } from "../types";
@@ -11,9 +11,11 @@ interface Props
 const Main = (props: Props) => (
   <>
     <Header />
-    {/*
-    // @ts-ignore */}
-    <Content slug={props.slug} />
+    <Suspense fallback={<div>Loading Content</div>}>
+      {/*
+        // @ts-ignore */}
+      <Content slug={props.slug} />
+    </Suspense>
   </>
 );
 

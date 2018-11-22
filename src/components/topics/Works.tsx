@@ -5,7 +5,7 @@ import { Item, Topic } from "..";
 import { Slug } from "../../types";
 
 const GET_WORKS_ITEMS = gql`
-  query Retro($slug: String!) {
+  query Retro($slug: String) {
     retro(slug: $slug) {
       works {
         id
@@ -52,6 +52,7 @@ type WorksProps = {
   slug: Slug;
 };
 
+// @ts-ignore
 const Works = ({ slug }: WorksProps) => (
   <WorksQuery query={GET_WORKS_ITEMS} variables={{ slug }}>
     {({ subscribeToMore, ...result }) => {

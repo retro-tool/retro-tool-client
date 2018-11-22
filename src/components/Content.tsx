@@ -1,9 +1,8 @@
 import React, { Suspense } from "react";
 import styled from "styled-components/macro";
-import { Stage } from "../types";
-// import { Item, Topic } from "./";
 import { Works } from "./topics";
 import { space, SpaceProps } from "styled-system";
+import { Stage } from "../types";
 
 type ContainerProps = SpaceProps;
 const ContentContainer = styled.div<ContainerProps>`
@@ -23,26 +22,10 @@ interface Props {
 const Content = ({ slug, stage }: Props) => (
   <ContentContainer>
     <Suspense fallback={<div>Loading...</div>}>
+      {/*
+        // @ts-ignore */}
       <Works slug={slug} />
     </Suspense>
-    {/* <Topic title="🤨">
-      {[
-        <Item key={22344}>Primer item en {stage}</Item>,
-        <Item key={5454}>Segundo item en {stage}</Item>
-      ]}
-    </Topic>
-    <Topic title="🤔">
-      {[
-        <Item key={5433}>Primer item en {stage}</Item>,
-        <Item key={266}>Segundo item en {stage}</Item>
-      ]}
-    </Topic>
-    <Topic title="✅">
-      {[
-        <Item key={245555}>Primer item en {stage}</Item>,
-        <Item key={567667}>Segundo item en {stage}</Item>
-      ]}
-    </Topic> */}
   </ContentContainer>
 );
 
