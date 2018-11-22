@@ -25,7 +25,7 @@ const Content = () => (
     <Suspense fallback={<LoadingCard />}>
       <Items topic="others" title="🤔" />
     </Suspense>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingCard />}>
       <ActionItems title="✅" />
     </Suspense>
   </ContentContainer>

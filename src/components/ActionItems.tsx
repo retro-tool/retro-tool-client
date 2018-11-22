@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { ActionItem, Topic, SlugContext } from ".";
+import { ActionItem, LoadingCard, Topic, SlugContext } from ".";
 import { Slug } from "../types";
 
 const GET_ACTION_ITEMS = gql`
@@ -55,8 +55,8 @@ const ActionItems = ({ title }: ActionItemsProps) => {
   return (
     <QueryActionItems query={GET_ACTION_ITEMS} variables={{ slug }}>
       {({ subscribeToMore, ...result }) => {
-        if (result.loading) return <div>"LOADING"</div>;
-        if (result.error) return <div>"ERROR"</div>;
+        if (result.loading) return <LoadingCard />;
+        if (result.error) return null;
 
         return (
           <Topic

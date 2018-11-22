@@ -1,6 +1,6 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useContext, useEffect } from "react";
 import styled from "styled-components/macro";
-import { Text, CreateActionItem, CreateItem } from "./";
+import { Text, CreateActionItem, CreateItem, StageContext } from "./";
 import {
   space,
   SpaceProps,
@@ -13,12 +13,17 @@ import {
 } from "styled-system";
 import { Topic as TopicType } from "../types";
 
-type TopicContainerProps = SpaceProps & MinWidthProps;
+type TopicContainerProps = SpaceProps &
+  MinWidthProps & {
+    disabled?: boolean;
+  };
 const TopicContainer = styled.div<TopicContainerProps>`
   flex: 1;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16);
   background: #fff;
   border-radius: 4px;
+  opacity: ${({ disabled }) => disabled && ".4"};
+  pointer-events: ${({ disabled }) => disabled && "none"};
 
   ${minWidth};
   ${space};
@@ -60,8 +65,10 @@ const Topic = ({ title, children, subscribeToNewItems, topic }: TopicProps) => {
     subscribeToNewItems();
   });
 
+  const { stage } = useContext(StageContext);
+
   return (
-    <TopicContainer>
+    <TopicContainer disabled={!topic && stage !== "actions"}>
       <Title>
         <Text fontSize={4} pt={1}>
           {title}
