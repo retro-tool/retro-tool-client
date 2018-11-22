@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { Item, Topic, SlugContext } from ".";
+import { Item, LoadingCard, Topic, SlugContext } from ".";
 import { Slug, Topic as TopicType } from "../types";
 
 const getItems = (topic: TopicType) =>
@@ -61,8 +61,8 @@ const Items = ({ title, topic }: ItemsProps) => {
   return (
     <QueryItems query={getItems(topic)} variables={{ slug }}>
       {({ subscribeToMore, ...result }) => {
-        if (result.loading) return <div>"LOADING"</div>;
-        if (result.error) return <div>"ERROR"</div>;
+        if (result.loading) return <LoadingCard />;
+        if (result.error) return null;
 
         return (
           <Topic

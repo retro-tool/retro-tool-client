@@ -22,7 +22,7 @@ const Main = (props: Props) => {
   return (
     <>
       <Header />
-      <Suspense fallback={<div>Loading Content</div>}>
+      <Suspense fallback={null}>
         <Content />
       </Suspense>
     </>

@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import styled from "styled-components/macro";
-import { Items } from "./";
+import { Items, LoadingCard } from "./";
 import { space, SpaceProps } from "styled-system";
 
 type ContainerProps = SpaceProps;
@@ -16,13 +16,13 @@ ContentContainer.defaultProps = {
 
 const Content = () => (
   <ContentContainer>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingCard />}>
       <Items topic="works" title="😃" />
     </Suspense>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingCard />}>
       <Items topic="improve" title="🤨" />
     </Suspense>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingCard />}>
       <Items topic="others" title="🤔" />
     </Suspense>
   </ContentContainer>
