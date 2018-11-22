@@ -86,7 +86,12 @@ const Items = ({ title, topic }: ItemsProps) => {
           >
             {result.data &&
               result.data.retro[topic].map(item => (
-                <Item key={item.id} hidden={item.hidden}>
+                <Item
+                  key={item.id}
+                  hidden={item.hidden}
+                  id={item.id}
+                  votes={item.votes}
+                >
                   {item.title}
                 </Item>
               ))}

@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
-import { Text, PlusOne } from "./";
-import { space, SpaceProps } from "styled-system";
 import theme from "../theme";
 import randomText from "random-textblock";
+import { space, SpaceProps } from "styled-system";
+import { Text, PlusOne } from "./";
 
 const randomTextConfig = {
   minWords: 3,
@@ -37,8 +37,10 @@ ItemContainer.defaultProps = {
 type ItemProps = {
   children?: ReactNode;
   hidden?: boolean;
+  id: string;
+  votes: number;
 };
-const Item = ({ children, hidden }: ItemProps) => (
+const Item = ({ children, id, hidden, votes }: ItemProps) => (
   <ItemContainer>
     {hidden ? (
       <Text obfuscate={hidden}>
@@ -47,7 +49,7 @@ const Item = ({ children, hidden }: ItemProps) => (
     ) : (
       <Text>{children}</Text>
     )}
-    <PlusOne hidden={hidden} />
+    <PlusOne hidden={hidden} id={id} votes={votes} />
   </ItemContainer>
 );
 
