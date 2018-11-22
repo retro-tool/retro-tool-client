@@ -16,8 +16,11 @@ type ItemContainerProps = SpaceProps;
 const ItemContainer = styled.div<ItemContainerProps>`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
+
+  ${space};
+
   &:hover:after {
     content: "";
     position: absolute;
@@ -27,8 +30,6 @@ const ItemContainer = styled.div<ItemContainerProps>`
     width: 5px;
     background: ${theme.colors.borderGrey};
   }
-
-  ${space};
 `;
 ItemContainer.defaultProps = {
   p: [3, null, null, null, 4]
@@ -49,7 +50,7 @@ const Item = ({ children, id, hidden, votes }: ItemProps) => (
     ) : (
       <Text>{children}</Text>
     )}
-    <PlusOne hidden={hidden} id={id} votes={votes} />
+    <PlusOne id={id} votes={votes} />
   </ItemContainer>
 );
 

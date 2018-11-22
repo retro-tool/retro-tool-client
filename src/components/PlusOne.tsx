@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
@@ -8,14 +8,24 @@ import {
   space,
   SpaceProps
 } from "styled-system";
+import { StageContext } from ".";
 import { Text } from "./";
 
-const PlusOneContainer = styled.div`
+type PlusOneContainerProps = SpaceProps & {
+  disabled: boolean;
+};
+const PlusOneContainer = styled.div<PlusOneContainerProps>`
   display: flex;
   align-items: center;
-  opacity: ${({ hidden }) => hidden && ".4"};
-  pointer-events: ${({ hidden }) => hidden && "none"};
+  opacity: ${({ disabled }) => disabled && ".5"};
+  pointer-events: ${({ disabled }) => disabled && "none"};
+  filter: ${({ disabled }) => disabled && "grayscale(80%)"};
+
+  ${space}
 `;
+PlusOneContainer.defaultProps = {
+  ml: 3
+};
 
 const PlusOneButton = styled.button`
   cursor: pointer;
@@ -32,14 +42,13 @@ const CountContainer = styled.div<CountContainerProps>`
   border-left: 1px solid;
   padding-left: 10px;
   margin-left: 10px;
+  min-width: 3ch;
+  text-align: center;
 
   ${borderColor}
   ${space}
 `;
 CountContainer.defaultProps = {
-  pt: 1,
-  pb: 1,
-  ml: 3,
   borderColor: "borderGrey"
 };
 
@@ -51,27 +60,32 @@ const ADD_VOTE = gql`
   }
 `;
 
+const stagesWithVotes = ["review", "actions"];
+
 type PlusOneProps = {
   id: string;
   votes: number;
-  hidden?: boolean;
 };
 
-const PlusOne = ({ hidden, id, votes }: PlusOneProps) => (
-  <Mutation mutation={ADD_VOTE}>
-    {(addVote, { data, loading }) => {
-      return (
-        <PlusOneContainer hidden={hidden}>
-          <PlusOneButton onClick={() => addVote({ variables: { id } })}>
-            <Text fontSize={3}>👍</Text>
-          </PlusOneButton>
-          <CountContainer>
-            <Text color="grey">{(data && data.votes) || votes}</Text>
-          </CountContainer>
-        </PlusOneContainer>
-      );
-    }}
-  </Mutation>
-);
+const PlusOne = ({ id, votes }: PlusOneProps) => {
+  const { stage } = useContext(StageContext);
+
+  return (
+    <Mutation mutation={ADD_VOTE}>
+      {(addVote, { data, loading }) => {
+        return (
+          <PlusOneContainer disabled={stagesWithVotes.indexOf(stage) < 0}>
+            <PlusOneButton onClick={() => addVote({ variables: { id } })}>
+              <Text fontSize={3}>👍</Text>
+            </PlusOneButton>
+            <CountContainer>
+              <Text color="grey">{(data && data.votes) || votes}</Text>
+            </CountContainer>
+          </PlusOneContainer>
+        );
+      }}
+    </Mutation>
+  );
+};
 
 export default PlusOne;
