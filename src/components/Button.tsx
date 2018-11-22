@@ -36,6 +36,10 @@ const Button = styled.button<Props>`
   ${fontWeight};
   ${lineHeight};
   ${space};
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 Button.defaultProps = {

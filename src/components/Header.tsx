@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components/macro";
-import { Button, Logo, Text, StageContext } from "./";
+import { Button, Logo, StageContext } from "./";
 import { space, SpaceProps } from "styled-system";
 
 type HeaderProps = SpaceProps;
@@ -24,17 +24,35 @@ HeaderContainer.defaultProps = {
 const Header = () => {
   const { stage, nextStage } = useContext(StageContext);
 
+  const headerActions = {
+    initial: {
+      label: "Start retro",
+      onClick: nextStage
+    },
+    review: {
+      label: "Add action items",
+      onClick: nextStage
+    },
+    actions: {
+      label: "Finish retro",
+      onClick: nextStage
+    },
+    final: {
+      label: "Export",
+      onClick: () => console.log("--> EXPORT")
+    }
+  };
+
   return (
     <HeaderContainer>
       <Logo />
-      <Text>{stage}</Text>
-      <Button onClick={nextStage}>Next</Button>
+      {stage && (
+        <Button onClick={headerActions[stage].onClick}>
+          {headerActions[stage].label}
+        </Button>
+      )}
     </HeaderContainer>
   );
-};
-
-Header.defaultProps = {
-  stage: "initial"
 };
 
 export default Header;

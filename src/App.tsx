@@ -102,14 +102,14 @@ export default () => {
       <ThemeProvider theme={theme}>
         <ApolloProvider client={subscriptionClient(uuid)}>
           <ApolloHooksProvider client={subscriptionClient(uuid)}>
-            <StageProvider>
-              <SlugProvider>
+            <SlugProvider>
+              <StageProvider>
                 <Router>
                   <Main path="/:slug" />
                   <CreateRetro default />
                 </Router>
-              </SlugProvider>
-            </StageProvider>
+              </StageProvider>
+            </SlugProvider>
           </ApolloHooksProvider>
         </ApolloProvider>
       </ThemeProvider>
