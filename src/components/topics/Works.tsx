@@ -62,6 +62,7 @@ const Works = ({ slug }: WorksProps) => (
       return (
         <Topic
           title="😃"
+          slug={slug}
           subscribeToNewItems={() =>
             subscribeToMore({
               document: SUBSCRIBE_WORKS_ITEMS,

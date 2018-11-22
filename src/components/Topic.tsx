@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components/macro";
-import { Text, Input } from "./";
+import { Text, CreateItem } from "./";
 import {
   space,
   SpaceProps,
@@ -11,6 +11,7 @@ import {
   borderBottom,
   BorderBottomProps
 } from "styled-system";
+import { Slug } from "../types";
 
 type TopicContainerProps = SpaceProps & MinWidthProps;
 const TopicContainer = styled.div<TopicContainerProps>`
@@ -49,14 +50,12 @@ Title.defaultProps = {
 
 interface TopicProps {
   title: string;
+  slug: Slug;
   subscribeToNewItems: () => {};
   children?: ReactNode;
 }
-const onSubmit = (target: any): void => {
-  console.log(target.value);
-};
 
-const Topic = ({ title, children, subscribeToNewItems }: TopicProps) => {
+const Topic = ({ title, children, slug, subscribeToNewItems }: TopicProps) => {
   useEffect(() => {
     subscribeToNewItems();
   });
@@ -67,7 +66,7 @@ const Topic = ({ title, children, subscribeToNewItems }: TopicProps) => {
         <Text fontSize={4} pt={1}>
           {title}
         </Text>
-        <Input ml={2} flex="1 1 auto" onSubmit={onSubmit} />
+        <CreateItem topic="works" slug={slug} />
       </Title>
       {children}
     </TopicContainer>

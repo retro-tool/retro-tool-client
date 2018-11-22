@@ -16,15 +16,27 @@ import Textarea, { TextareaAutosizeProps } from "react-textarea-autosize";
 
 type InputProps = TextareaAutosizeProps & {
   placeholder?: string;
-  onSubmit?: (target: any) => void;
+  onSubmit?: (value: string) => void;
+  onChange: (value: string) => void;
+  value: string;
 };
 
-const Input = ({ className, placeholder, onKeyDown, onSubmit }: InputProps) => {
+const Input = ({
+  className,
+  placeholder,
+  onSubmit,
+  onChange,
+  value
+}: InputProps) => {
   const HandleOnKeyDown = (evt: any): void => {
     if (evt.keyCode === 13) {
       evt.preventDefault();
-      onSubmit && onSubmit(evt.target);
+      onSubmit && onSubmit(evt.target.value);
     }
+  };
+
+  const HandleChange = (evt: any): void => {
+    onChange(evt.target.value);
   };
 
   return (
@@ -32,6 +44,8 @@ const Input = ({ className, placeholder, onKeyDown, onSubmit }: InputProps) => {
       className={className}
       placeholder={placeholder}
       onKeyDown={HandleOnKeyDown}
+      onChange={HandleChange}
+      value={value}
     />
   );
 };
