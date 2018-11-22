@@ -7,7 +7,7 @@ import { createGlobalStyle, ThemeProvider } from "styled-components/macro";
 import { client, subscriptionClient } from "./services/api";
 import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
-import { StageProvider } from "./components";
+import { StageProvider, SlugProvider } from "./components";
 import { CreateRetro, Main } from "./routes";
 
 interface FontShape {
@@ -103,10 +103,12 @@ export default () => {
         <ApolloProvider client={subscriptionClient(uuid)}>
           <ApolloHooksProvider client={subscriptionClient(uuid)}>
             <StageProvider>
-              <Router>
-                <Main path="/:slug" />
-                <CreateRetro default />
-              </Router>
+              <SlugProvider>
+                <Router>
+                  <Main path="/:slug" />
+                  <CreateRetro default />
+                </Router>
+              </SlugProvider>
             </StageProvider>
           </ApolloHooksProvider>
         </ApolloProvider>

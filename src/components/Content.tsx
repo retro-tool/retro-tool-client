@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import styled from "styled-components/macro";
 import { Items } from "./";
 import { space, SpaceProps } from "styled-system";
-import { Stage } from "../types";
 
 type ContainerProps = SpaceProps;
 const ContentContainer = styled.div<ContainerProps>`
@@ -15,26 +14,18 @@ ContentContainer.defaultProps = {
   p: [1, 2]
 };
 
-interface Props {
-  stage?: Stage;
-  slug: string;
-}
-const Content = ({ slug, stage }: Props) => (
+const Content = () => (
   <ContentContainer>
     <Suspense fallback={<div>Loading...</div>}>
-      <Items topic="works" slug={slug} title="😃" />
+      <Items topic="works" title="😃" />
     </Suspense>
     <Suspense fallback={<div>Loading...</div>}>
-      <Items topic="improve" slug={slug} title="🤨" />
+      <Items topic="improve" title="🤨" />
     </Suspense>
     <Suspense fallback={<div>Loading...</div>}>
-      <Items topic="others" slug={slug} title="🤔" />
+      <Items topic="others" title="🤔" />
     </Suspense>
   </ContentContainer>
 );
-
-Content.defaultProps = {
-  stage: "initial"
-};
 
 export default Content;

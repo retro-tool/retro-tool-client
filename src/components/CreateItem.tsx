@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { Input } from ".";
-import { Slug, Topic } from "../types";
+import { Input, SlugContext } from ".";
+import { Topic } from "../types";
 
 const createItemMutations = {
   works: "createWorksItem",
@@ -24,12 +24,12 @@ const CREATE_ITEM = (topic: Topic) =>
   `;
 
 type Props = {
-  slug: Slug;
   topic: Topic;
 };
 
-const CreateItem = ({ slug, topic }: Props) => {
+const CreateItem = ({ topic }: Props) => {
   const [value, setValue] = useState("");
+  const { slug } = useContext(SlugContext);
 
   return (
     <Mutation mutation={CREATE_ITEM(topic)}>

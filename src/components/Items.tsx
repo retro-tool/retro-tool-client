@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { Item, Topic } from "./";
+import { Item, Topic, SlugContext } from ".";
 import { Slug, Topic as TopicType } from "../types";
 
 const getItems = (topic: TopicType) =>
@@ -51,47 +51,48 @@ interface Variables {
 class QueryItems extends Query<Data, Variables> {}
 
 type ItemsProps = {
-  slug: Slug;
   title: string;
   topic: TopicType;
 };
 
-// @ts-ignore
-const Items = ({ slug, title, topic }: ItemsProps) => (
-  <QueryItems query={getItems(topic)} variables={{ slug }}>
-    {({ subscribeToMore, ...result }) => {
-      if (result.loading) return <div>"LOADING"</div>;
-      if (result.error) return <div>"ERROR"</div>;
+const Items = ({ title, topic }: ItemsProps) => {
+  const { slug } = useContext(SlugContext);
 
-      return (
-        <Topic
-          title={title}
-          topic={topic}
-          slug={slug}
-          subscribeToNewItems={() =>
-            subscribeToMore({
-              document: getSubscribeItems(topic),
-              variables: { slug },
-              updateQuery: (prev, { subscriptionData }) => {
-                if (!subscriptionData.data) return prev;
-                // @ts-ignore
-                const newItems = subscriptionData.data.retroUpdated;
+  return (
+    <QueryItems query={getItems(topic)} variables={{ slug }}>
+      {({ subscribeToMore, ...result }) => {
+        if (result.loading) return <div>"LOADING"</div>;
+        if (result.error) return <div>"ERROR"</div>;
 
-                return {
-                  retro: newItems
-                };
-              }
-            })
-          }
-        >
-          {result.data &&
-            result.data.retro[topic].map(item => (
-              <Item key={item.id}>{item.title}</Item>
-            ))}
-        </Topic>
-      );
-    }}
-  </QueryItems>
-);
+        return (
+          <Topic
+            title={title}
+            topic={topic}
+            subscribeToNewItems={() =>
+              subscribeToMore({
+                document: getSubscribeItems(topic),
+                variables: { slug },
+                updateQuery: (prev, { subscriptionData }) => {
+                  if (!subscriptionData.data) return prev;
+                  // @ts-ignore
+                  const newItems = subscriptionData.data.retroUpdated;
+
+                  return {
+                    retro: newItems
+                  };
+                }
+              })
+            }
+          >
+            {result.data &&
+              result.data.retro[topic].map(item => (
+                <Item key={item.id}>{item.title}</Item>
+              ))}
+          </Topic>
+        );
+      }}
+    </QueryItems>
+  );
+};
 
 export default Items;

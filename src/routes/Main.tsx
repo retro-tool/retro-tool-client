@@ -1,6 +1,6 @@
-import React, { Suspense } from "react";
-import { Header, Content } from "../components";
+import React, { Suspense, useEffect, useContext } from "react";
 import { RouteComponentProps } from "@reach/router";
+import { Header, Content, SlugContext } from "../components";
 import { Slug } from "../types";
 
 interface Props
@@ -8,15 +8,25 @@ interface Props
     slug: Slug;
   }> {}
 
-const Main = (props: Props) => (
-  <>
-    <Header />
-    <Suspense fallback={<div>Loading Content</div>}>
-      {/*
-        // @ts-ignore */}
-      <Content slug={props.slug} />
-    </Suspense>
-  </>
-);
+const Main = (props: Props) => {
+  const { setSlug } = useContext(SlugContext);
+
+  useEffect(
+    () => {
+      // @ts-ignore
+      setSlug(props.slug);
+    },
+    [props.slug]
+  );
+
+  return (
+    <>
+      <Header />
+      <Suspense fallback={<div>Loading Content</div>}>
+        <Content />
+      </Suspense>
+    </>
+  );
+};
 
 export default Main;
