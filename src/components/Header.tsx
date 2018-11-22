@@ -1,12 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components/macro";
-import { Button, Logo, Text } from "./";
-import { Stage } from "../types";
+import { Button, Logo, Text, StageContext } from "./";
 import { space, SpaceProps } from "styled-system";
-
-interface Props {
-  stage?: Stage;
-}
 
 type HeaderProps = SpaceProps;
 
@@ -26,13 +21,17 @@ HeaderContainer.defaultProps = {
   pr: 4
 };
 
-const Header = ({ stage }: Props) => (
-  <HeaderContainer>
-    <Logo />
-    <Text>{stage}</Text>
-    <Button>Next</Button>
-  </HeaderContainer>
-);
+const Header = () => {
+  const { stage, nextStage } = useContext(StageContext);
+
+  return (
+    <HeaderContainer>
+      <Logo />
+      <Text>{stage}</Text>
+      <Button onClick={nextStage}>Next</Button>
+    </HeaderContainer>
+  );
+};
 
 Header.defaultProps = {
   stage: "initial"

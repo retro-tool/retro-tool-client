@@ -25,7 +25,7 @@ type Props = BackgroundProps &
   LineHeightProps &
   SpaceProps;
 
-const Button = styled.span<Props>`
+const Button = styled.button<Props>`
   border-radius: 3px;
   cursor: pointer;
 
