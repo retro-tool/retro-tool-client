@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components/macro";
-import { Text, CreateItem } from "./";
+import { Text, CreateActionItem, CreateItem } from "./";
 import {
   space,
   SpaceProps,
@@ -50,7 +50,7 @@ Title.defaultProps = {
 
 interface TopicProps {
   title: string;
-  topic: TopicType;
+  topic?: TopicType;
   subscribeToNewItems: () => {};
   children?: ReactNode;
 }
@@ -66,7 +66,7 @@ const Topic = ({ title, children, subscribeToNewItems, topic }: TopicProps) => {
         <Text fontSize={4} pt={1}>
           {title}
         </Text>
-        <CreateItem topic={topic} />
+        {topic ? <CreateItem topic={topic} /> : <CreateActionItem />}
       </Title>
       {children}
     </TopicContainer>
