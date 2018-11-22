@@ -28,11 +28,13 @@ export type TextProps = ColorProps &
   LineHeightProps &
   SpaceProps & {
     size?: Size;
+    obfuscate?: boolean;
   };
 
 const Text = styled.div<TextProps>`
   margin: 0;
   padding: 0;
+  filter: ${({ obfuscate }) => obfuscate && "blur(5px)"};
 
   ${size};
 

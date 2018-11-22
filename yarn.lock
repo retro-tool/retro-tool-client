@@ -8614,6 +8614,11 @@ raf@3.4.0:
   dependencies:
     performance-now "^2.1.0"
 
+random-textblock@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/random-textblock/-/random-textblock-1.2.0.tgz#b368467d1ad855e7924e48616bb39207c1c66849"
+  integrity sha1-s2hGfRrYVeeSTkhha7OSB8HGaEk=
+
 randomatic@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-3.1.1.tgz#b776efc59375984e36c537b2f51a1f0aff0da1ed"

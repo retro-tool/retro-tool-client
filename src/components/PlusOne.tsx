@@ -16,9 +16,11 @@ const PlusOneContainer = styled.button<PlusOneContainerProps>`
   align-items: center;
   border-radius: 6px;
   border: 1px solid;
-  cursor: pointer;
   padding-left: 10px;
   padding-right: 10px;
+  cursor: pointer;
+  opacity: ${({ hidden }) => hidden && ".4"};
+  pointer-events: ${({ hidden }) => hidden && "none"};
 
   ${borderColor}
   ${space}
@@ -26,6 +28,7 @@ const PlusOneContainer = styled.button<PlusOneContainerProps>`
 PlusOneContainer.defaultProps = {
   pt: 1,
   pb: 1,
+  ml: 3,
   borderColor: "borderGrey"
 };
 
@@ -46,14 +49,11 @@ const CountContainer = styled.div`
   margin-left: 8px;
 `;
 
-const PlusOne = () => (
-  <PlusOneContainer>
-    {/* <PlusOneSvg>
-      <path
-        fill="currentColor"
-        d="M21.6 18.09h-7.2v7.2H7.2v-7.2H0v-7.2h7.2v-7.2h7.2v7.2h7.2v7.2zM39.7 29h-7.2V9.49l-5.2 2.6-3.2-6.5L34.6.39a3.4 3.4 0 0 1 3.5.2 3.56 3.56 0 0 1 1.7 3.1V29z"
-      />
-    </PlusOneSvg> */}
+type PlusOneProps = {
+  hidden?: boolean;
+};
+const PlusOne = ({ hidden }: PlusOneProps) => (
+  <PlusOneContainer hidden={hidden}>
     <Text fontSize={6} color="link" lineHeight={0}>
       +
     </Text>

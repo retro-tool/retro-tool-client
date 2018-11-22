@@ -3,6 +3,14 @@ import styled from "styled-components/macro";
 import { Text, PlusOne } from "./";
 import { space, SpaceProps } from "styled-system";
 import theme from "../theme";
+import randomText from "random-textblock";
+
+const randomTextConfig = {
+  minWords: 3,
+  maxWords: 8,
+  minSentences: 1,
+  maxSentences: 1
+};
 
 type ItemContainerProps = SpaceProps;
 const ItemContainer = styled.div<ItemContainerProps>`
@@ -28,11 +36,18 @@ ItemContainer.defaultProps = {
 
 type ItemProps = {
   children?: ReactNode;
+  hidden?: boolean;
 };
-const Item = ({ children }: ItemProps) => (
+const Item = ({ children, hidden }: ItemProps) => (
   <ItemContainer>
-    <Text>{children}</Text>
-    <PlusOne />
+    {hidden ? (
+      <Text obfuscate={hidden}>
+        {randomText.getTextBlock(randomTextConfig)}
+      </Text>
+    ) : (
+      <Text>{children}</Text>
+    )}
+    <PlusOne hidden={hidden} />
   </ItemContainer>
 );
 
