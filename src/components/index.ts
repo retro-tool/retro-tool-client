@@ -4,6 +4,7 @@ export { default as CreateItem } from "./CreateItem";
 export { default as Header } from "./Header";
 export { default as Input } from "./Input";
 export { default as Item } from "./Item";
+export { default as Items } from "./Items";
 export { default as Logo } from "./Logo";
 export { default as PlusOne } from "./PlusOne";
 export { default as StageProvider, StageContext } from "./StageProvider";

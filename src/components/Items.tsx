@@ -1,39 +1,41 @@
 import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { Item, Topic } from "..";
-import { Slug } from "../../types";
+import { Item, Topic } from "./";
+import { Slug, Topic as TopicType } from "../types";
 
-const GET_WORKS_ITEMS = gql`
-  query Retro($slug: String) {
-    retro(slug: $slug) {
-      works {
-        id
-        hidden
-        title
-        votes
+const getItems = (topic: TopicType) =>
+  gql`
+    query Retro($slug: String) {
+      retro(slug: $slug) {
+        ${topic} {
+          id
+          hidden
+          title
+          votes
+        }
       }
     }
-  }
-`;
+  `;
 
-const SUBSCRIBE_WORKS_ITEMS = gql`
-  subscription onItemAdded($slug: String!) {
-    retroUpdated(slug: $slug) {
-      works {
-        id
-        hidden
-        title
-        votes
+const getSubscribeItems = (topic: TopicType) =>
+  gql`
+    subscription onItemAdded($slug: String!) {
+      retroUpdated(slug: $slug) {
+        ${topic} {
+          id
+          hidden
+          title
+          votes
+        }
+        status
       }
-      status
     }
-  }
-`;
+  `;
 
 interface Data {
   retro: {
-    works: Array<{
+    [key: string]: Array<{
       id: string;
       hidden: boolean;
       title: string;
@@ -46,26 +48,29 @@ interface Variables {
   slug: Slug;
 }
 
-class WorksQuery extends Query<Data, Variables> {}
+class QueryItems extends Query<Data, Variables> {}
 
-type WorksProps = {
+type ItemsProps = {
   slug: Slug;
+  title: string;
+  topic: TopicType;
 };
 
 // @ts-ignore
-const Works = ({ slug }: WorksProps) => (
-  <WorksQuery query={GET_WORKS_ITEMS} variables={{ slug }}>
+const Items = ({ slug, title, topic }: ItemsProps) => (
+  <QueryItems query={getItems(topic)} variables={{ slug }}>
     {({ subscribeToMore, ...result }) => {
       if (result.loading) return <div>"LOADING"</div>;
       if (result.error) return <div>"ERROR"</div>;
 
       return (
         <Topic
-          title="😃"
+          title={title}
+          topic={topic}
           slug={slug}
           subscribeToNewItems={() =>
             subscribeToMore({
-              document: SUBSCRIBE_WORKS_ITEMS,
+              document: getSubscribeItems(topic),
               variables: { slug },
               updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -80,13 +85,13 @@ const Works = ({ slug }: WorksProps) => (
           }
         >
           {result.data &&
-            result.data.retro.works.map(item => (
+            result.data.retro[topic].map(item => (
               <Item key={item.id}>{item.title}</Item>
             ))}
         </Topic>
       );
     }}
-  </WorksQuery>
+  </QueryItems>
 );
 
-export default Works;
+export default Items;

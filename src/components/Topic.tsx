@@ -11,7 +11,7 @@ import {
   borderBottom,
   BorderBottomProps
 } from "styled-system";
-import { Slug } from "../types";
+import { Slug, Topic as TopicType } from "../types";
 
 type TopicContainerProps = SpaceProps & MinWidthProps;
 const TopicContainer = styled.div<TopicContainerProps>`
@@ -51,11 +51,18 @@ Title.defaultProps = {
 interface TopicProps {
   title: string;
   slug: Slug;
+  topic: TopicType;
   subscribeToNewItems: () => {};
   children?: ReactNode;
 }
 
-const Topic = ({ title, children, slug, subscribeToNewItems }: TopicProps) => {
+const Topic = ({
+  title,
+  children,
+  slug,
+  subscribeToNewItems,
+  topic
+}: TopicProps) => {
   useEffect(() => {
     subscribeToNewItems();
   });
@@ -66,7 +73,7 @@ const Topic = ({ title, children, slug, subscribeToNewItems }: TopicProps) => {
         <Text fontSize={4} pt={1}>
           {title}
         </Text>
-        <CreateItem topic="works" slug={slug} />
+        <CreateItem topic={topic} slug={slug} />
       </Title>
       {children}
     </TopicContainer>
