@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components/macro";
-import { Button, Logo, StageContext, Text } from "./";
+import { Button, Logo, SlugContext, StageContext, Text } from "./";
 import { space, SpaceProps } from "styled-system";
 import Modal from "react-responsive-modal";
+import { Redirect } from "@reach/router";
 
 type HeaderProps = SpaceProps;
 
@@ -23,8 +24,10 @@ HeaderContainer.defaultProps = {
 };
 
 const Header = () => {
+  const { slug } = useContext(SlugContext);
   const { stage, nextStage } = useContext(StageContext);
   const [confirm, setConfirm] = useState(false);
+  const [raw, setRaw] = useState(false);
 
   const headerActions = {
     initial: {
@@ -47,9 +50,13 @@ const Header = () => {
     },
     final: {
       label: "Export",
-      onClick: () => console.log("--> EXPORT")
+      onClick: () => {
+        setRaw(true);
+      }
     }
   };
+
+  if (raw) return <Redirect noThrow to={`/${slug}/export`} />;
 
   return (
     <>
@@ -75,4 +82,5 @@ const Header = () => {
   );
 };
 
+export { HeaderContainer };
 export default Header;

@@ -73,10 +73,16 @@ const Topic = ({
   });
 
   const { stage } = useContext(StageContext);
-  const stagesWithActions = ["actions"];
+  const stagesWithActions = ["actions", "final"];
+  const stagesWithTopics = ["initial", "review", "actions"];
 
   return (
-    <TopicContainer disabled={!topic && stagesWithActions.indexOf(stage) < 0}>
+    <TopicContainer
+      disabled={
+        (topic && stagesWithTopics.indexOf(stage) < 0) ||
+        (!topic && stagesWithActions.indexOf(stage) < 0)
+      }
+    >
       <Title>
         <Text fontSize={4} pt={1}>
           {title}

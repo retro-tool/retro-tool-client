@@ -3,7 +3,7 @@ import theme from "./theme";
 import { Router } from "@reach/router";
 import { createGlobalStyle, ThemeProvider } from "styled-components/macro";
 import { StageProvider, SlugProvider } from "./components";
-import { CreateRetro, Main } from "./routes";
+import { CreateRetro, Export, Main } from "./routes";
 
 interface FontShape {
   style: string;
@@ -74,6 +74,7 @@ export default () => {
           <StageProvider>
             <Router>
               <Main path="/:slug" />
+              <Export path="/:slug/export" />
               <CreateRetro default />
             </Router>
           </StageProvider>
