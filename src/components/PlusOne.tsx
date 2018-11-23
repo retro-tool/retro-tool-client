@@ -60,7 +60,7 @@ const ADD_VOTE = gql`
   }
 `;
 
-const stagesWithVotes = ["review", "actions"];
+const stagesWithVotes = ["review"];
 
 type PlusOneProps = {
   id: string;

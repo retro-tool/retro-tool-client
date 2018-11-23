@@ -66,9 +66,10 @@ const Topic = ({ title, children, subscribeToNewItems, topic }: TopicProps) => {
   });
 
   const { stage } = useContext(StageContext);
+  const stagesWithActions = ["actions"];
 
   return (
-    <TopicContainer disabled={!topic && stage !== "actions"}>
+    <TopicContainer disabled={!topic && stagesWithActions.indexOf(stage) < 0}>
       <Title>
         <Text fontSize={4} pt={1}>
           {title}
