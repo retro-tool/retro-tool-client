@@ -63,8 +63,6 @@ export default ({ children }) => {
               const currentVotesLeft = result.data.currentUser.votesLeft;
               setUser({ votesLeft: currentVotesLeft });
 
-              console.log("first query result:", result);
-
               subscribeToMore({
                 document: SUBSCRIBE_TO_VOTES,
                 variables: { slug },
