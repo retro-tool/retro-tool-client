@@ -19,18 +19,30 @@ const Main = (props: Props) => {
     // @ts-ignore
     setSlug(props.slug);
 
-    client
-      .query({
+    (async () => {
+      await client.query({
         query: gql`
-          {
-            currentUser (retroSlug: "${props.slug}") {
-              uuid
+            {
+              retro (slug: "${props.slug}") {
+                slug
+              }
             }
-          }
-        `
-      })
-      // @ts-ignore
-      .then(({ data: { currentUser: { uuid } } }) => setUuid(uuid));
+          `
+      });
+
+      const uuid = await client.query({
+        query: gql`
+            {
+              currentUser (retroSlug: "${props.slug}") {
+                uuid
+              }
+            }
+          `
+      });
+
+      //@ts-ignore
+      setUuid(uuid.data.currentUser.uuid);
+    })();
   }, []);
 
   if (!uuid) return null;
