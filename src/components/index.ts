@@ -16,3 +16,4 @@ export { default as SlugProvider, SlugContext } from "./SlugProvider";
 export { default as StageProvider, StageContext } from "./StageProvider";
 export { default as Text } from "./Text";
 export { default as Topic } from "./Topic";
+export { default as UserProvider, UserContext } from "./UserProvider";

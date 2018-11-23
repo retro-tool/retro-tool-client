@@ -8,7 +8,7 @@ import {
   space,
   SpaceProps
 } from "styled-system";
-import { StageContext } from ".";
+import { StageContext, UserContext } from ".";
 import { Text } from "./";
 
 type PlusOneContainerProps = SpaceProps & {
@@ -55,7 +55,7 @@ CountContainer.defaultProps = {
 const ADD_VOTE = gql`
   mutation AddVote($id: String!) {
     addVote(itemId: $id) {
-      votes
+      id
     }
   }
 `;
@@ -69,12 +69,15 @@ type PlusOneProps = {
 
 const PlusOne = ({ id, votes }: PlusOneProps) => {
   const { stage } = useContext(StageContext);
+  const { user } = useContext(UserContext);
+
+  const disabled = !user.votesLeft || stagesWithVotes.indexOf(stage) < 0;
 
   return (
     <Mutation mutation={ADD_VOTE}>
       {(addVote, { data, loading }) => {
         return (
-          <PlusOneContainer disabled={stagesWithVotes.indexOf(stage) < 0}>
+          <PlusOneContainer disabled={disabled}>
             <PlusOneButton onClick={() => addVote({ variables: { id } })}>
               <Text fontSize={3}>👍</Text>
             </PlusOneButton>
