@@ -25,6 +25,8 @@ const CreateItem = () => {
           flex="1 1 auto"
           placeholder="Do you need to create some actions?"
           onSubmit={title => {
+            if (!title) return;
+
             createItem({ variables: { slug: slug, title } });
             setValue("");
           }}

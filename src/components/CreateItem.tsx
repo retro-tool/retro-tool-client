@@ -40,6 +40,8 @@ const CreateItem = ({ topic, placeholder }: Props) => {
           flex="1 1 auto"
           placeholder={placeholder}
           onSubmit={title => {
+            if (!title) return;
+
             createItem({ variables: { slug: slug, title } });
             setValue("");
           }}
