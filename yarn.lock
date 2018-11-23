@@ -8668,14 +8668,6 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-apollo-hooks@0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/react-apollo-hooks/-/react-apollo-hooks-0.1.6.tgz#96c878589bafd76fdd54dbf68f43c7680af0ea69"
-  integrity sha512-eCNmANw/sgkfLblcmHUvH1fe0DbmDMcPhj4Z3VypxtEPUxoMnLzD9Wd3/D34AIpgMHKNCza4mmO0iWwrpE8Smg==
-  dependencies:
-    react-fast-compare "^2.0.2"
-    warning "^4.0.2"
-
 react-apollo@2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.3.1.tgz#f3687062f438b9b40e525d7e1ac2bcf0101b4495"
@@ -8743,11 +8735,6 @@ react-error-overlay@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.0.tgz#c516995a5652e7bfbed8b497910d5280df74a7e8"
   integrity sha512-akMy/BQT5m1J3iJIHkSb4qycq2wzllWsmmolaaFVnb+LPV9cIJ/nTud40ZsiiT0H3P+/wXIdbjx2fzF61OaeOQ==
-
-react-fast-compare@^2.0.2:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
-  integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
 react-is@^16.3.2, react-is@^16.6.0:
   version "16.6.3"
@@ -10490,13 +10477,6 @@ warning@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
   integrity sha1-MuU3fLVy3kqwR1O9+IIcAe1gW3w=
-  dependencies:
-    loose-envify "^1.0.0"
-
-warning@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.2.tgz#aa6876480872116fa3e11d434b0d0d8d91e44607"
-  integrity sha512-wbTp09q/9C+jJn4KKJfJfoS6VleK/Dti0yqWSm6KMvJ4MRCXFQNapHuJXutJIrWV0Cf4AhTdeIe4qdKHR1+Hug==
   dependencies:
     loose-envify "^1.0.0"
 

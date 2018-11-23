@@ -1,7 +1,9 @@
 import React from "react";
-import { Redirect } from "@reach/router";
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import { client } from "../services/api";
+import { ApolloProvider } from "react-apollo";
+import { Query } from "react-apollo";
+import { Redirect } from "@reach/router";
 import { RouteComponentProps } from "@reach/router";
 
 interface Data {
@@ -21,15 +23,17 @@ const CREATE_RETRO_QUERY = gql`
 `;
 
 const CreateRetro = (props: RouteComponentProps) => (
-  <CreateRetroQuery query={CREATE_RETRO_QUERY}>
-    {({ data, loading, error }) => {
-      if (loading) return null;
-      if (error) return null;
+  <ApolloProvider client={client}>
+    <CreateRetroQuery query={CREATE_RETRO_QUERY}>
+      {({ data, loading, error }) => {
+        if (loading) return null;
+        if (error) return null;
 
-      // @ts-ignore
-      return <Redirect noThrow to={`/${data.retro.slug}`} />;
-    }}
-  </CreateRetroQuery>
+        // @ts-ignore
+        return <Redirect noThrow to={`/${data.retro.slug}`} />;
+      }}
+    </CreateRetroQuery>
+  </ApolloProvider>
 );
 
 export default CreateRetro;

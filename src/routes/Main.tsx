@@ -1,6 +1,9 @@
-import React, { Suspense, useEffect, useContext } from "react";
-import { RouteComponentProps } from "@reach/router";
+import React, { Suspense, useEffect, useState, useContext } from "react";
+import { client, subscriptionClient } from "../services/api";
+import { ApolloProvider } from "react-apollo";
+import gql from "graphql-tag";
 import { Header, Content, SlugContext } from "../components";
+import { RouteComponentProps } from "@reach/router";
 import { Slug } from "../types";
 
 interface Props
@@ -10,22 +13,37 @@ interface Props
 
 const Main = (props: Props) => {
   const { setSlug } = useContext(SlugContext);
+  const [uuid, setUuid] = useState(null);
 
-  useEffect(
-    () => {
+  useEffect(() => {
+    // @ts-ignore
+    setSlug(props.slug);
+
+    client
+      .query({
+        query: gql`
+          {
+            currentUser (retroSlug: "${props.slug}") {
+              uuid
+            }
+          }
+        `
+      })
       // @ts-ignore
-      setSlug(props.slug);
-    },
-    [props.slug]
-  );
+      .then(({ data: { currentUser: { uuid } } }) => setUuid(uuid));
+  }, []);
+
+  if (!uuid) return null;
 
   return (
-    <>
-      <Header />
-      <Suspense fallback={null}>
-        <Content />
-      </Suspense>
-    </>
+    <ApolloProvider client={subscriptionClient(uuid)}>
+      <>
+        <Header />
+        <Suspense fallback={null}>
+          <Content />
+        </Suspense>
+      </>
+    </ApolloProvider>
   );
 };
 

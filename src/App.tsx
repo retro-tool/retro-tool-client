@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import theme from "./theme";
-import gql from "graphql-tag";
 import { Router } from "@reach/router";
 import { createGlobalStyle, ThemeProvider } from "styled-components/macro";
-// @ts-ignore
-import { client, subscriptionClient } from "./services/api";
-import { ApolloProvider } from "react-apollo";
-import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { StageProvider, SlugProvider } from "./components";
 import { CreateRetro, Main } from "./routes";
 
@@ -70,48 +65,19 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// interface Data {
-//   currentUser: {
-//     uuid: string;
-//   };
-// }
-
 export default () => {
-  const [uuid, setUuid] = useState(null);
-
-  useEffect(() => {
-    client
-      .query({
-        query: gql`
-          {
-            currentUser {
-              uuid
-            }
-          }
-        `
-      })
-      // @ts-ignore
-      .then(({ data: { currentUser: { uuid } } }) => setUuid(uuid));
-  }, []);
-
-  if (!uuid) return null;
-
   return (
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <ApolloProvider client={subscriptionClient(uuid)}>
-          <ApolloHooksProvider client={subscriptionClient(uuid)}>
-            <SlugProvider>
-              <StageProvider>
-                <Router>
-                  <Main path="/:slug" />
-                  <CreateRetro default />
-                </Router>
-              </StageProvider>
-            </SlugProvider>
-          </ApolloHooksProvider>
-        </ApolloProvider>
+        <SlugProvider>
+          <StageProvider>
+            <Router>
+              <Main path="/:slug" />
+              <CreateRetro default />
+            </Router>
+          </StageProvider>
+        </SlugProvider>
       </ThemeProvider>
     </>
   );
