@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components/macro";
-import { Button, Logo, StageContext } from "./";
+import { Button, Logo, StageContext, Text } from "./";
 import { space, SpaceProps } from "styled-system";
+import Modal from "react-responsive-modal";
 
 type HeaderProps = SpaceProps;
 
@@ -23,11 +24,18 @@ HeaderContainer.defaultProps = {
 
 const Header = () => {
   const { stage, nextStage } = useContext(StageContext);
+  const [confirm, setConfirm] = useState(false);
 
   const headerActions = {
     initial: {
       label: "Start retro",
-      onClick: nextStage
+      onClick: () => {
+        setConfirm(true);
+      },
+      onConfirm: () => {
+        setConfirm(false);
+        nextStage();
+      }
     },
     review: {
       label: "Add action items",
@@ -44,14 +52,26 @@ const Header = () => {
   };
 
   return (
-    <HeaderContainer>
-      <Logo />
-      {stage && (
-        <Button onClick={headerActions[stage].onClick}>
+    <>
+      <Modal open={confirm} onClose={() => setConfirm(false)} center>
+        <Text size="title">Are you sure?</Text>
+        <Text mt={3} mb={3}>
+          In the next stage everybody will see all topics and topics can be
+          voted.
+        </Text>
+        <Button onClick={headerActions[stage].onConfirm}>
           {headerActions[stage].label}
         </Button>
-      )}
-    </HeaderContainer>
+      </Modal>
+      <HeaderContainer>
+        <Logo />
+        {stage && (
+          <Button onClick={headerActions[stage].onClick}>
+            {headerActions[stage].label}
+          </Button>
+        )}
+      </HeaderContainer>
+    </>
   );
 };
 
