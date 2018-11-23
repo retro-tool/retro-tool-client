@@ -23,6 +23,7 @@ const CreateItem = () => {
         <Input
           ml={2}
           flex="1 1 auto"
+          placeholder="Do you need to create some actions?"
           onSubmit={title => {
             createItem({ variables: { slug: slug, title } });
             setValue("");

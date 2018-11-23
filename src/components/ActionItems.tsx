@@ -47,9 +47,10 @@ class QueryActionItems extends Query<Data, Variables> {}
 
 type ActionItemsProps = {
   title: string;
+  placeholder?: string;
 };
 
-const ActionItems = ({ title }: ActionItemsProps) => {
+const ActionItems = ({ title, placeholder }: ActionItemsProps) => {
   const { slug } = useContext(SlugContext);
 
   return (

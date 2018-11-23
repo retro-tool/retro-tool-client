@@ -53,9 +53,10 @@ class QueryItems extends Query<Data, Variables> {}
 type ItemsProps = {
   title: string;
   topic: TopicType;
+  placeholder?: string;
 };
 
-const Items = ({ title, topic }: ItemsProps) => {
+const Items = ({ title, topic, placeholder }: ItemsProps) => {
   const { slug } = useContext(SlugContext);
 
   return (
@@ -68,6 +69,7 @@ const Items = ({ title, topic }: ItemsProps) => {
           <Topic
             title={title}
             topic={topic}
+            placeholder={placeholder}
             subscribeToNewItems={() =>
               subscribeToMore({
                 document: getSubscribeItems(topic),

@@ -58,9 +58,16 @@ interface TopicProps {
   topic?: TopicType;
   subscribeToNewItems: () => {};
   children?: ReactNode;
+  placeholder?: string;
 }
 
-const Topic = ({ title, children, subscribeToNewItems, topic }: TopicProps) => {
+const Topic = ({
+  title,
+  children,
+  subscribeToNewItems,
+  topic,
+  placeholder
+}: TopicProps) => {
   useEffect(() => {
     subscribeToNewItems();
   });
@@ -74,7 +81,11 @@ const Topic = ({ title, children, subscribeToNewItems, topic }: TopicProps) => {
         <Text fontSize={4} pt={1}>
           {title}
         </Text>
-        {topic ? <CreateItem topic={topic} /> : <CreateActionItem />}
+        {topic ? (
+          <CreateItem topic={topic} placeholder={placeholder} />
+        ) : (
+          <CreateActionItem />
+        )}
       </Title>
       {children}
     </TopicContainer>

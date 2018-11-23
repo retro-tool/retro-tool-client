@@ -25,9 +25,10 @@ const CREATE_ITEM = (topic: Topic) =>
 
 type Props = {
   topic: Topic;
+  placeholder?: string;
 };
 
-const CreateItem = ({ topic }: Props) => {
+const CreateItem = ({ topic, placeholder }: Props) => {
   const [value, setValue] = useState("");
   const { slug } = useContext(SlugContext);
 
@@ -37,6 +38,7 @@ const CreateItem = ({ topic }: Props) => {
         <Input
           ml={2}
           flex="1 1 auto"
+          placeholder={placeholder}
           onSubmit={title => {
             createItem({ variables: { slug: slug, title } });
             setValue("");
