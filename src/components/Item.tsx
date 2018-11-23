@@ -32,7 +32,10 @@ const ItemContainer = styled.div<ItemContainerProps>`
   }
 `;
 ItemContainer.defaultProps = {
-  p: [3, null, null, null, 4]
+  pl: [3, null, null, null, 4],
+  pr: [3, null, null, null, 4],
+  pt: [3, null, null, null, 3],
+  pb: [3, null, null, null, 3]
 };
 
 type ItemProps = {

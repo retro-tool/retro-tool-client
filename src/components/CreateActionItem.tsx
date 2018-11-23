@@ -23,7 +23,7 @@ const CreateItem = () => {
         <Input
           ml={2}
           flex="1 1 auto"
-          placeholder="Do you need to create some actions?"
+          placeholder="We need to do..."
           onSubmit={title => {
             if (!title) return;
 

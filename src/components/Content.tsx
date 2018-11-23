@@ -17,17 +17,13 @@ ContentContainer.defaultProps = {
 const Content = () => (
   <ContentContainer>
     <Suspense fallback={<LoadingCard />}>
-      <Items topic="works" title="😃" placeholder="What worked well?" />
+      <Items topic="works" title="😃" placeholder="It worked well that..." />
     </Suspense>
     <Suspense fallback={<LoadingCard />}>
-      <Items topic="improve" title="🤨" placeholder="What can be improved?" />
+      <Items topic="improve" title="🤨" placeholder="We could improve..." />
     </Suspense>
     <Suspense fallback={<LoadingCard />}>
-      <Items
-        topic="others"
-        title="🤔"
-        placeholder="Anything else to ask or comment?"
-      />
+      <Items topic="others" title="🤔" placeholder="I want to ask about..." />
     </Suspense>
     <Suspense fallback={<LoadingCard />}>
       <ActionItems title="✅" />
