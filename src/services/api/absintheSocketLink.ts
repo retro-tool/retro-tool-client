@@ -5,7 +5,7 @@ import { Socket as PhoenixSocket } from "phoenix";
 export default uuid =>
   createAbsintheSocketLink(
     AbsintheSocket.create(
-      new PhoenixSocket("ws://localhost:4000/socket", {
+      new PhoenixSocket("/socket", {
         params: { user_uuid: uuid }
       })
     )

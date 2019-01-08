@@ -1,0 +1,31 @@
+// Import the olympus shared library
+@Library('olympus') _
+
+// Configure your showtime api key, which you need to generate/obtain from https://showtime.xing.io/apps
+showtime.apiKey = "5d547c0ed9eb58acae12972e929b4ff7f69a10f870036bdeb56e35cce869dfa4"
+
+// Configure your namespace.
+olympus.namespace = "xing-retro"
+
+// Configure the image name.
+olympus.dockerImage = "quay.dc.xing.com/xing-retro/xing-retro-client"
+
+// Configure the source repository to prevent pushing images and deployment.
+olympus.sourceRepository = "https://source.xing.com/xing-retro/xing-retro-client.git"
+
+olympus.productionBranch = 'master'
+olympus.previewBranch = 'preview'
+
+olympus.tagGeneratorName = "xing-retro-client"
+
+olympusDefaultPipeline(this, buildImageAndCompileConcurrently: true,
+    compileAndTestCmd: {
+        currentBuild.result = 'SUCCESS'
+        return
+    },
+    imageBuildCmd: { image, tag ->
+        def fullName = "${image}:${tag}"
+        sh "docker build --tag=${fullName} ."
+        sh "docker push ${fullName}"
+    }
+)
