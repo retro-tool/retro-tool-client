@@ -8,6 +8,7 @@ metadata:
 # Make sure you clean up deleted resources.
 # See https://olympus.xing.io/user-guide/deployment-setup for more information.
 
+<% if dc == "ams1" %>
 <%= partial "web",
   name: "xing-retro-client",
   logjam_name: "xingretroclient",
@@ -17,3 +18,4 @@ metadata:
   memory: "512Mi"
 %>
 <%= partial "service", name: "xing-retro-client" %>
+<% end %>
