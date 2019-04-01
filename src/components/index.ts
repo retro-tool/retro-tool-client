@@ -13,7 +13,7 @@ export { default as LoadingCard } from "./LoadingCard";
 export { default as Logo } from "./Logo";
 export { default as PlusOne } from "./PlusOne";
 export { default as SlugProvider, SlugContext } from "./SlugProvider";
-export { StageProvider, StageContext } from "./StageProvider";
+export { StatusProvider, StatusContext } from "./StatusProvider";
 export { default as Text } from "./Text";
 export { default as Topic } from "./Topic";
 export { UserProvider, UserContext } from "./UserProvider";

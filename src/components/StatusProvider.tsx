@@ -3,31 +3,31 @@ import { client } from "../services/api";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { SlugContext } from "./SlugProvider";
-import { Slug, Stage } from "../types";
+import { Slug, Status } from "../types";
 
-const StageContext = React.createContext({
-  stage: "",
-  nextStage: () => {}
+const StatusContext = React.createContext({
+  status: "",
+  nextStatus: () => {}
 });
 
-const CURRENT_STAGE = gql`
-  query CurrentStep($slug: String!) {
+const CURRENT_STATUS = gql`
+  query CurrentStatus($slug: String!) {
     retro(slug: $slug) {
       status
     }
   }
 `;
 
-const SUBSCRIBE_TO_STAGE = gql`
-  subscription onStageUpdated($slug: String!) {
+const SUBSCRIBE_TO_STATUS = gql`
+  subscription onStatusUpdated($slug: String!) {
     retroUpdated(slug: $slug) {
       status
     }
   }
 `;
 
-const NEXT_STAGE = gql`
-  mutation NextStep($slug: String!) {
+const NEXT_STATUS = gql`
+  mutation NextStatus($slug: String!) {
     nextStep(slug: $slug) {
       status
     }
@@ -36,10 +36,10 @@ const NEXT_STAGE = gql`
 
 interface Data {
   retro: {
-    status: Stage;
+    status: Status;
   };
   retroUpdated?: {
-    status: Stage;
+    status: Status;
   };
 }
 
@@ -47,43 +47,43 @@ interface Variables {
   slug: Slug;
 }
 
-class StageQuery extends Query<Data, Variables> {}
+class StatusQuery extends Query<Data, Variables> {}
 
-const SubscribeToStage = ({ children, subscribeToStage }) => {
+const SubscribeToStatus = ({ children, subscribeToStatus }) => {
   useEffect(() => {
-    subscribeToStage();
+    subscribeToStatus();
   }, []);
 
   return children;
 };
 
-const StageProvider = ({ children }) => {
+const StatusProvider = ({ children }) => {
   const { slug } = useContext(SlugContext);
-  const [stage, setStage] = useState("initial");
+  const [status, setStatus] = useState("initial");
 
-  const nextStage = () => {
+  const nextStatus = () => {
     client
-      .mutate({ mutation: NEXT_STAGE, variables: { slug } })
-      .then(({ data }) => setStage(data.nextStep.status));
+      .mutate({ mutation: NEXT_STATUS, variables: { slug } })
+      .then(({ data }) => setStatus(data.nextStep.status));
   };
 
   return (
-    <StageQuery query={CURRENT_STAGE} variables={{ slug }}>
+    <StatusQuery query={CURRENT_STATUS} variables={{ slug }}>
       {({ subscribeToMore, ...result }) => {
         if (result.loading) return null;
         if (result.error) return null;
 
         return (
-          <SubscribeToStage
-            subscribeToStage={() => {
-              const currentStage = result.data
+          <SubscribeToStatus
+            subscribeToStatus={() => {
+              const currentStatus = result.data
                 ? result.data.retro.status
                 : "initial";
 
-              setStage(currentStage);
+              setStatus(currentStatus);
 
               subscribeToMore({
-                document: SUBSCRIBE_TO_STAGE,
+                document: SUBSCRIBE_TO_STATUS,
                 variables: { slug },
                 updateQuery: (prev, { subscriptionData }) => {
                   if (!subscriptionData.data) return prev;
@@ -92,8 +92,8 @@ const StageProvider = ({ children }) => {
                     ? subscriptionData.data.retroUpdated.status
                     : prev.retro.status;
 
-                  if (status && currentStage !== status) {
-                    setStage(status);
+                  if (status && currentStatus !== status) {
+                    setStatus(status);
                   }
 
                   return {
@@ -106,14 +106,14 @@ const StageProvider = ({ children }) => {
               });
             }}
           >
-            <StageContext.Provider value={{ stage, nextStage }}>
+            <StatusContext.Provider value={{ status, nextStatus }}>
               {children}
-            </StageContext.Provider>
-          </SubscribeToStage>
+            </StatusContext.Provider>
+          </SubscribeToStatus>
         );
       }}
-    </StageQuery>
+    </StatusQuery>
   );
 };
 
-export { StageProvider, StageContext };
+export { StatusProvider, StatusContext };

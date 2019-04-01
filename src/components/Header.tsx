@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components/macro";
-import { Button, Logo, SlugContext, StageContext, Text } from "./";
+import { Button, Logo, SlugContext, StatusContext, Text } from "./";
 import { space, SpaceProps } from "styled-system";
 import Modal from "react-responsive-modal";
 import { Redirect } from "@reach/router";
@@ -25,7 +25,7 @@ HeaderContainer.defaultProps = {
 
 const Header = () => {
   const { slug } = useContext(SlugContext);
-  const { stage, nextStage } = useContext(StageContext);
+  const { status, nextStatus } = useContext(StatusContext);
   const [confirm, setConfirm] = useState(false);
   const [raw, setRaw] = useState(false);
 
@@ -37,16 +37,16 @@ const Header = () => {
       },
       onConfirm: () => {
         setConfirm(false);
-        nextStage();
+        nextStatus();
       }
     },
     review: {
       label: "Add action items",
-      onClick: nextStage
+      onClick: nextStatus
     },
     actions: {
       label: "Finish retro",
-      onClick: nextStage
+      onClick: nextStatus
     },
     final: {
       label: "Export",
@@ -63,18 +63,18 @@ const Header = () => {
       <Modal open={confirm} onClose={() => setConfirm(false)} center>
         <Text size="title">Are you sure?</Text>
         <Text mt={3} mb={3}>
-          In the next stage everybody will see all topics and topics can be
+          In the next step everybody will see all topics and topics can be
           voted.
         </Text>
-        <Button onClick={headerActions[stage].onConfirm}>
-          {headerActions[stage].label}
+        <Button onClick={headerActions[status].onConfirm}>
+          {headerActions[status].label}
         </Button>
       </Modal>
       <HeaderContainer>
         <Logo />
-        {stage && (
-          <Button onClick={headerActions[stage].onClick}>
-            {headerActions[stage].label}
+        {status && (
+          <Button onClick={headerActions[status].onClick}>
+            {headerActions[status].label}
           </Button>
         )}
       </HeaderContainer>

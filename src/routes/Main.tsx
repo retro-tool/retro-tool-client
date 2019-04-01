@@ -6,7 +6,7 @@ import {
   Header,
   Content,
   SlugContext,
-  StageProvider,
+  StatusProvider,
   UserProvider
 } from "../components";
 import { RouteComponentProps } from "@reach/router";
@@ -17,53 +17,53 @@ interface Props
     slug: Slug;
   }> {}
 
-const Main = (props: Props) => {
+const Main = ({ slug }: Props) => {
   const { setSlug } = useContext(SlugContext);
   const [uuid, setUuid] = useState(null);
 
+  const setUserUuid = async () => {
+    await client.query({
+      query: gql`
+          {
+            retro (slug: "${slug}") {
+              slug
+            }
+          }
+        `
+    });
+
+    const uuid = await client.query({
+      query: gql`
+          {
+            currentUser (retroSlug: "${slug}") {
+              uuid
+            }
+          }
+        `
+    });
+
+    setUuid(uuid.data.currentUser.uuid);
+  };
+
   useEffect(() => {
-    // @ts-ignore
-    setSlug(props.slug);
+    slug && setSlug(slug);
 
-    (async () => {
-      await client.query({
-        query: gql`
-            {
-              retro (slug: "${props.slug}") {
-                slug
-              }
-            }
-          `
-      });
-
-      const uuid = await client.query({
-        query: gql`
-            {
-              currentUser (retroSlug: "${props.slug}") {
-                uuid
-              }
-            }
-          `
-      });
-
-      //@ts-ignore
-      setUuid(uuid.data.currentUser.uuid);
-    })();
-  }, []);
+    setUserUuid();
+  }, [slug]);
 
   if (!uuid) return null;
 
   return (
     <ApolloProvider client={subscriptionClient(uuid)}>
       <UserProvider>
-        <StageProvider>
+        <StatusProvider>
           <>
             <Header />
             <Suspense fallback={null}>
               <Content />
             </Suspense>
           </>
-        </StageProvider>
+        </StatusProvider>
       </UserProvider>
     </ApolloProvider>
   );

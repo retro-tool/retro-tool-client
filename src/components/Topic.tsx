@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, useEffect } from "react";
 import styled from "styled-components/macro";
-import { Text, CreateActionItem, CreateItem, StageContext } from "./";
+import { Text, CreateActionItem, CreateItem, StatusContext } from "./";
 import {
   space,
   SpaceProps,
@@ -72,15 +72,15 @@ const Topic = ({
     subscribeToNewItems();
   });
 
-  const { stage } = useContext(StageContext);
-  const stagesWithActions = ["actions", "final"];
-  const stagesWithTopics = ["initial", "review", "actions"];
+  const { status } = useContext(StatusContext);
+  const statusesWithActions = ["actions", "final"];
+  const statusesWithTopics = ["initial", "review", "actions"];
 
   return (
     <TopicContainer
       disabled={
-        (topic && stagesWithTopics.indexOf(stage) < 0) ||
-        (!topic && stagesWithActions.indexOf(stage) < 0)
+        (topic && statusesWithTopics.indexOf(status) < 0) ||
+        (!topic && statusesWithActions.indexOf(status) < 0)
       }
     >
       <Title>
