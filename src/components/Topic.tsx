@@ -1,16 +1,7 @@
 import React, { ReactNode, useContext, useEffect } from "react";
 import styled from "styled-components/macro";
 import { Text, CreateActionItem, CreateItem, StatusContext } from "./";
-import {
-  space,
-  SpaceProps,
-  minWidth,
-  MinWidthProps,
-  borderColor,
-  BorderColorProps,
-  borderBottom,
-  BorderBottomProps
-} from "styled-system";
+import { space, SpaceProps, minWidth, MinWidthProps } from "styled-system";
 import { Topic as TopicType } from "../types";
 
 type TopicContainerProps = SpaceProps &
@@ -34,23 +25,18 @@ TopicContainer.defaultProps = {
   minWidth: ["90%", "40%", null, null, 0]
 };
 
-type TitleProps = BorderColorProps & BorderBottomProps & SpaceProps;
+type TitleProps = SpaceProps;
 const Title = styled.div<TitleProps>`
   display: flex;
   align-items: flex-start;
 
-  ${borderBottom}
-  ${borderColor}
   ${space}
 `;
 Title.defaultProps = {
-  borderColor: "borderGrey",
-  borderBottom: "1px solid",
-  pl: [4, null, null, null, 6],
-  pr: [4, null, null, null, 6],
-  pt: [2, null, null, null, 3],
-  pb: [2, null, null, null, 3],
-  mb: 3
+  pl: [3, null, null, null, 4],
+  pr: [3, null, null, null, 4],
+  pt: [3, null, null, null, 4],
+  pb: [3, null, null, null, 4]
 };
 
 interface TopicProps {
@@ -84,7 +70,7 @@ const Topic = ({
       }
     >
       <Title>
-        <Text fontSize={4} pt={1}>
+        <Text fontSize={20} pt={1}>
           {title}
         </Text>
         {topic ? (

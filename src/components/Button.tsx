@@ -26,8 +26,13 @@ type Props = BackgroundProps &
   SpaceProps;
 
 const Button = styled.button<Props>`
-  border-radius: 3px;
+  display: inline-flex;
+  vertical-align: middle;
+  flex-wrap: nowrap;
+  align-items: center;
   cursor: pointer;
+  border: none;
+  border-radius: 3px;
 
   ${background};
   ${color};

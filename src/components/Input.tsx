@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components/macro";
+import { themeGet } from "styled-system";
 import {
   flex,
   FlexProps,
@@ -12,7 +13,14 @@ import {
   space,
   SpaceProps
 } from "styled-system";
+import c from "color";
 import Textarea, { TextareaAutosizeProps } from "react-textarea-autosize";
+
+const toShadow = (col: string): string =>
+  c(col)
+    .alpha(0.2)
+    .rgb()
+    .string();
 
 type InputProps = TextareaAutosizeProps & {
   placeholder?: string;
@@ -70,7 +78,9 @@ type StyledInputProps = FlexProps &
   InputProps;
 
 const StyledInput = styled(Input)<StyledInputProps>`
+  background: ${themeGet("colors.contentGrey")};
   border: 0;
+  border-radius: 3px;
   resize: none;
 
   ${flex};
@@ -81,6 +91,9 @@ const StyledInput = styled(Input)<StyledInputProps>`
 
   &:focus {
     outline: none;
+    box-shadow: ${({ theme }) =>
+      `0 0 0 3px ${toShadow(theme.colors.lime)}, 0 0 0 1px rgba(0,0,0,.1)`};
+    background: white;
   }
 `;
 
