@@ -4,7 +4,7 @@ import { Query } from "react-apollo";
 import { SlugContext } from "./SlugProvider";
 import { Slug } from "../types";
 
-export const UserContext = React.createContext({
+const UserContext = React.createContext({
   user: { votesLeft: 0 }
 });
 
@@ -27,6 +27,9 @@ const SUBSCRIBE_TO_VOTES = gql`
 `;
 
 interface Data {
+  currentUser: {
+    votesLeft: number;
+  };
   currentUserUpdated: {
     votesLeft: number;
   };
@@ -46,7 +49,7 @@ const SubscribeToVotesLeft = ({ children, subscribeToVotesLeft }) => {
   return children;
 };
 
-export default ({ children }) => {
+const UserProvider = ({ children }) => {
   const { slug } = useContext(SlugContext);
   const [user, setUser] = useState({ votesLeft: 0 });
 
@@ -59,16 +62,17 @@ export default ({ children }) => {
         return (
           <SubscribeToVotesLeft
             subscribeToVotesLeft={() => {
-              // @ts-ignore
-              const currentVotesLeft = result.data.currentUser.votesLeft;
+              const currentVotesLeft = result.data
+                ? result.data.currentUser.votesLeft
+                : 10;
               setUser({ votesLeft: currentVotesLeft });
 
               subscribeToMore({
                 document: SUBSCRIBE_TO_VOTES,
                 variables: { slug },
-                // @ts-ignore
                 updateQuery: (prev, { subscriptionData }) => {
                   if (!subscriptionData.data) return prev;
+
                   const votesLeft =
                     subscriptionData.data.currentUserUpdated.votesLeft;
 
@@ -78,12 +82,12 @@ export default ({ children }) => {
                         subscriptionData.data.currentUserUpdated.votesLeft
                     });
                   }
+
+                  return subscriptionData.data;
                 }
               });
             }}
           >
-            {/*
-            // @ts-ignore */}
             <UserContext.Provider value={{ user }}>
               {children}
             </UserContext.Provider>
@@ -93,3 +97,5 @@ export default ({ children }) => {
     </VotesLeftQuery>
   );
 };
+
+export { UserProvider, UserContext };
