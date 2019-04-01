@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { client, subscriptionClient } from "../services/api";
 import { ApolloProvider } from "react-apollo";
 import gql from "graphql-tag";
@@ -59,9 +59,7 @@ const Main = ({ slug }: Props) => {
         <StatusProvider>
           <>
             <Header />
-            <Suspense fallback={null}>
-              <Content />
-            </Suspense>
+            <Content />
           </>
         </StatusProvider>
       </UserProvider>

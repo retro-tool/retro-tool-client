@@ -47,6 +47,7 @@ const CreateItem = ({ topic, placeholder }: Props) => {
           }}
           onChange={title => setValue(title)}
           value={value}
+          shouldFocus={topic === "works"}
         />
       )}
     </Mutation>

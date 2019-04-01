@@ -42,6 +42,14 @@ interface Data {
       votes: number;
     }>;
   };
+  retroUpdated?: {
+    [key: string]: Array<{
+      id: string;
+      hidden: boolean;
+      title: string;
+      votes: number;
+    }>;
+  };
 }
 
 interface Variables {
@@ -76,8 +84,9 @@ const Items = ({ title, topic, placeholder }: ItemsProps) => {
                 variables: { slug },
                 updateQuery: (prev, { subscriptionData }) => {
                   if (!subscriptionData.data) return prev;
-                  // @ts-ignore
-                  const newItems = subscriptionData.data.retroUpdated;
+                  const newItems = subscriptionData.data.retroUpdated
+                    ? subscriptionData.data.retroUpdated
+                    : prev.retro;
 
                   return {
                     retro: newItems

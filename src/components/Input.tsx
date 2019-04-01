@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components/macro";
 import {
   flex,
@@ -18,6 +18,7 @@ type InputProps = TextareaAutosizeProps & {
   placeholder?: string;
   onSubmit?: (value: string) => void;
   onChange: (value: string) => void;
+  shouldFocus?: boolean;
   value: string;
 };
 
@@ -26,8 +27,11 @@ const Input = ({
   placeholder,
   onSubmit,
   onChange,
+  shouldFocus,
   value
 }: InputProps) => {
+  const inputEl = useRef(null);
+
   const HandleOnKeyDown = (evt: any): void => {
     if (evt.keyCode === 13) {
       evt.preventDefault();
@@ -39,6 +43,11 @@ const Input = ({
     onChange(evt.target.value);
   };
 
+  useEffect(() => {
+    // @ts-ignore
+    shouldFocus && inputEl && inputEl.current.focus();
+  }, [inputEl]);
+
   return (
     <Textarea
       className={className}
@@ -46,6 +55,8 @@ const Input = ({
       onKeyDown={HandleOnKeyDown}
       onChange={HandleChange}
       value={value}
+      // @ts-ignore
+      inputRef={inputEl}
     />
   );
 };
