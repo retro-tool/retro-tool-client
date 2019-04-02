@@ -83,6 +83,8 @@ const UserProvider = ({ children }) => {
                     });
                   }
 
+                  console.log(subscriptionData.data);
+
                   return subscriptionData.data;
                 }
               });

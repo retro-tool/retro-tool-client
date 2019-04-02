@@ -31,6 +31,7 @@ const PlusOneButton = styled.button`
   cursor: pointer;
   border: none;
   padding: 0;
+  background: transparent;
 
   &:focus {
     outline: none;
