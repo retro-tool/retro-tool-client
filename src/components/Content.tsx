@@ -2,22 +2,25 @@ import React from "react";
 import styled, { css } from "styled-components/macro";
 import { ActionItems, Items } from "./";
 import { TopicContainer } from "./Topic";
-import { space, SpaceProps } from "styled-system";
+import { display, DisplayProps, space, SpaceProps } from "styled-system";
 import { SmileyHappy } from "styled-icons/boxicons-solid/SmileyHappy";
 import { SmileySad } from "styled-icons/boxicons-solid/SmileySad";
 import { QuestionAnswer } from "styled-icons/material/QuestionAnswer";
 import { CheckBox } from "styled-icons/material/CheckBox";
 
 type ContainerProps = SpaceProps;
-const ContentContainer = styled.div<ContainerProps>`
+const ContentContainer = styled.div.attrs<ContainerProps>({
+  px: [1, 2],
+  py: [2, 2]
+})`
   display: flex;
   flex-wrap: wrap;
   height: calc(100vh - 44px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
   ${space};
 `;
-ContentContainer.defaultProps = {
-  p: [1, 2]
-};
 
 const sharedIconStyles = css`
   width: 24px;

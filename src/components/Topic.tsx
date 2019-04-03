@@ -22,6 +22,7 @@ export const TopicContainer = styled.div<TopicContainerProps>`
 
 TopicContainer.defaultProps = {
   m: [1, 2],
+  pb: 2,
   minWidth: ["90%", "40%", null, null, 0]
 };
 

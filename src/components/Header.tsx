@@ -8,6 +8,8 @@ import { Redirect } from "@reach/router";
 type HeaderProps = SpaceProps;
 
 const HeaderContainer = styled.div<HeaderProps>`
+  position: relative;
+  z-index: 1;
   align-items: center;
   background: white;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);

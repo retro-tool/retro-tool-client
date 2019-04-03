@@ -188,7 +188,9 @@ const ItemList = ({ items: itemsProp }: ItemListProps) => {
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {items.map((item, index) => {
               const dragIsDisabled =
-                status === `initial` || !!item.similarItems;
+                status === `initial` ||
+                status === `actions` ||
+                !!item.similarItems;
 
               return (
                 <Draggable
