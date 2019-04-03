@@ -54,7 +54,8 @@ Button.defaultProps = {
   pl: 4,
   pr: 4,
   pt: 2,
-  pb: 2
+  pb: 2,
+  lineHeight: 5
 };
 
 export default Button;

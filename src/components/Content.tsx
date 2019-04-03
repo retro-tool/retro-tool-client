@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components/macro";
 import { ActionItems, Items } from "./";
 import { TopicContainer } from "./Topic";
-import { display, DisplayProps, space, SpaceProps } from "styled-system";
+import { space, SpaceProps } from "styled-system";
 import { SmileyHappy } from "styled-icons/boxicons-solid/SmileyHappy";
 import { SmileySad } from "styled-icons/boxicons-solid/SmileySad";
 import { QuestionAnswer } from "styled-icons/material/QuestionAnswer";
@@ -15,7 +15,7 @@ const ContentContainer = styled.div.attrs<ContainerProps>({
 })`
   display: flex;
   flex-wrap: wrap;
-  height: calc(100vh - 48px);
+  height: calc(100vh - 86px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
