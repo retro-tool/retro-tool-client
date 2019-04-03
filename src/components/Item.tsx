@@ -1,9 +1,11 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
-import { themeGet } from "styled-system";
+import { space, SpaceProps, themeGet } from "styled-system";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 import randomText from "random-textblock";
-import { space, SpaceProps } from "styled-system";
-import { Text, PlusOne } from "./";
+import { PlusOne } from "./";
+import { Text } from "./Text";
 
 const randomTextConfig = {
   minWords: 3,
@@ -37,6 +39,69 @@ const SimilarItems = styled.div`
   border-left: ${({ theme }) => `1px solid ${theme.colors.borderGrey}`};
 `;
 
+const DETACH_ITEM = gql`
+  mutation DetachItem($id: String!) {
+    detachItem(id: $id) {
+      id
+    }
+  }
+`;
+
+interface DetachItemButtonProps {
+  onClick: () => void;
+}
+const DetachItemButton = styled(Text).attrs({
+  as: "button",
+  title: "Detach comment",
+  color: "borderDarkGrey",
+  fontSize: 1,
+  mb: 2
+})<DetachItemButtonProps>`
+  display: block;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    color: ${themeGet("colors.grey")};
+
+    &::before {
+      content: "↤";
+      font-size: 18px;
+      line-height: 13px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translate(-130%, -10%);
+      background: white;
+      padding: 3px 0px;
+    }
+  }
+`;
+
+interface SimilarItemProps {
+  children: React.ReactChild;
+  id: string;
+}
+const SimilarItem: React.FC<SimilarItemProps> = ({ children, id }) => {
+  return (
+    <Mutation mutation={DETACH_ITEM}>
+      {(detachItem, { data, loading }) => (
+        <DetachItemButton onClick={() => detachItem({ variables: { id } })}>
+          {children}
+        </DetachItemButton>
+      )}
+    </Mutation>
+  );
+};
+
 type Item = {
   title: string;
   hidden?: boolean;
@@ -66,10 +131,10 @@ const Item = ({ children, id, hidden, votes, similarItems }: ItemProps) => (
     </ItemHeader>
     {similarItems && (
       <SimilarItems>
-        {similarItems.map(({ title }, index) => (
-          <Text color="borderDarkGrey" fontSize={1} mb={1} key={index}>
+        {similarItems.map(({ title, id }, index) => (
+          <SimilarItem key={index} id={id}>
             {title}
-          </Text>
+          </SimilarItem>
         ))}
       </SimilarItems>
     )}

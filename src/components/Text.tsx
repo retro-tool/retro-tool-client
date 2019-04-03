@@ -50,4 +50,4 @@ Text.defaultProps = {
   size: "base"
 };
 
-export default Text;
+export { Text };

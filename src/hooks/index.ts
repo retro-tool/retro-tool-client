@@ -1,0 +1,1 @@
+export { useStyled } from "./useStyled";
