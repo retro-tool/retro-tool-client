@@ -15,15 +15,14 @@ const randomTextConfig = {
 };
 
 type ItemContainerProps = SpaceProps;
-const ItemContainer = styled.div<ItemContainerProps>`
-  ${space};
-`;
-ItemContainer.defaultProps = {
+const ItemContainer = styled.div.attrs<ItemContainerProps>({
   pl: [3, null, null, null, 4],
   pr: [3, null, null, null, 4],
   pt: [3, null, null, null, 3],
   pb: [3, null, null, null, 3]
-};
+})`
+  ${space};
+`;
 
 const ItemHeader = styled.div`
   display: flex;
