@@ -76,12 +76,11 @@ const DraggableItem = styled.div<DraggableItemProps>`
     isDragging && "0 0 1px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.15)"};
   border-radius: ${({ isDragging }) => isDragging && "3px"};
   outline: ${({ combineTargetFor, theme }) =>
-    combineTargetFor && `2px dashed ${theme.colors.lime}`};
+    combineTargetFor ? `2px dashed ${theme.colors.lime}` : "none"};
   z-index: ${({ combineTargetFor }) => combineTargetFor && 2};
 
   &:hover {
     cursor: hand;
-    /* background: ${themeGet("colors.contentGrey")}; */
   }
 `;
 
@@ -240,7 +239,7 @@ interface Variables {
 class QueryItems extends Query<Data, Variables> {}
 
 type ItemsProps = {
-  title: string;
+  title: React.ReactNode;
   topic: TopicType;
   placeholder?: string;
 };

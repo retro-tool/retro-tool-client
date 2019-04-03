@@ -8,7 +8,7 @@ type TopicContainerProps = SpaceProps &
   MinWidthProps & {
     disabled?: boolean;
   };
-const TopicContainer = styled.div<TopicContainerProps>`
+export const TopicContainer = styled.div<TopicContainerProps>`
   flex: 1;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16);
   background: #fff;
@@ -26,21 +26,24 @@ TopicContainer.defaultProps = {
 };
 
 type TitleProps = SpaceProps;
-const Title = styled.div<TitleProps>`
+const Title = styled.div.attrs<TitleProps>({
+  pl: [3, null, null, null, 4],
+  pr: [3, null, null, null, 4],
+  pt: [3, null, null, null, 4],
+  pb: [3, null, null, null, 4]
+})`
   display: flex;
   align-items: flex-start;
 
   ${space}
 `;
-Title.defaultProps = {
-  pl: [3, null, null, null, 4],
-  pr: [3, null, null, null, 4],
-  pt: [3, null, null, null, 4],
-  pb: [3, null, null, null, 4]
-};
+
+const TitleIcon = styled.div`
+  margin-top: 2px;
+`;
 
 interface TopicProps {
-  title: string;
+  title: React.ReactNode;
   topic?: TopicType;
   subscribeToNewItems: () => {};
   children?: ReactNode;
@@ -70,9 +73,7 @@ const Topic = ({
       }
     >
       <Title>
-        <Text fontSize={20} pt={1}>
-          {title}
-        </Text>
+        <TitleIcon>{title}</TitleIcon>
         {topic ? (
           <CreateItem topic={topic} placeholder={placeholder} />
         ) : (

@@ -46,11 +46,10 @@ interface Variables {
 class QueryActionItems extends Query<Data, Variables> {}
 
 type ActionItemsProps = {
-  title: string;
-  placeholder?: string;
+  title: React.ReactNode;
 };
 
-const ActionItems = ({ title, placeholder }: ActionItemsProps) => {
+const ActionItems = ({ title }: ActionItemsProps) => {
   const { slug } = useContext(SlugContext);
 
   return (

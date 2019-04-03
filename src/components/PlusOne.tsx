@@ -6,20 +6,20 @@ import {
   borderColor,
   BorderColorProps,
   space,
-  SpaceProps
+  SpaceProps,
+  themeGet
 } from "styled-system";
 import { StatusContext, UserContext } from ".";
 import { Text } from "./";
+import { ThumbUp } from "styled-icons/material/ThumbUp";
 
-type PlusOneContainerProps = SpaceProps & {
+interface PlusOneContainerProps extends SpaceProps {
   disabled: boolean;
-};
+}
 const PlusOneContainer = styled.div<PlusOneContainerProps>`
   display: flex;
   align-items: center;
   opacity: ${({ disabled }) => disabled && ".5"};
-  pointer-events: ${({ disabled }) => disabled && "none"};
-  filter: ${({ disabled }) => disabled && "grayscale(80%)"};
 
   ${space}
 `;
@@ -27,11 +27,22 @@ PlusOneContainer.defaultProps = {
   ml: 3
 };
 
-const PlusOneButton = styled.button`
+interface PlusOneButtonProps {
+  disabled: boolean;
+}
+const PlusOneButton = styled.button<PlusOneButtonProps>`
   cursor: pointer;
   border: none;
   padding: 0;
   background: transparent;
+  margin-top: -5px;
+  pointer-events: ${({ disabled }) => disabled && "visible"};
+  cursor: ${({ disabled }) => disabled && "not-allowed"};
+  color: ${themeGet("colors.mediumGrey")};
+
+  &:hover {
+    color: ${({ disabled, theme }) => !disabled && theme.colors.link}};
+  }
 
   &:focus {
     outline: none;
@@ -40,9 +51,7 @@ const PlusOneButton = styled.button`
 
 type CountContainerProps = SpaceProps & BorderColorProps;
 const CountContainer = styled.div<CountContainerProps>`
-  border-left: 1px solid;
-  padding-left: 10px;
-  margin-left: 10px;
+  padding-left: 8px;
   min-width: 3ch;
   text-align: center;
 
@@ -68,6 +77,11 @@ type PlusOneProps = {
   votes: number;
 };
 
+const ThumbUpIcon = styled(ThumbUp)`
+  width: 16px;
+  color: currentColor;
+`;
+
 const PlusOne = ({ id, votes }: PlusOneProps) => {
   const { status } = useContext(StatusContext);
   const { user } = useContext(UserContext);
@@ -79,8 +93,13 @@ const PlusOne = ({ id, votes }: PlusOneProps) => {
       {(addVote, { data, loading }) => {
         return (
           <PlusOneContainer disabled={disabled}>
-            <PlusOneButton onClick={() => addVote({ variables: { id } })}>
-              <Text fontSize={3}>👍</Text>
+            <PlusOneButton
+              onClick={() => addVote({ variables: { id } })}
+              disabled={disabled}
+            >
+              <Text fontSize={3}>
+                <ThumbUpIcon />
+              </Text>
             </PlusOneButton>
             <CountContainer>
               <Text color="grey">{(data && data.votes) || votes}</Text>

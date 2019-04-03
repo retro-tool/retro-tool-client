@@ -59,7 +59,7 @@ const SubscribeToStatus = ({ children, subscribeToStatus }) => {
 
 const StatusProvider = ({ children }) => {
   const { slug } = useContext(SlugContext);
-  const [status, setStatus] = useState("initial");
+  const [status, setStatus] = useState<Status>("initial");
 
   const nextStatus = () => {
     client
