@@ -15,7 +15,7 @@ const ContentContainer = styled.div.attrs<ContainerProps>({
 })`
   display: flex;
   flex-wrap: wrap;
-  height: calc(100vh - 44px);
+  height: calc(100vh - 48px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
