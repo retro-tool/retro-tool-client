@@ -82,6 +82,7 @@ const StyledInput = styled(Input)<StyledInputProps>`
   border: 0;
   border-radius: 3px;
   resize: none;
+  overflow: hidden;
 
   ${flex};
   ${fontSize};
