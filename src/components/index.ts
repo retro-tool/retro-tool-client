@@ -5,6 +5,7 @@ export { default as Card } from "./Card";
 export { default as Content } from "./Content";
 export { default as CreateActionItem } from "./CreateActionItem";
 export { default as CreateItem } from "./CreateItem";
+export { DeleteItem } from "./DeleteItemButton";
 export { default as Header, HeaderContainer } from "./Header";
 export { default as Input } from "./Input";
 export { default as Item } from "./Item";

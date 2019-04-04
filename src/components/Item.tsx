@@ -4,7 +4,7 @@ import { space, SpaceProps, themeGet } from "styled-system";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import randomText from "random-textblock";
-import { PlusOne } from "./";
+import { DeleteItem, PlusOne } from "./";
 import { Text } from "./Text";
 
 const randomTextConfig = {
@@ -14,6 +14,14 @@ const randomTextConfig = {
   maxSentences: 1
 };
 
+const DeleteItemButton = styled(DeleteItem)`
+  display: none;
+  position: absolute;
+  top: 7px;
+  left: -13px;
+  transform: rotate(45deg);
+`;
+
 type ItemContainerProps = SpaceProps;
 const ItemContainer = styled.div.attrs<ItemContainerProps>({
   pl: [3, null, null, null, 4],
@@ -21,7 +29,13 @@ const ItemContainer = styled.div.attrs<ItemContainerProps>({
   pt: [3, null, null, null, 3],
   pb: [3, null, null, null, 3]
 })`
+  position: relative;
+
   ${space};
+
+  &:hover ${DeleteItemButton} {
+    display: block;
+  }
 `;
 
 const ItemHeader = styled.div`
@@ -92,7 +106,7 @@ interface SimilarItemProps {
 const SimilarItem: React.FC<SimilarItemProps> = ({ children, id }) => {
   return (
     <Mutation mutation={DETACH_ITEM}>
-      {(detachItem, { data, loading }) => (
+      {detachItem => (
         <DetachItemButton onClick={() => detachItem({ variables: { id } })}>
           {children}
         </DetachItemButton>
@@ -118,6 +132,7 @@ interface ItemProps {
 
 const Item = ({ children, id, hidden, votes, similarItems }: ItemProps) => (
   <ItemContainer>
+    {!hidden && <DeleteItemButton id={id} />}
     <ItemHeader>
       {hidden ? (
         <Text obfuscate={hidden}>

@@ -97,9 +97,7 @@ const PlusOne = ({ id, votes }: PlusOneProps) => {
               onClick={() => addVote({ variables: { id } })}
               disabled={disabled}
             >
-              <Text fontSize={3}>
-                <ThumbUpIcon />
-              </Text>
+              <ThumbUpIcon />
             </PlusOneButton>
             <CountContainer>
               <Text color="grey">{(data && data.votes) || votes}</Text>

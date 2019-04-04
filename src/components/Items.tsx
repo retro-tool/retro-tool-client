@@ -142,7 +142,6 @@ const combineItems = ({
   const filteredItems = combinedItems.filter(
     (_item, index) => index !== childIndex
   );
-  console.log({ filteredItems });
 
   return filteredItems;
 };
