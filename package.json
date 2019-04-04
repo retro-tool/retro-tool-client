@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@absinthe/socket-apollo-link": "0.2.1",
+    "@reach/dialog": "0.1.4",
     "@reach/router": "1.2.1",
     "@types/graphql": "14.2.0",
     "@types/jest": "24.0.11",
@@ -32,7 +33,6 @@
     "react-apollo": "2.5.3",
     "react-beautiful-dnd": "10.1.1",
     "react-dom": "16.8.6",
-    "react-responsive-modal": "^3.6.0",
     "react-scripts": "2.1.8",
     "react-textarea-autosize": "7.1.0",
     "styled-components": "4.2.0",

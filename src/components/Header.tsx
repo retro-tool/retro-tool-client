@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import styled, { css } from "styled-components/macro";
-import { space, SpaceProps, themeGet } from "styled-system";
-import Modal from "react-responsive-modal";
+import { space, SpaceProps, themeGet, width, WidthProps } from "styled-system";
+import c from "color";
 import { Redirect } from "@reach/router";
+import { DialogContent, DialogOverlay } from "@reach/dialog";
 import { Button, Logo, SlugContext, StatusContext, Text } from "./";
 import { ChevronRight } from "styled-icons/material/ChevronRight";
 import { ArrowUpward } from "styled-icons/material/ArrowUpward";
@@ -143,11 +144,43 @@ const ExportIcon = styled(ArrowUpward)`
   ${iconStyles};
 `;
 
+const LightboxOverlay = styled(DialogOverlay)`
+  background: ${({ theme }) =>
+    c(theme.colors.dark)
+      .alpha(0.3)
+      .rgb()
+      .string()};
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+`;
+
+interface LightboxContentProps extends SpaceProps, WidthProps {}
+const LightboxContent = styled(DialogContent).attrs({
+  p: 5,
+  width: ["95vw", null, "500px"]
+})<LightboxContentProps>`
+  width: 50vw;
+  margin: 10vh auto 0;
+  background: white;
+  outline: none;
+  border-radius: 6px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.16), 0 3px 8px rgba(0, 0, 0, 0.16);
+
+  ${space}
+  ${width}
+`;
+
 const Header = () => {
   const { slug } = useContext(SlugContext);
   const { cansSwitchStatus, status, nextStatus } = useContext(StatusContext);
   const [confirm, setConfirm] = useState(false);
   const [raw, setRaw] = useState(false);
+  const buttonRef = useRef(null);
 
   const headerActions = {
     initial: {
@@ -180,25 +213,25 @@ const Header = () => {
 
   return (
     <>
-      <Modal
-        open={confirm}
-        onClose={() => setConfirm(false)}
-        center
-        styles={{
-          modal: {
-            borderRadius: "3px"
-          }
-        }}
+      <LightboxOverlay
+        isOpen={confirm}
+        onDismiss={() => setConfirm(false)}
+        initialFocusRef={buttonRef}
       >
-        <Text size="title">Are you sure?</Text>
-        <Text mt={3} mb={3}>
-          In the next step everybody will see all topics and topics can be
-          voted.
-        </Text>
-        <Button onClick={headerActions[status].onConfirm}>
-          {headerActions[status].label}
-        </Button>
-      </Modal>
+        <LightboxContent>
+          <Text size="title">Are you sure?</Text>
+          <Text mt={3} mb={6}>
+            Everyone will see all comments and this can't be undone.
+          </Text>
+          <Button bg="mediumGrey" onClick={() => setConfirm(false)} mr={3}>
+            Cancel
+          </Button>
+          <Button onClick={headerActions[status].onConfirm} ref={buttonRef}>
+            {headerActions[status].label}
+            <NextIcon />
+          </Button>
+        </LightboxContent>
+      </LightboxOverlay>
       <PageHeaderContainer>
         <HeaderContainer>
           <Logo />

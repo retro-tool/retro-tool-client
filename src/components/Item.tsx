@@ -1,9 +1,8 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
-import { space, SpaceProps, themeGet } from "styled-system";
+import { space, SpaceProps, themeGet, width, WidthProps } from "styled-system";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import randomText from "random-textblock";
 import { DeleteItem, PlusOne } from "./";
 import { Text } from "./Text";
 
@@ -130,14 +129,30 @@ interface ItemProps {
   votes: number;
 }
 
+const randomInt = (min: number, max: number): number =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+interface FakeTextProps extends WidthProps {}
+const FakeText = styled.div<FakeTextProps>`
+  display: inline-block;
+  background: ${themeGet("colors.borderGrey")};
+  border-radius: 3px;
+  height: 13px;
+  margin-right: 4px;
+
+  ${width}
+`;
+
 const Item = ({ children, id, hidden, votes, similarItems }: ItemProps) => (
   <ItemContainer>
     {!hidden && <DeleteItemButton id={id} />}
     <ItemHeader>
       {hidden ? (
-        <Text obfuscate={hidden}>
-          {randomText.getTextBlock(randomTextConfig)}
-        </Text>
+        <div>
+          {Array.from({ length: randomInt(4, 10) }).map(() => (
+            <FakeText width={randomInt(16, 100)} />
+          ))}
+        </div>
       ) : (
         <Text>{children}</Text>
       )}

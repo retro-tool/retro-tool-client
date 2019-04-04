@@ -15,6 +15,7 @@ import {
   space,
   SpaceProps
 } from "styled-system";
+import c from "color";
 
 interface ButtonProps
   extends BackgroundProps,
@@ -36,6 +37,7 @@ const Button = styled.button.attrs(({ disabled, theme }) => ({
   align-items: center;
   cursor: pointer;
   border: none;
+  height: 36px;
   border-radius: 3px;
   pointer-events: ${({ disabled }) => disabled && "none"};
   opacity: ${({ disabled }) => disabled && ".5"};
@@ -50,6 +52,13 @@ const Button = styled.button.attrs(({ disabled, theme }) => ({
 
   &:focus {
     outline: none;
+    box-shadow: 0 0 0 1px white,
+      0 0 0 4px
+        ${({ theme }) =>
+          c(theme.colors.blue)
+            .alpha(0.3)
+            .rgb()
+            .string()};
   }
 `;
 
@@ -58,8 +67,6 @@ Button.defaultProps = {
   fontWeight: 1,
   pl: 4,
   pr: 4,
-  pt: 2,
-  pb: 2,
   lineHeight: 5
 };
 
