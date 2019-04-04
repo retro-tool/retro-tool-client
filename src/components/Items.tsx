@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import c from "color";
 import styled from "styled-components/macro";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Item, LoadingCard, Topic, SlugContext, StatusContext } from ".";
 import { Slug, Topic as TopicType } from "../types";
@@ -17,6 +17,10 @@ const getItems = (topic: TopicType) =>
           hidden
           title
           votes
+          similarItems {
+            id
+            title
+          }
         }
       }
     }
@@ -31,28 +35,37 @@ const getSubscribeItems = (topic: TopicType) =>
           hidden
           title
           votes
+          similarItems {
+            id
+            title
+          }
         }
         status
       }
     }
   `;
 
+type ItemT = {
+  title: string;
+  hidden?: boolean;
+  id: string;
+  votes: number;
+};
+
+type ParentItem = {
+  title: string;
+  hidden?: boolean;
+  id: string;
+  votes: number;
+  similarItems: ItemT[];
+};
+
 interface Data {
   retro: {
-    [key: string]: Array<{
-      id: string;
-      hidden: boolean;
-      title: string;
-      votes: number;
-    }>;
+    [key: string]: ParentItem[];
   };
   retroUpdated?: {
-    [key: string]: Array<{
-      id: string;
-      hidden: boolean;
-      title: string;
-      votes: number;
-    }>;
+    [key: string]: ParentItem[];
   };
 }
 
@@ -84,21 +97,6 @@ const DraggableItem = styled.div<DraggableItemProps>`
   }
 `;
 
-type ItemT = {
-  title: string;
-  hidden?: boolean;
-  id: string;
-  votes: number;
-};
-
-type ParentItem = {
-  title: string;
-  hidden?: boolean;
-  id: string;
-  votes: number;
-  similarItems?: ItemT[];
-};
-
 interface ItemListProps {
   items: ParentItem[];
 }
@@ -123,26 +121,20 @@ const reorderItems = ({
 
 interface CombineItemsParams {
   items: ParentItem[];
-  childId: string;
   childIndex: number;
   parentId: string;
 }
 
 const combineItems = ({
   items,
-  childId,
   childIndex,
   parentId
 }: CombineItemsParams): ParentItem[] => {
   const combinedItems = items.map(item => {
-    const similarItems = item.similarItems
-      ? [...item.similarItems, items[childIndex]]
-      : [items[childIndex]];
-
     return item.id === parentId
       ? {
           ...item,
-          similarItems,
+          similarItems: item.similarItems,
           votes: item.votes + items[childIndex].votes
         }
       : item;
@@ -150,15 +142,24 @@ const combineItems = ({
   const filteredItems = combinedItems.filter(
     (_item, index) => index !== childIndex
   );
+  console.log({ filteredItems });
 
   return filteredItems;
 };
+
+const COMBINE_ITEMS = gql`
+  mutation CombineItems($parentId: String!, $childId: String!) {
+    combineItems(parentId: $parentId, childId: $childId) {
+      id
+    }
+  }
+`;
 
 const ItemList = ({ items: itemsProp }: ItemListProps) => {
   const [items, setItems] = useState(itemsProp);
   const { status } = useContext(StatusContext);
 
-  const onDragEnd = result => {
+  const onDragEnd = (result, combineItemsMutation) => {
     if (result.destination) {
       const reorderedItems = reorderItems({
         items,
@@ -167,11 +168,14 @@ const ItemList = ({ items: itemsProp }: ItemListProps) => {
       });
       setItems(reorderedItems);
     } else if (result.combine) {
+      const parentId = result.combine.draggableId;
+      const childId = result.draggableId;
+
+      combineItemsMutation({ variables: { parentId, childId } });
       const combinedItems = combineItems({
         items,
-        childId: result.draggableId,
-        childIndex: result.source.index,
-        parentId: result.combine.draggableId
+        parentId,
+        childIndex: result.source.index
       });
       setItems(combinedItems);
     }
@@ -182,55 +186,65 @@ const ItemList = ({ items: itemsProp }: ItemListProps) => {
   }, [itemsProp]);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable" isCombineEnabled>
-        {provided => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            {items.map((item, index) => {
-              const dragIsDisabled =
-                status === `initial` ||
-                status === `actions` ||
-                !!item.similarItems;
+    <Mutation mutation={COMBINE_ITEMS}>
+      {(combineItems, { data, loading }) => {
+        return (
+          <DragDropContext
+            onDragEnd={result => {
+              onDragEnd(result, combineItems);
+            }}
+          >
+            <Droppable droppableId="droppable" isCombineEnabled>
+              {provided => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  {items.map((item, index) => {
+                    const dragIsDisabled =
+                      status === `initial` ||
+                      status === `actions` ||
+                      item.similarItems.length > 0;
 
-              return (
-                <Draggable
-                  key={item.id}
-                  draggableId={item.id}
-                  index={index}
-                  isDragDisabled={dragIsDisabled}
-                >
-                  {(provided, snapshot) => (
-                    <DraggableItem
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      combineWith={snapshot.combineWith}
-                      combineTargetFor={snapshot.combineTargetFor}
-                      isDragging={snapshot.isDragging}
-                      style={{
-                        userSelect: "none",
-                        ...provided.draggableProps.style
-                      }}
-                    >
-                      <Item
+                    return (
+                      <Draggable
                         key={item.id}
-                        hidden={item.hidden}
-                        id={item.id}
-                        similarItems={item.similarItems}
-                        votes={item.votes}
+                        draggableId={item.id}
+                        index={index}
+                        isDragDisabled={dragIsDisabled}
                       >
-                        {item.title}
-                      </Item>
-                    </DraggableItem>
-                  )}
-                </Draggable>
-              );
-            })}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+                        {(provided, snapshot) => (
+                          <DraggableItem
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            combineWith={snapshot.combineWith}
+                            combineTargetFor={snapshot.combineTargetFor}
+                            isDragging={snapshot.isDragging}
+                            style={{
+                              userSelect: "none",
+                              ...provided.draggableProps.style
+                            }}
+                          >
+                            <Item
+                              key={item.id}
+                              hidden={item.hidden}
+                              id={item.id}
+                              similarItems={item.similarItems}
+                              votes={item.votes}
+                            >
+                              {item.title}
+                            </Item>
+                          </DraggableItem>
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        );
+      }}
+    </Mutation>
   );
 };
 
