@@ -6,6 +6,7 @@ import { SlugContext } from "./SlugProvider";
 import { Slug, Status } from "../types";
 
 const StatusContext = React.createContext({
+  cansSwitchStatus: false,
   status: "",
   nextStatus: () => {}
 });
@@ -14,6 +15,18 @@ const CURRENT_STATUS = gql`
   query CurrentStatus($slug: String!) {
     retro(slug: $slug) {
       status
+      works {
+        id
+        votes
+      }
+      improve {
+        id
+        votes
+      }
+      others {
+        id
+        votes
+      }
     }
   }
 `;
@@ -22,6 +35,18 @@ const SUBSCRIBE_TO_STATUS = gql`
   subscription onStatusUpdated($slug: String!) {
     retroUpdated(slug: $slug) {
       status
+      works {
+        id
+        votes
+      }
+      improve {
+        id
+        votes
+      }
+      others {
+        id
+        votes
+      }
     }
   }
 `;
@@ -37,9 +62,15 @@ const NEXT_STATUS = gql`
 interface Data {
   retro: {
     status: Status;
+    improve: [];
+    others: [];
+    works: [];
   };
   retroUpdated?: {
     status: Status;
+    improve: [];
+    others: [];
+    works: [];
   };
 }
 
@@ -59,6 +90,7 @@ const SubscribeToStatus = ({ children, subscribeToStatus }) => {
 
 const StatusProvider = ({ children }) => {
   const { slug } = useContext(SlugContext);
+  const [cansSwitchStatus, setCansSwitchStatus] = useState(false);
   const [status, setStatus] = useState<Status>("initial");
 
   const nextStatus = () => {
@@ -82,11 +114,55 @@ const StatusProvider = ({ children }) => {
 
               setStatus(currentStatus);
 
+              if (result.data) {
+                let { improve, others, status, works } = result.data.retro;
+                let itemsAvailable =
+                  !!works.length || !!improve.length || !!others.length;
+
+                let hasVotes = [...improve, ...others, ...works].some(
+                  ({ votes }) => !!votes
+                );
+
+                if (status === "initial") {
+                  setCansSwitchStatus(itemsAvailable);
+                } else if (status === "review") {
+                  setCansSwitchStatus(hasVotes);
+                } else {
+                  setCansSwitchStatus(true);
+                }
+              }
+
               subscribeToMore({
                 document: SUBSCRIBE_TO_STATUS,
                 variables: { slug },
                 updateQuery: (prev, { subscriptionData }) => {
                   if (!subscriptionData.data) return prev;
+
+                  if (subscriptionData.data.retroUpdated) {
+                    let {
+                      improve,
+                      others,
+                      status,
+                      works
+                    } = subscriptionData.data.retroUpdated;
+
+                    let itemsAvailable =
+                      (works && !!works.length) ||
+                      (improve && !!improve.length) ||
+                      (others && !!others.length);
+
+                    let hasVotes = [...improve, ...others, ...works].some(
+                      ({ votes }) => !!votes
+                    );
+
+                    if (status === "initial") {
+                      setCansSwitchStatus(itemsAvailable);
+                    } else if (status === "review") {
+                      setCansSwitchStatus(hasVotes);
+                    } else {
+                      setCansSwitchStatus(true);
+                    }
+                  }
 
                   const status = subscriptionData.data.retroUpdated
                     ? subscriptionData.data.retroUpdated.status
@@ -106,7 +182,9 @@ const StatusProvider = ({ children }) => {
               });
             }}
           >
-            <StatusContext.Provider value={{ status, nextStatus }}>
+            <StatusContext.Provider
+              value={{ cansSwitchStatus, status, nextStatus }}
+            >
               {children}
             </StatusContext.Provider>
           </SubscribeToStatus>

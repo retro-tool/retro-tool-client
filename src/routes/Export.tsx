@@ -1,5 +1,6 @@
 import React from "react";
 import { HeaderContainer, Logo, Text } from "../components";
+import { PageHeaderContainer } from "../components/Header";
 import styled from "styled-components/macro";
 import { ApolloProvider } from "react-apollo";
 import { client } from "../services/api";
@@ -58,9 +59,11 @@ interface Props
 const Export = ({ slug }: Props) => (
   <ApolloProvider client={client}>
     <>
-      <HeaderContainer>
-        <Logo />
-      </HeaderContainer>
+      <PageHeaderContainer>
+        <HeaderContainer>
+          <Logo />
+        </HeaderContainer>
+      </PageHeaderContainer>
       <div>
         {/*
         // @ts-ignore */}

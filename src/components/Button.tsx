@@ -15,17 +15,21 @@ import {
   space,
   SpaceProps
 } from "styled-system";
-import theme from "../theme";
 
-type Props = BackgroundProps &
-  ColorProps &
-  DisplayProps &
-  FontSizeProps &
-  FontWeightProps &
-  LineHeightProps &
-  SpaceProps;
+interface ButtonProps
+  extends BackgroundProps,
+    ColorProps,
+    DisplayProps,
+    FontSizeProps,
+    FontWeightProps,
+    LineHeightProps,
+    SpaceProps {
+  disabled?: boolean;
+}
 
-const Button = styled.button<Props>`
+const Button = styled.button.attrs(({ disabled, theme }) => ({
+  background: disabled ? theme.colors.mediumGrey : theme.colors.lime
+}))<ButtonProps>`
   display: inline-flex;
   vertical-align: middle;
   flex-wrap: nowrap;
@@ -33,6 +37,8 @@ const Button = styled.button<Props>`
   cursor: pointer;
   border: none;
   border-radius: 3px;
+  pointer-events: ${({ disabled }) => disabled && "none"};
+  opacity: ${({ disabled }) => disabled && ".5"};
 
   ${background};
   ${color};
@@ -50,7 +56,6 @@ const Button = styled.button<Props>`
 Button.defaultProps = {
   fontSize: 2,
   fontWeight: 1,
-  background: theme.colors.lime,
   pl: 4,
   pr: 4,
   pt: 2,

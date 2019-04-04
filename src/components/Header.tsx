@@ -1,12 +1,14 @@
 import React, { useContext, useState } from "react";
-import styled from "styled-components/macro";
-import { Button, Logo, SlugContext, StatusContext, Text } from "./";
+import styled, { css } from "styled-components/macro";
 import { space, SpaceProps, themeGet } from "styled-system";
 import Modal from "react-responsive-modal";
 import { Redirect } from "@reach/router";
+import { Button, Logo, SlugContext, StatusContext, Text } from "./";
+import { ChevronRight } from "styled-icons/material/ChevronRight";
+import { ArrowUpward } from "styled-icons/material/ArrowUpward";
 
 interface PageHeaderProps extends SpaceProps {}
-const PageHeaderContainer = styled.div<PageHeaderProps>`
+export const PageHeaderContainer = styled.div<PageHeaderProps>`
   position: relative;
   z-index: 1;
   background: white;
@@ -90,6 +92,7 @@ const Breadcrumbs = ({ status }: BreadcrumbsProps) => {
       <BreadcrumbItem active={status === "actions"}>
         Add action items
       </BreadcrumbItem>
+      <BreadcrumbItem active={status === "final"}>Done</BreadcrumbItem>
     </BreadcrumbsContainer>
   );
 };
@@ -126,15 +129,29 @@ const StatusHelp = ({ status }: StatusHelpProps) => {
   );
 };
 
+const iconStyles = css`
+  margin-right: -8px;
+`;
+
+const NextIcon = styled(ChevronRight)`
+  width: 20px;
+  ${iconStyles}
+`;
+const ExportIcon = styled(ArrowUpward)`
+  width: 16px;
+  margin-left: 6px;
+  ${iconStyles};
+`;
+
 const Header = () => {
   const { slug } = useContext(SlugContext);
-  const { status, nextStatus } = useContext(StatusContext);
+  const { cansSwitchStatus, status, nextStatus } = useContext(StatusContext);
   const [confirm, setConfirm] = useState(false);
   const [raw, setRaw] = useState(false);
 
   const headerActions = {
     initial: {
-      label: "Start retro",
+      label: "Group & vote comments",
       onClick: () => {
         setConfirm(true);
       },
@@ -144,7 +161,7 @@ const Header = () => {
       }
     },
     review: {
-      label: "Add action items",
+      label: "Discuss and add action items",
       onClick: nextStatus
     },
     actions: {
@@ -186,8 +203,13 @@ const Header = () => {
         <HeaderContainer>
           <Logo />
           {status && (
-            <Button onClick={headerActions[status].onClick}>
+            <Button
+              onClick={headerActions[status].onClick}
+              disabled={!cansSwitchStatus}
+            >
               {headerActions[status].label}
+              {status !== "final" && <NextIcon />}
+              {status === "final" && <ExportIcon />}
             </Button>
           )}
         </HeaderContainer>
