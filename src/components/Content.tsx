@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components/macro";
-import { ActionItems, Items } from "./";
+import { About, ActionItems, Items } from "./";
 import { TopicContainer } from "./Topic";
 import { space, SpaceProps } from "styled-system";
 import { SmileyHappy } from "styled-icons/boxicons-solid/SmileyHappy";
@@ -48,6 +48,26 @@ const ActionItemsIcon = styled(CheckBox)`
   ${sharedIconStyles}
 `;
 
+const LasColumnContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+interface FooterProps extends SpaceProps {}
+const Footer = styled.div.attrs({
+  m: [1, 2],
+  p: [3, null, null, null, 4]
+})<FooterProps>`
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
+
+  ${space};
+`;
+
 const Content = () => (
   <ContentContainer>
     <Items
@@ -65,7 +85,12 @@ const Content = () => (
       title={<OthersIcon />}
       placeholder="I want to ask about..."
     />
-    <ActionItems title={<ActionItemsIcon />} />
+    <LasColumnContainer>
+      <ActionItems title={<ActionItemsIcon />} />
+      <Footer>
+        <About />
+      </Footer>
+    </LasColumnContainer>
   </ContentContainer>
 );
 

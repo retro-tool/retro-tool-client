@@ -63,6 +63,15 @@ const GlobalStyle = createGlobalStyle`
   input, textarea, button {
     font-family: ${theme.fontFamily};
   }
+
+  a {
+    color: ${theme.colors.link};
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 export default () => {

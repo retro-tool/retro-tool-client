@@ -1,10 +1,16 @@
 import React, { useContext, useRef, useState } from "react";
 import styled, { css } from "styled-components/macro";
-import { space, SpaceProps, themeGet, width, WidthProps } from "styled-system";
-import c from "color";
+import { space, SpaceProps, themeGet } from "styled-system";
 import { Redirect } from "@reach/router";
-import { DialogContent, DialogOverlay } from "@reach/dialog";
-import { Button, Logo, SlugContext, StatusContext, Text } from "./";
+import {
+  Button,
+  LightboxContent,
+  LightboxOverlay,
+  Logo,
+  SlugContext,
+  StatusContext,
+  Text
+} from "./";
 import { ChevronRight } from "styled-icons/material/ChevronRight";
 import { ArrowUpward } from "styled-icons/material/ArrowUpward";
 
@@ -142,37 +148,6 @@ const ExportIcon = styled(ArrowUpward)`
   width: 16px;
   margin-left: 6px;
   ${iconStyles};
-`;
-
-const LightboxOverlay = styled(DialogOverlay)`
-  background: ${({ theme }) =>
-    c(theme.colors.dark)
-      .alpha(0.3)
-      .rgb()
-      .string()};
-  position: fixed;
-  z-index: 2;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow: auto;
-`;
-
-interface LightboxContentProps extends SpaceProps, WidthProps {}
-const LightboxContent = styled(DialogContent).attrs({
-  p: 5,
-  width: ["95vw", null, "500px"]
-})<LightboxContentProps>`
-  width: 50vw;
-  margin: 10vh auto 0;
-  background: white;
-  outline: none;
-  border-radius: 6px;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.16), 0 3px 8px rgba(0, 0, 0, 0.16);
-
-  ${space}
-  ${width}
 `;
 
 const Header = () => {

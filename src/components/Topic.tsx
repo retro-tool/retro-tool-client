@@ -4,43 +4,82 @@ import { Text, CreateActionItem, CreateItem, StatusContext } from "./";
 import { space, SpaceProps, minWidth, MinWidthProps } from "styled-system";
 import { Topic as TopicType } from "../types";
 
-type TopicContainerProps = SpaceProps &
-  MinWidthProps & {
-    disabled?: boolean;
-  };
-export const TopicContainer = styled.div<TopicContainerProps>`
+interface TopicContainerProps extends SpaceProps, MinWidthProps {
+  disabled?: boolean;
+}
+export const TopicContainer = styled.div.attrs({
+  m: [1, 2],
+  minWidth: ["90%", "40%", null, null, 0]
+})<TopicContainerProps>`
+  position: relative;
   flex: 1;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16);
-  background: #fff;
+  background: white;
   border-radius: 4px;
   opacity: ${({ disabled }) => disabled && ".4"};
   pointer-events: ${({ disabled }) => disabled && "none"};
 
   ${minWidth};
   ${space};
-`;
 
-TopicContainer.defaultProps = {
-  m: [1, 2],
-  pb: 2,
-  minWidth: ["90%", "40%", null, null, 0]
-};
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    height: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background: linear-gradient(
+      to top,
+      white,
+      rgba(255, 255, 255, 0.8) 20%,
+      rgba(255, 255, 255, 0)
+    );
+  }
+`;
 
 type TitleProps = SpaceProps;
 const Title = styled.div.attrs<TitleProps>({
-  pl: [3, null, null, null, 4],
-  pr: [3, null, null, null, 4],
-  pt: [3, null, null, null, 4],
-  pb: [3, null, null, null, 4]
+  p: [3, null, null, null, 4]
 })`
+  position: relative;
   display: flex;
   align-items: flex-start;
 
   ${space}
+
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    height: 10px;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+      to bottom,
+      white,
+      rgba(255, 255, 255, 0.8) 20%,
+      rgba(255, 255, 255, 0)
+    );
+  }
 `;
 
 const TitleIcon = styled.div`
   margin-top: 2px;
+`;
+
+interface ItemsContainerProps extends SpaceProps {}
+const ItemsContainer = styled.div.attrs({
+  pb: 2
+})<ItemsContainerProps>`
+  max-height: calc(100vh - 182px);
+  overflow: scroll;
+
+  ${space}
 `;
 
 interface TopicProps {
@@ -81,7 +120,7 @@ const Topic = ({
           <CreateActionItem />
         )}
       </Title>
-      {children}
+      <ItemsContainer>{children}</ItemsContainer>
     </TopicContainer>
   );
 };

@@ -1,3 +1,4 @@
+export { About } from "./About";
 export { default as ActionItem } from "./ActionItem";
 export { default as ActionItems } from "./ActionItems";
 export { default as Button } from "./Button";
@@ -10,6 +11,7 @@ export { default as Header, HeaderContainer } from "./Header";
 export { default as Input } from "./Input";
 export { default as Item } from "./Item";
 export { default as Items } from "./Items";
+export { LightboxOverlay, LightboxContent } from "./Lightbox";
 export { default as LoadingCard } from "./LoadingCard";
 export { default as Logo } from "./Logo";
 export { default as PlusOne } from "./PlusOne";
