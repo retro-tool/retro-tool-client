@@ -3,7 +3,7 @@ import styled from "styled-components/macro";
 import { space, SpaceProps, themeGet } from "styled-system";
 import { Button, LightboxContent, LightboxOverlay, Text } from "./";
 import { Clear } from "styled-icons/material/Clear";
-import { LiveHelp } from "styled-icons/material/LiveHelp";
+import { Help } from "styled-icons/material/Help";
 
 const CloseIcon = styled(Clear)`
   width: ${themeGet("space.5")}px;
@@ -11,9 +11,9 @@ const CloseIcon = styled(Clear)`
   margin-left: 6px;
 `;
 
-const HelpIcon = styled(LiveHelp)`
-  height: ${themeGet("space.6")}px;
-  width: ${themeGet("space.6")}px;
+const HelpIcon = styled(Help)`
+  height: ${themeGet("space.5")}px;
+  width: ${themeGet("space.5")}px;
   color: ${themeGet("colors.mediumGrey")};
 
   &:hover {

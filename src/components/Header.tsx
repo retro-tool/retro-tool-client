@@ -9,6 +9,7 @@ import {
 } from "styled-system";
 import { Redirect } from "@reach/router";
 import {
+  About,
   Button,
   LightboxContent,
   LightboxOverlay,
@@ -159,6 +160,11 @@ const ExportIcon = styled(ArrowUpward)`
   ${iconStyles};
 `;
 
+const NextStatusContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const Header = () => {
   const { slug } = useContext(SlugContext);
   const { cansSwitchStatus, status, nextStatus } = useContext(StatusContext);
@@ -219,16 +225,20 @@ const Header = () => {
       <PageHeaderContainer>
         <HeaderContainer>
           <Logo />
-          {status && (
-            <Button
-              onClick={headerActions[status].onClick}
-              disabled={!cansSwitchStatus}
-            >
-              {headerActions[status].label}
-              {status !== "final" && <NextIcon />}
-              {status === "final" && <ExportIcon />}
-            </Button>
-          )}
+          <NextStatusContainer>
+            <About />
+            {status && (
+              <Button
+                onClick={headerActions[status].onClick}
+                disabled={!cansSwitchStatus}
+                ml={3}
+              >
+                {headerActions[status].label}
+                {status !== "final" && <NextIcon />}
+                {status === "final" && <ExportIcon />}
+              </Button>
+            )}
+          </NextStatusContainer>
         </HeaderContainer>
         <SubheaderContainer>
           <Breadcrumbs status={status} />
