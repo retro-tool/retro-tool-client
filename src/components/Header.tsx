@@ -1,6 +1,12 @@
 import React, { useContext, useRef, useState } from "react";
 import styled, { css } from "styled-components/macro";
-import { space, SpaceProps, themeGet } from "styled-system";
+import {
+  display,
+  DisplayProps,
+  space,
+  SpaceProps,
+  themeGet
+} from "styled-system";
 import { Redirect } from "@reach/router";
 import {
   Button,
@@ -35,18 +41,19 @@ const HeaderContainer = styled.div.attrs<HeaderProps>({
   ${space}
 `;
 
-interface SubheaderProps extends SpaceProps {}
+interface SubheaderProps extends DisplayProps, SpaceProps {}
 const SubheaderContainer = styled.div.attrs<SubheaderProps>({
+  display: ["none", null, null, "flex"],
   pl: 4,
   pr: 4
 })`
-  display: flex;
   position: relative;
   background: white;
   border-top: 1px solid ${({ theme }) => theme.colors.borderGrey};
   height: 36px;
   justify-content: space-between;
 
+  ${display}
   ${space}
 `;
 
@@ -107,6 +114,8 @@ const Breadcrumbs = ({ status }: BreadcrumbsProps) => {
 const StatusHelpContainer = styled.div`
   display: flex;
   align-items: center;
+
+  ${display}
 `;
 
 interface StatusHelpProps {
