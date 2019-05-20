@@ -17,9 +17,11 @@ interface Props
     slug: Slug;
   }> {}
 
+type Uuid = string;
+
 const Main = ({ slug }: Props) => {
   const { setSlug } = useContext(SlugContext);
-  const [uuid, setUuid] = useState(null);
+  const [uuid, setUuid] = useState<Uuid | null>(null);
 
   const setUserUuid = async () => {
     await client.query({
