@@ -32,17 +32,24 @@ const Main = ({ slug }: Props) => {
         `
     });
 
-    const uuid = await client.query({
-      query: gql`
+    if (window.localStorage && localStorage.getItem("uuid") !== null) {
+      setUuid(localStorage.getItem("uuid"));
+    } else {
+      const uuid = await client.query({
+        query: gql`
           {
             currentUser (retroSlug: "${slug}") {
               uuid
             }
           }
         `
-    });
+      });
 
-    setUuid(uuid.data.currentUser.uuid);
+      setUuid(uuid.data.currentUser.uuid);
+      if (window.localStorage) {
+        localStorage.setItem("uuid", uuid.data.currentUser.uuid);
+      }
+    }
   };
 
   useEffect(() => {
