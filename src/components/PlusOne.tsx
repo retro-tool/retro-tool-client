@@ -9,7 +9,7 @@ import {
   SpaceProps,
   themeGet
 } from "styled-system";
-import { StatusContext, UserContext, Text } from "components";
+import { StatusContext, Text } from "components";
 import { ThumbUp } from "styled-icons/material/ThumbUp";
 
 interface PlusOneContainerProps extends SpaceProps {
@@ -69,7 +69,7 @@ const ADD_VOTE = gql`
   }
 `;
 
-const statussWithVotes = ["review"];
+const statusWithVotes = ["review"];
 
 type PlusOneProps = {
   id: string;
@@ -83,13 +83,12 @@ const ThumbUpIcon = styled(ThumbUp)`
 
 const PlusOne = ({ id, votes }: PlusOneProps) => {
   const { status } = useContext(StatusContext);
-  const { user } = useContext(UserContext);
 
-  const disabled = !user.votesLeft || statussWithVotes.indexOf(status) < 0;
+  const disabled = statusWithVotes.indexOf(status) < 0;
 
   return (
     <Mutation mutation={ADD_VOTE}>
-      {(addVote, { data, loading }) => {
+      {(addVote, { data }) => {
         return (
           <PlusOneContainer disabled={disabled}>
             <PlusOneButton

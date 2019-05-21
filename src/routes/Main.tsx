@@ -2,13 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { client, subscriptionClient } from "services/api";
 import { ApolloProvider } from "react-apollo";
 import gql from "graphql-tag";
-import {
-  Header,
-  Content,
-  SlugContext,
-  StatusProvider,
-  UserProvider
-} from "components";
+import { Header, Content, SlugContext, StatusProvider } from "components";
 import { RouteComponentProps } from "@reach/router";
 import { Slug } from "types";
 
@@ -64,14 +58,12 @@ const Main = ({ slug }: Props) => {
 
   return (
     <ApolloProvider client={subscriptionClient(uuid)}>
-      <UserProvider>
-        <StatusProvider>
-          <>
-            <Header />
-            <Content />
-          </>
-        </StatusProvider>
-      </UserProvider>
+      <StatusProvider>
+        <>
+          <Header />
+          <Content />
+        </>
+      </StatusProvider>
     </ApolloProvider>
   );
 };

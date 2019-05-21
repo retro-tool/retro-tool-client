@@ -20,4 +20,3 @@ export { default as SlugProvider, SlugContext } from "./SlugProvider";
 export { StatusProvider, StatusContext } from "./StatusProvider";
 export { Text } from "./Text";
 export { default as Topic } from "./Topic";
-export { UserProvider, UserContext } from "./UserProvider";
