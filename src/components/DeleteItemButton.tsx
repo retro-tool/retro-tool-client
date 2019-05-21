@@ -65,6 +65,7 @@ const REMOVE_ITEM = gql`
 
 type DeleteItemProps = {
   id: string;
+  mutation: string;
   className?: string;
 };
 
@@ -74,13 +75,13 @@ const DeleteIcon = styled(Clear)`
   color: currentColor;
 `;
 
-const DeleteItem: React.FC<DeleteItemProps> = ({ className, id }) => {
+const DeleteItem: React.FC<DeleteItemProps> = ({ className, id, mutation }) => {
   const { status } = useContext(StatusContext);
 
   const disabled = status === "final";
 
   return (
-    <Mutation mutation={REMOVE_ITEM}>
+    <Mutation mutation={mutation}>
       {removeItem => {
         return (
           <DeleteItemContainer className={className} disabled={disabled}>
