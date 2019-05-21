@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { client, subscriptionClient } from "../services/api";
+import { client, subscriptionClient } from "services/api";
 import { ApolloProvider } from "react-apollo";
 import gql from "graphql-tag";
 import {
@@ -8,9 +8,9 @@ import {
   SlugContext,
   StatusProvider,
   UserProvider
-} from "../components";
+} from "components";
 import { RouteComponentProps } from "@reach/router";
-import { Slug } from "../types";
+import { Slug } from "types";
 
 interface Props
   extends RouteComponentProps<{
@@ -23,7 +23,7 @@ const Main = ({ slug }: Props) => {
   const { setSlug } = useContext(SlugContext);
   const [uuid, setUuid] = useState<Uuid | null>(null);
 
-  const setUserUuid = async () => {
+  const setUserUuid = React.useCallback(async () => {
     await client.query({
       query: gql`
           {
@@ -52,13 +52,13 @@ const Main = ({ slug }: Props) => {
         localStorage.setItem("uuid", uuid.data.currentUser.uuid);
       }
     }
-  };
+  }, [slug]);
 
   useEffect(() => {
     slug && setSlug(slug);
 
     setUserUuid();
-  }, [slug]);
+  }, [slug, setSlug, setUserUuid]);
 
   if (!uuid) return null;
 

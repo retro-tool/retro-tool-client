@@ -2,14 +2,8 @@ import React, { useContext } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
-import {
-  borderColor,
-  BorderColorProps,
-  space,
-  SpaceProps,
-  themeGet
-} from "styled-system";
-import { StatusContext } from ".";
+import { space, SpaceProps, themeGet } from "styled-system";
+import { StatusContext } from "components";
 import { Clear } from "styled-icons/material/Clear";
 
 interface DeleteItemContainerProps extends SpaceProps {

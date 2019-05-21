@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Slug } from "../types";
+import { Slug } from "types";
 
 export const SlugContext = React.createContext({
   slug: "",

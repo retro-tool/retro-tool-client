@@ -4,9 +4,14 @@ import styled from "styled-components/macro";
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Item, LoadingCard, Topic, SlugContext, StatusContext } from ".";
-import { Slug, Topic as TopicType } from "../types";
-import { themeGet } from "styled-system";
+import {
+  Item,
+  LoadingCard,
+  Topic,
+  SlugContext,
+  StatusContext
+} from "components";
+import { Slug, Topic as TopicType } from "types";
 
 const getItems = (topic: TopicType) =>
   gql`

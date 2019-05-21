@@ -1,8 +1,8 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
 import { space, SpaceProps } from "styled-system";
-import { Text } from "./";
-import { DeleteActionItem } from "./DeleteActionItemButton";
+import { Text } from "components";
+import { DeleteActionItem } from "components/DeleteActionItemButton";
 
 const DeleteItemButton = styled(DeleteActionItem)`
   display: none;

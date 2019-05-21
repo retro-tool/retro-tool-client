@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { Input, SlugContext } from ".";
-import { Topic } from "../types";
+import { Input, SlugContext } from "components";
+import { Topic } from "types";
 
 const createItemMutations = {
   works: "createWorksItem",
