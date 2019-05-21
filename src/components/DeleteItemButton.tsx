@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import { DocumentNode } from "graphql";
 import styled from "styled-components";
 import { space, SpaceProps, themeGet } from "styled-system";
 import { StatusContext } from "components";
@@ -49,17 +49,9 @@ const DeleteItemButton = styled.button.attrs({
   }
 `;
 
-const REMOVE_ITEM = gql`
-  mutation RemoveItem($id: String!) {
-    removeItem(id: $id) {
-      id
-    }
-  }
-`;
-
 type DeleteItemProps = {
   id: string;
-  mutation: string;
+  mutation: DocumentNode;
   className?: string;
 };
 
