@@ -1,7 +1,7 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components/macro";
-import { space, SpaceProps, themeGet } from "styled-system";
-import { Button, LightboxContent, LightboxOverlay, Text } from "./";
+import { themeGet } from "styled-system";
+import { Button, LightboxContent, LightboxOverlay, Text } from "components";
 import { Clear } from "styled-icons/material/Clear";
 import { Help } from "styled-icons/material/Help";
 

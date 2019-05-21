@@ -9,8 +9,7 @@ import {
   SpaceProps,
   themeGet
 } from "styled-system";
-import { StatusContext, UserContext } from ".";
-import { Text } from "./";
+import { StatusContext, UserContext, Text } from "components";
 import { ThumbUp } from "styled-icons/material/ThumbUp";
 
 interface PlusOneContainerProps extends SpaceProps {

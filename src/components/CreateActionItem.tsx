@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { Input, SlugContext } from ".";
+import { Input, SlugContext } from "components";
 
 const CREATE_ITEM = gql`
   mutation CreateITem($slug: String!, $title: String!) {

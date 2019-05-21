@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { SlugContext } from "./SlugProvider";
-import { Slug } from "../types";
+import { SlugContext } from "components/SlugProvider";
+import { Slug } from "types";
 
 const UserContext = React.createContext({
   user: { votesLeft: 0 }
@@ -44,7 +44,7 @@ class VotesLeftQuery extends Query<Data, Variables> {}
 const SubscribeToVotesLeft = ({ children, subscribeToVotesLeft }) => {
   useEffect(() => {
     subscribeToVotesLeft();
-  }, []);
+  }, [subscribeToVotesLeft]);
 
   return children;
 };

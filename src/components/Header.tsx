@@ -17,7 +17,7 @@ import {
   SlugContext,
   StatusContext,
   Text
-} from "./";
+} from "components";
 import { ChevronRight } from "styled-icons/material/ChevronRight";
 import { ArrowUpward } from "styled-icons/material/ArrowUpward";
 

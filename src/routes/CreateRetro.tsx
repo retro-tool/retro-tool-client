@@ -1,6 +1,6 @@
 import React from "react";
 import gql from "graphql-tag";
-import { client } from "../services/api";
+import { client } from "services/api";
 import { ApolloProvider } from "react-apollo";
 import { Query } from "react-apollo";
 import { Redirect } from "@reach/router";

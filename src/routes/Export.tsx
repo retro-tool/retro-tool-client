@@ -1,11 +1,11 @@
 import React from "react";
-import { HeaderContainer, Logo, Text } from "../components";
-import { PageHeaderContainer } from "../components/Header";
+import { HeaderContainer, Logo, Text } from "components";
+import { PageHeaderContainer } from "components/Header";
 import styled from "styled-components/macro";
 import { ApolloProvider } from "react-apollo";
-import { client } from "../services/api";
+import { client } from "services/api";
 import { RouteComponentProps } from "@reach/router";
-import { Slug } from "../types";
+import { Slug } from "types";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 

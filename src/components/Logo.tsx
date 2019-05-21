@@ -10,7 +10,7 @@ import {
   space,
   SpaceProps
 } from "styled-system";
-import theme from "../theme";
+import theme from "theme";
 
 const LogoSVG = styled.svg.attrs({
   width: "61px",

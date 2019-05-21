@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { ActionItem, LoadingCard, Topic, SlugContext } from ".";
-import { Slug } from "../types";
+import { ActionItem, LoadingCard, Topic, SlugContext } from "components";
+import { Slug } from "types";
 
 const GET_ACTION_ITEMS = gql`
   query Retro($slug: String) {

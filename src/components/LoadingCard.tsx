@@ -1,5 +1,5 @@
 import styled from "styled-components/macro";
-import { Card } from ".";
+import { Card } from "components";
 import { minWidth, MinWidthProps, space, SpaceProps } from "styled-system";
 
 type LoadingCardProps = MinWidthProps & SpaceProps;

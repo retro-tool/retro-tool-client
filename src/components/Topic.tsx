@@ -1,8 +1,8 @@
 import React, { ReactNode, useContext, useEffect } from "react";
 import styled from "styled-components/macro";
-import { Text, CreateActionItem, CreateItem, StatusContext } from "./";
+import { CreateActionItem, CreateItem, StatusContext } from "components";
 import { space, SpaceProps, minWidth, MinWidthProps } from "styled-system";
-import { Topic as TopicType } from "../types";
+import { Topic as TopicType } from "types";
 
 interface TopicContainerProps extends SpaceProps, MinWidthProps {
   disabled?: boolean;

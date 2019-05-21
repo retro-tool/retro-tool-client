@@ -3,15 +3,8 @@ import styled from "styled-components/macro";
 import { space, SpaceProps, themeGet, width, WidthProps } from "styled-system";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { DeleteRetroItem, PlusOne } from "./";
-import { Text } from "./Text";
-
-const randomTextConfig = {
-  minWords: 3,
-  maxWords: 8,
-  minSentences: 1,
-  maxSentences: 1
-};
+import { DeleteRetroItem, PlusOne } from "components";
+import { Text } from "components/Text";
 
 const DeleteItemButton = styled(DeleteRetroItem)`
   display: none;

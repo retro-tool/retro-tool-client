@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { client } from "../services/api";
+import { client } from "services/api";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { SlugContext } from "./SlugProvider";
-import { Slug, Status } from "../types";
+import { SlugContext } from "components/SlugProvider";
+import { Slug, Status } from "types";
 
 const StatusContext = React.createContext({
   cansSwitchStatus: false,
@@ -83,7 +83,7 @@ class StatusQuery extends Query<Data, Variables> {}
 const SubscribeToStatus = ({ children, subscribeToStatus }) => {
   useEffect(() => {
     subscribeToStatus();
-  }, []);
+  }, [subscribeToStatus]);
 
   return children;
 };

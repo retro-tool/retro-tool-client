@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components/macro";
-import { ActionItems, Items } from "./";
-import { TopicContainer } from "./Topic";
+import { ActionItems, Items } from "components";
+import { TopicContainer } from "components/Topic";
 import { height, HeightProps, space, SpaceProps } from "styled-system";
 import { SmileyHappy } from "styled-icons/boxicons-solid/SmileyHappy";
 import { SmileySad } from "styled-icons/boxicons-solid/SmileySad";
@@ -47,19 +47,6 @@ const OthersIcon = styled(QuestionAnswer)`
 
 const ActionItemsIcon = styled(CheckBox)`
   ${sharedIconStyles}
-`;
-
-interface FooterProps extends SpaceProps {}
-const Footer = styled.div.attrs({
-  m: [1, 2],
-  p: [3, null, null, null, 4]
-})<FooterProps>`
-  position: absolute;
-  display: flex;
-  bottom: 0;
-  right: 0;
-
-  ${space};
 `;
 
 const Content = () => (

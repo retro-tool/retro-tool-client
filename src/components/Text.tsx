@@ -14,7 +14,7 @@ import {
   SpaceProps,
   variant
 } from "styled-system";
-import { Size } from "../types";
+import { Size } from "types";
 
 const size = variant({
   key: "text",

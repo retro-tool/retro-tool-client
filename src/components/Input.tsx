@@ -38,7 +38,7 @@ const Input = ({
   shouldFocus,
   value
 }: InputProps) => {
-  const inputEl = useRef(null);
+  const inputEl = useRef<HTMLInputElement>(null);
 
   const HandleOnKeyDown = (evt: any): void => {
     if (evt.keyCode === 13) {
@@ -52,9 +52,10 @@ const Input = ({
   };
 
   useEffect(() => {
-    // @ts-ignore
-    shouldFocus && inputEl && inputEl.current.focus();
-  }, [inputEl]);
+    if (shouldFocus && inputEl && inputEl.current) {
+      inputEl.current.focus();
+    }
+  }, [inputEl, shouldFocus]);
 
   return (
     <Textarea
