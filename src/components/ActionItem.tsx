@@ -2,9 +2,9 @@ import React, { ReactNode, useState } from "react";
 import styled from "styled-components/macro";
 import { space, SpaceProps } from "styled-system";
 import { Text } from "./";
-import { DeleteItem } from "./DeleteItemButton";
+import { DeleteActionItem } from "./DeleteActionItemButton";
 
-const DeleteItemButton = styled(DeleteItem)`
+const DeleteItemButton = styled(DeleteActionItem)`
   display: none;
   position: absolute;
   top: 7px;
