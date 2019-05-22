@@ -126,19 +126,19 @@ const StatusHelp = ({ status }: StatusHelpProps) => {
   return (
     <StatusHelpContainer>
       {status === "initial" && (
-        <Text fontSize={1} color="borderDarkGrey">
+        <Text fontSize={1} color="secondaryGrey">
           Add your comments below, you won't be able to see your peers' until
           next step
         </Text>
       )}
       {status === "review" && (
-        <Text fontSize={1} color="borderDarkGrey">
+        <Text fontSize={1} color="secondaryGrey">
           Drag and drop comments to group them together and vote for the ones
           you'd like to discuss about
         </Text>
       )}
       {status === "actions" && (
-        <Text fontSize={1} color="borderDarkGrey">
+        <Text fontSize={1} color="secondaryGrey">
           Add action items, you can no longer group or vote comments
         </Text>
       )}

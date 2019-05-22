@@ -10,7 +10,7 @@ const colors = {
   contentGrey: "#f2f2f2",
   borderGrey: "#e5e5e5",
   mediumGrey: "#d1d1d1",
-  borderDarkGrey: "#b3b3b3"
+  secondaryGrey: "#b3b3b3"
 };
 
 const space = [0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64];

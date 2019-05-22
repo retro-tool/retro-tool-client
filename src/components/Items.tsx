@@ -11,7 +11,7 @@ import {
   SlugContext,
   StatusContext
 } from "components";
-import { Slug, Topic as TopicType } from "types";
+import { Slug, Topic as TopicType, Item as ItemType } from "types";
 
 const getItems = (topic: TopicType) =>
   gql`
@@ -21,6 +21,7 @@ const getItems = (topic: TopicType) =>
           id
           hidden
           title
+          ref
           votes
           similarItems {
             id
@@ -40,6 +41,7 @@ const getSubscribeItems = (topic: TopicType) =>
           hidden
           title
           votes
+          ref
           similarItems {
             id
             title
@@ -50,27 +52,12 @@ const getSubscribeItems = (topic: TopicType) =>
     }
   `;
 
-type ItemT = {
-  title: string;
-  hidden?: boolean;
-  id: string;
-  votes: number;
-};
-
-type ParentItem = {
-  title: string;
-  hidden?: boolean;
-  id: string;
-  votes: number;
-  similarItems: ItemT[];
-};
-
 interface Data {
   retro: {
-    [key: string]: ParentItem[];
+    [key: string]: ItemType[];
   };
   retroUpdated?: {
-    [key: string]: ParentItem[];
+    [key: string]: ItemType[];
   };
 }
 
@@ -103,11 +90,11 @@ const DraggableItem = styled.div<DraggableItemProps>`
 `;
 
 interface ItemListProps {
-  items: ParentItem[];
+  items: ItemType[];
 }
 
 interface ReorderItemsParams {
-  items: ParentItem[];
+  items: ItemType[];
   startIndex: number;
   endIndex: number;
 }
@@ -116,7 +103,7 @@ const reorderItems = ({
   items,
   startIndex,
   endIndex
-}: ReorderItemsParams): ParentItem[] => {
+}: ReorderItemsParams): ItemType[] => {
   const result = Array.from(items);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -125,7 +112,7 @@ const reorderItems = ({
 };
 
 interface CombineItemsParams {
-  items: ParentItem[];
+  items: ItemType[];
   childIndex: number;
   parentId: string;
 }
@@ -134,7 +121,7 @@ const combineItems = ({
   items,
   childIndex,
   parentId
-}: CombineItemsParams): ParentItem[] => {
+}: CombineItemsParams): ItemType[] => {
   const combinedItems = items.map(item => {
     return item.id === parentId
       ? {
@@ -227,15 +214,7 @@ const ItemList = ({ items: itemsProp }: ItemListProps) => {
                               ...provided.draggableProps.style
                             }}
                           >
-                            <Item
-                              key={item.id}
-                              hidden={item.hidden}
-                              id={item.id}
-                              similarItems={item.similarItems}
-                              votes={item.votes}
-                            >
-                              {item.title}
-                            </Item>
+                            <Item key={item.id} item={item} />
                           </DraggableItem>
                         )}
                       </Draggable>

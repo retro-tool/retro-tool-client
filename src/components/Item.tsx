@@ -5,6 +5,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { DeleteRetroItem, PlusOne } from "components";
 import { Text } from "components/Text";
+import { Item as ItemType } from "types";
 
 const DeleteItemButton = styled(DeleteRetroItem)`
   display: none;
@@ -58,7 +59,7 @@ interface DetachItemButtonProps {
 const DetachItemButton = styled(Text).attrs({
   as: "button",
   title: "Detach comment",
-  color: "borderDarkGrey",
+  color: "secondaryGrey",
   fontSize: 1,
   mb: 2
 })<DetachItemButtonProps>`
@@ -91,6 +92,15 @@ const DetachItemButton = styled(Text).attrs({
   }
 `;
 
+const Ref = styled(Text)`
+  color: ${themeGet("colors.secondaryGrey")};
+  margin-right: ${themeGet("space.1")}px;
+`;
+
+const ItemText = styled.div`
+  display: flex;
+`;
+
 interface SimilarItemProps {
   children: React.ReactChild;
   id: string;
@@ -107,19 +117,9 @@ const SimilarItem: React.FC<SimilarItemProps> = ({ children, id }) => {
   );
 };
 
-type Item = {
-  title: string;
-  hidden?: boolean;
-  id: string;
-  votes: number;
-};
-
 interface ItemProps {
   children?: ReactNode;
-  hidden?: boolean;
-  id: string;
-  similarItems?: Item[];
-  votes: number;
+  item: ItemType;
 }
 
 const randomInt = (min: number, max: number): number =>
@@ -136,7 +136,9 @@ const FakeText = styled.div<FakeTextProps>`
   ${width}
 `;
 
-const Item = ({ children, id, hidden, votes, similarItems }: ItemProps) => (
+const Item = ({
+  item: { id, hidden, votes, similarItems, ref, title }
+}: ItemProps) => (
   <ItemContainer>
     {!hidden && <DeleteItemButton id={id} />}
     <ItemHeader>
@@ -147,7 +149,10 @@ const Item = ({ children, id, hidden, votes, similarItems }: ItemProps) => (
           ))}
         </div>
       ) : (
-        <Text>{children}</Text>
+        <ItemText>
+          <Ref>#{ref}</Ref>
+          <Text>{title}</Text>
+        </ItemText>
       )}
       <PlusOne id={id} votes={votes} />
     </ItemHeader>
