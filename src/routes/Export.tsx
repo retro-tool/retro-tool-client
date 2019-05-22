@@ -2,11 +2,10 @@ import React from "react";
 import { HeaderContainer, Logo, Text } from "components";
 import { PageHeaderContainer } from "components/Header";
 import styled from "styled-components/macro";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider, useQuery } from "@apollo/react-hooks";
 import { client } from "services/api";
 import { RouteComponentProps } from "@reach/router";
 import { Slug } from "types";
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 const Content = styled.div`
@@ -36,20 +35,70 @@ const GET_ITEMS = gql`
   }
 `;
 
-interface Data {
-  retro?: {
-    [key: string]: Array<{
-      id: string;
-      title: string;
-    }>;
-  };
-}
+const Items = ({ slug }: Props) => {
+  const { error, loading, data } = useQuery(GET_ITEMS, {
+    variables: { slug }
+  });
 
-interface Variables {
-  slug: Slug;
-}
+  if (loading || error) return null;
 
-class QueryItems extends Query<Data, Variables> {}
+  const {
+    retro: { works, improve, others, actionItems }
+  } = data;
+
+  return (
+    <Content>
+      <div>
+        <Text size="title">Works</Text>
+        {works.length && (
+          <ul>
+            {works.map(({ id, title }) => (
+              <li key={id}>
+                <Text>{title}</Text>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div>
+        <Text size="title">Improve</Text>
+        {improve.length && (
+          <ul>
+            {improve.map(({ id, title }) => (
+              <li key={id}>
+                <Text>{title}</Text>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div>
+        <Text size="title">Others</Text>
+        {others.length && (
+          <ul>
+            {others.map(({ id, title }) => (
+              <li key={id}>
+                <Text>{title}</Text>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div>
+        <Text size="title">Action Items</Text>
+        {actionItems.length && (
+          <ul>
+            {actionItems.map(({ id, title }) => (
+              <li key={id}>
+                <Text>{title}</Text>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </Content>
+  );
+};
 
 interface Props
   extends RouteComponentProps<{
@@ -65,71 +114,7 @@ const Export = ({ slug }: Props) => (
         </HeaderContainer>
       </PageHeaderContainer>
       <div>
-        {/*
-        // @ts-ignore */}
-        <QueryItems query={GET_ITEMS} variables={{ slug }}>
-          {({ loading, error, data }) => {
-            if (loading || error) return null;
-
-            const {
-              // @ts-ignore
-              retro: { works, improve, others, actionItems }
-            } = data;
-
-            return (
-              <Content>
-                <div>
-                  <Text size="title">Works</Text>
-                  {works.length && (
-                    <ul>
-                      {works.map(({ id, title }) => (
-                        <li key={id}>
-                          <Text>{title}</Text>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-                <div>
-                  <Text size="title">Improve</Text>
-                  {improve.length && (
-                    <ul>
-                      {improve.map(({ id, title }) => (
-                        <li key={id}>
-                          <Text>{title}</Text>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-                <div>
-                  <Text size="title">Others</Text>
-                  {others.length && (
-                    <ul>
-                      {others.map(({ id, title }) => (
-                        <li key={id}>
-                          <Text>{title}</Text>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-                <div>
-                  <Text size="title">Action Items</Text>
-                  {actionItems.length && (
-                    <ul>
-                      {actionItems.map(({ id, title }) => (
-                        <li key={id}>
-                          <Text>{title}</Text>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </Content>
-            );
-          }}
-        </QueryItems>
+        <Items slug={slug} />
       </div>
     </>
   </ApolloProvider>
