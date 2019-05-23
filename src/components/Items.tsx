@@ -4,13 +4,8 @@ import styled from "styled-components/macro";
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {
-  Item,
-  LoadingCard,
-  Topic,
-  SlugContext,
-  StatusContext
-} from "components";
+import { Item, LoadingCard, Topic, StatusContext } from "components";
+import { useSlug } from "components/Slug.context";
 import { Slug, Topic as TopicType, Item as ItemType } from "types";
 
 const getItems = (topic: TopicType) =>
@@ -244,7 +239,7 @@ type ItemsProps = {
 };
 
 const Items = ({ title, topic, placeholder }: ItemsProps) => {
-  const { slug } = useContext(SlugContext);
+  const slug = useSlug();
 
   return (
     <QueryItems query={getItems(topic)} variables={{ slug }}>

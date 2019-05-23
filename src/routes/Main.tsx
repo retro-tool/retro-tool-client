@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { client, subscriptionClient } from "services/api";
 import { ApolloProvider } from "react-apollo";
 import gql from "graphql-tag";
-import { Header, Content, SlugContext, StatusProvider } from "components";
+import { Header, Content, StatusProvider } from "components";
 import { RouteComponentProps } from "@reach/router";
-import { Slug } from "types";
+import { Slug } from "../types";
 
 interface Props
   extends RouteComponentProps<{
@@ -14,7 +14,6 @@ interface Props
 type Uuid = string;
 
 const Main = ({ slug }: Props) => {
-  const { setSlug } = useContext(SlugContext);
   const [uuid, setUuid] = useState<Uuid | null>(null);
 
   const setUserUuid = React.useCallback(async () => {
@@ -49,10 +48,8 @@ const Main = ({ slug }: Props) => {
   }, [slug]);
 
   useEffect(() => {
-    slug && setSlug(slug);
-
     setUserUuid();
-  }, [slug, setSlug, setUserUuid]);
+  }, [slug, setUserUuid]);
 
   if (!uuid) return null;
 

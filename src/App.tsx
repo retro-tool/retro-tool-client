@@ -2,8 +2,8 @@ import React from "react";
 import theme from "./theme";
 import { Router } from "@reach/router";
 import { createGlobalStyle, ThemeProvider } from "styled-components/macro";
-import { SlugProvider } from "./components";
-import { CreateRetro, Export, Main } from "./routes";
+import { SlugProvider } from "components/Slug.context";
+import { CreateRetro, Export, Main } from "routes";
 
 interface FontShape {
   style: string;

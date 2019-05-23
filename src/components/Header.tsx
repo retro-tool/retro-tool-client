@@ -8,13 +8,13 @@ import {
   themeGet
 } from "styled-system";
 import { Redirect } from "@reach/router";
+import { useSlug } from "components/Slug.context";
 import {
   About,
   Button,
   LightboxContent,
   LightboxOverlay,
   Logo,
-  SlugContext,
   StatusContext,
   Text
 } from "components";
@@ -166,7 +166,7 @@ const NextStatusContainer = styled.div`
 `;
 
 const Header = () => {
-  const { slug } = useContext(SlugContext);
+  const slug = useSlug();
   const { cansSwitchStatus, status, nextStatus } = useContext(StatusContext);
   const [confirm, setConfirm] = useState(false);
   const [raw, setRaw] = useState(false);

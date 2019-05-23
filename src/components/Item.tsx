@@ -144,8 +144,8 @@ const Item = ({
     <ItemHeader>
       {hidden ? (
         <div>
-          {Array.from({ length: randomInt(4, 10) }).map(() => (
-            <FakeText width={randomInt(16, 100)} />
+          {Array.from({ length: randomInt(4, 10) }).map((s, index) => (
+            <FakeText width={randomInt(16, 100)} key={index} />
           ))}
         </div>
       ) : (

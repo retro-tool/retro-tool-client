@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { client } from "services/api";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { SlugContext } from "components/SlugProvider";
+import { useSlug } from "components/Slug.context";
 import { Slug, Status } from "types";
 
 const StatusContext = React.createContext({
@@ -89,7 +89,7 @@ const SubscribeToStatus = ({ children, subscribeToStatus }) => {
 };
 
 const StatusProvider = ({ children }) => {
-  const { slug } = useContext(SlugContext);
+  const slug = useSlug();
   const [cansSwitchStatus, setCansSwitchStatus] = useState(false);
   const [status, setStatus] = useState<Status>("initial");
 

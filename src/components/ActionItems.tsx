@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { ActionItem, LoadingCard, Topic, SlugContext } from "components";
+import { ActionItem, LoadingCard, Topic } from "components";
+import { useSlug } from "components/Slug.context";
 import { Slug } from "types";
 
 const GET_ACTION_ITEMS = gql`
@@ -50,7 +51,7 @@ type ActionItemsProps = {
 };
 
 const ActionItems = ({ title }: ActionItemsProps) => {
-  const { slug } = useContext(SlugContext);
+  const slug = useSlug();
 
   return (
     <QueryActionItems query={GET_ACTION_ITEMS} variables={{ slug }}>
