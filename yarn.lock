@@ -1237,6 +1237,13 @@
   resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.2.2.tgz#c3a05ae9fd1f921988ae8a89b5a0d28d1a2b92df"
   integrity sha512-jYeIi46AA5jh2gfdXD/nInUYfeLp3girRafiajP7AVHF6B4hpYAzUSx/ZH4xmPyf5alut5rml2DHxrv+X+Xu+A==
 
+"@rehooks/local-storage@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@rehooks/local-storage/-/local-storage-1.4.0.tgz#7f5127732525b3f385f1c5417f9c40452ead5b9a"
+  integrity sha512-YLIAWaObqn17mx24fhxaw6Hp/Bs/Gg/ptlPfrxx4CLi3GehdtGaM6jIzeDvmpn8uJsOm3/YB5yUL6awLsekjnA==
+  dependencies:
+    react "^16.8.6"
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
@@ -8841,7 +8848,7 @@ react-textarea-autosize@7.1.0:
     "@babel/runtime" "^7.1.2"
     prop-types "^15.6.0"
 
-react@16.8.6:
+react@16.8.6, react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
   integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==

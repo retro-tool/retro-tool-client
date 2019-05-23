@@ -23,6 +23,7 @@
     "@apollo/react-hooks": "0.1.0-beta.2",
     "@reach/dialog": "0.2.8",
     "@reach/router": "1.2.1",
+    "@rehooks/local-storage": "1.4.0",
     "apollo-boost": "0.4.0",
     "apollo-client": "2.6.0",
     "apollo-link": "1.2.11",
