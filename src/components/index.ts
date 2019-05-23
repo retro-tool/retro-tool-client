@@ -1,6 +1,7 @@
 export { About } from "./About";
 export { default as ActionItem } from "./ActionItem";
 export { default as ActionItems } from "./ActionItems";
+export * from "./BaseItem";
 export { default as Button } from "./Button";
 export { default as Card } from "./Card";
 export { default as Content } from "./Content";

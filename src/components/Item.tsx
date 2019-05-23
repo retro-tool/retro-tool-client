@@ -1,30 +1,36 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
-import { space, SpaceProps, themeGet, width, WidthProps } from "styled-system";
+import { themeGet, width, WidthProps } from "styled-system";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { DeleteRetroItem, PlusOne } from "components";
+import {
+  DeleteRetroItem,
+  BaseItemContainer,
+  ItemText,
+  ItemLeft,
+  PlusOne
+} from "components";
 import { Text } from "components/Text";
 import { Item as ItemType } from "types";
 
 const DeleteItemButton = styled(DeleteRetroItem)`
   display: none;
   position: absolute;
-  top: 7px;
-  left: -13px;
+  top: -4px;
+  left: 0;
   transform: rotate(45deg);
 `;
 
-type ItemContainerProps = SpaceProps;
-const ItemContainer = styled.div.attrs<ItemContainerProps>({
-  pl: [3, null, null, null, 4],
-  pr: [3, null, null, null, 4],
-  pt: [3, null, null, null, 3],
-  pb: [3, null, null, null, 3]
-})`
-  position: relative;
+const Ref = styled(Text)`
+  flex: 0 0 28px;
+  color: ${themeGet("colors.secondaryGrey")};
+  margin-right: ${themeGet("space.1")}px;
+`;
 
-  ${space};
+const ItemContainer = styled(BaseItemContainer)`
+  &:hover ${Ref} {
+    display: none;
+  }
 
   &:hover ${DeleteItemButton} {
     display: block;
@@ -40,8 +46,8 @@ const ItemHeader = styled.div`
 
 const SimilarItems = styled.div`
   padding-top: ${themeGet("space.1")}px;
-  padding-left: ${themeGet("space.2")}px;
-  margin-left: ${themeGet("space.2")}px;
+  padding-left: ${themeGet("space.5")}px;
+  margin-left: ${themeGet("space.3")}px;
   border-left: ${({ theme }) => `1px solid ${theme.colors.borderGrey}`};
 `;
 
@@ -92,15 +98,6 @@ const DetachItemButton = styled(Text).attrs({
   }
 `;
 
-const Ref = styled(Text)`
-  color: ${themeGet("colors.secondaryGrey")};
-  margin-right: ${themeGet("space.1")}px;
-`;
-
-const ItemText = styled.div`
-  display: flex;
-`;
-
 interface SimilarItemProps {
   children: React.ReactChild;
   id: string;
@@ -117,11 +114,6 @@ const SimilarItem: React.FC<SimilarItemProps> = ({ children, id }) => {
   );
 };
 
-interface ItemProps {
-  children?: ReactNode;
-  item: ItemType;
-}
-
 const randomInt = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -136,11 +128,14 @@ const FakeText = styled.div<FakeTextProps>`
   ${width}
 `;
 
+interface ItemProps {
+  children?: ReactNode;
+  item: ItemType;
+}
 const Item = ({
   item: { id, hidden, votes, similarItems, ref, title }
 }: ItemProps) => (
   <ItemContainer>
-    {!hidden && <DeleteItemButton id={id} />}
     <ItemHeader>
       {hidden ? (
         <div>
@@ -150,16 +145,19 @@ const Item = ({
         </div>
       ) : (
         <ItemText>
-          <Ref>#{ref}</Ref>
+          <ItemLeft>
+            <Ref>#{ref}</Ref>
+            <DeleteItemButton id={id} />
+          </ItemLeft>
           <Text>{title}</Text>
         </ItemText>
       )}
       <PlusOne id={id} votes={votes} />
     </ItemHeader>
-    {similarItems && (
+    {similarItems.length > 0 && (
       <SimilarItems>
-        {similarItems.map(({ title, id }, index) => (
-          <SimilarItem key={index} id={id}>
+        {similarItems.map(({ title, id }) => (
+          <SimilarItem key={id} id={id}>
             {title}
           </SimilarItem>
         ))}

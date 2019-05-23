@@ -15,11 +15,7 @@ const DeleteItemContainer = styled.div.attrs({
 })<DeleteItemContainerProps>`
   display: flex;
   align-items: center;
-  background: white;
   display: ${({ disabled }) => (disabled ? "none" : "block")};
-  border-color: ${({ theme }) => theme.colors.borderGrey};
-  border-width: 0 0 1px 1px;
-  border-style: solid;
   border-radius: 99px;
 
   ${space}

@@ -1,28 +1,18 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
-import { space, SpaceProps } from "styled-system";
-import { Text } from "components";
+import { ItemText, ItemLeft, Text } from "components";
+import { BaseItemContainer } from "./BaseItem";
 import { DeleteActionItem } from "components/DeleteActionItemButton";
 
 const DeleteItemButton = styled(DeleteActionItem)`
   display: none;
   position: absolute;
   top: 7px;
-  left: -13px;
+  left: 16px;
   transform: rotate(45deg);
 `;
 
-type ItemContainerProps = SpaceProps;
-const ItemContainer = styled.div.attrs<ItemContainerProps>({
-  pl: [3, null, null, null, 4],
-  pr: [3, null, null, null, 4],
-  pt: [3, null, null, null, 3],
-  pb: [3, null, null, null, 3]
-})`
-  position: relative;
-
-  ${space};
-
+const ItemContainer = styled(BaseItemContainer)`
   &:hover ${DeleteItemButton} {
     display: block;
   }
@@ -35,8 +25,12 @@ type ItemProps = {
 };
 const Item = ({ children, id }: ItemProps) => (
   <ItemContainer>
-    <DeleteItemButton id={id} />
-    <Text ml={2}>{children}</Text>
+    <ItemText>
+      <ItemLeft>
+        <DeleteItemButton id={id} />
+      </ItemLeft>
+      <Text>{children}</Text>
+    </ItemText>
   </ItemContainer>
 );
 
