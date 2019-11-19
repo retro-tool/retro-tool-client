@@ -1,84 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { client } from "services/api";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
 import { useSlug } from "components/Slug.context";
-import { Slug, Status } from "types";
+import {
+  OnStatusUpdatedDocument,
+  useGetRetroStatusQuery,
+  SetRetroNextStatusDocument
+} from "generated/graphql";
 
 const StatusContext = React.createContext({
   cansSwitchStatus: false,
   status: "",
   nextStatus: () => {}
 });
-
-const CURRENT_STATUS = gql`
-  query CurrentStatus($slug: String!) {
-    retro(slug: $slug) {
-      status
-      works {
-        id
-        votes
-      }
-      improve {
-        id
-        votes
-      }
-      others {
-        id
-        votes
-      }
-    }
-  }
-`;
-
-const SUBSCRIBE_TO_STATUS = gql`
-  subscription onStatusUpdated($slug: String!) {
-    retroUpdated(slug: $slug) {
-      status
-      works {
-        id
-        votes
-      }
-      improve {
-        id
-        votes
-      }
-      others {
-        id
-        votes
-      }
-    }
-  }
-`;
-
-const NEXT_STATUS = gql`
-  mutation NextStatus($slug: String!) {
-    nextStep(slug: $slug) {
-      status
-    }
-  }
-`;
-
-interface Data {
-  retro: {
-    status: Status;
-    improve: [];
-    others: [];
-    works: [];
-  };
-  retroUpdated?: {
-    status: Status;
-    improve: [];
-    others: [];
-    works: [];
-  };
-}
-
-interface Variables {
-  slug: Slug;
-}
-
-class StatusQuery extends Query<Data, Variables> {}
 
 const SubscribeToStatus = ({ children, subscribeToStatus }) => {
   useEffect(() => {
@@ -91,106 +24,110 @@ const SubscribeToStatus = ({ children, subscribeToStatus }) => {
 const StatusProvider = ({ children }) => {
   const slug = useSlug();
   const [cansSwitchStatus, setCansSwitchStatus] = useState(false);
-  const [status, setStatus] = useState<Status>("initial");
+  const [status, setStatus] = useState("initial");
+  const { subscribeToMore, data, loading, error } = useGetRetroStatusQuery({
+    variables: { slug }
+  });
 
   const nextStatus = () => {
     client
-      .mutate({ mutation: NEXT_STATUS, variables: { slug } })
+      .mutate({ mutation: SetRetroNextStatusDocument, variables: { slug } })
       .then(({ data }) => setStatus(data.nextStep.status));
   };
 
+  if (loading) return null;
+  if (error) return null;
+
   return (
-    <StatusQuery query={CURRENT_STATUS} variables={{ slug }}>
-      {({ subscribeToMore, ...result }) => {
-        if (result.loading) return null;
-        if (result.error) return null;
+    <SubscribeToStatus
+      subscribeToStatus={() => {
+        const currentStatus =
+          data && data.retro ? data.retro.status : "initial";
 
-        return (
-          <SubscribeToStatus
-            subscribeToStatus={() => {
-              const currentStatus = result.data
-                ? result.data.retro.status
-                : "initial";
+        setStatus(currentStatus);
 
-              setStatus(currentStatus);
+        if (data) {
+          // @ts-ignore
+          let { improve, others, status, works } = data.retro;
+          let itemsAvailable =
+            !!works.length || !!improve.length || !!others.length;
 
-              if (result.data) {
-                let { improve, others, status, works } = result.data.retro;
-                let itemsAvailable =
-                  !!works.length || !!improve.length || !!others.length;
+          let hasVotes = [...improve, ...others, ...works].some(
+            ({ votes }) => !!votes
+          );
 
-                let hasVotes = [...improve, ...others, ...works].some(
-                  ({ votes }) => !!votes
-                );
+          if (status === "initial") {
+            setCansSwitchStatus(itemsAvailable);
+          } else if (status === "review") {
+            setCansSwitchStatus(hasVotes);
+          } else {
+            setCansSwitchStatus(true);
+          }
+        }
 
-                if (status === "initial") {
-                  setCansSwitchStatus(itemsAvailable);
-                } else if (status === "review") {
-                  setCansSwitchStatus(hasVotes);
-                } else {
-                  setCansSwitchStatus(true);
-                }
+        subscribeToMore({
+          document: OnStatusUpdatedDocument,
+          variables: { slug },
+          // @ts-ignore
+          updateQuery: (prev, { subscriptionData }) => {
+            if (!subscriptionData.data) return prev;
+
+            // @ts-ignore
+            if (subscriptionData.data.retroUpdated) {
+              let {
+                improve,
+                others,
+                status,
+                works
+                // @ts-ignore
+              } = subscriptionData.data.retroUpdated;
+
+              let itemsAvailable =
+                (works && !!works.length) ||
+                (improve && !!improve.length) ||
+                (others && !!others.length);
+
+              let hasVotes = [...improve, ...others, ...works].some(
+                ({ votes }) => !!votes
+              );
+
+              if (status === "initial") {
+                setCansSwitchStatus(itemsAvailable);
+              } else if (status === "review") {
+                setCansSwitchStatus(hasVotes);
+              } else {
+                setCansSwitchStatus(true);
               }
+            }
 
-              subscribeToMore({
-                document: SUBSCRIBE_TO_STATUS,
-                variables: { slug },
-                updateQuery: (prev, { subscriptionData }) => {
-                  if (!subscriptionData.data) return prev;
+            let status;
 
-                  if (subscriptionData.data.retroUpdated) {
-                    let {
-                      improve,
-                      others,
-                      status,
-                      works
-                    } = subscriptionData.data.retroUpdated;
+            // @ts-ignore: wtf why retroUpdated doesn't exist on type data?
+            if (subscriptionData.data.retroUpdated) {
+              // @ts-ignore
+              status = subscriptionData.data.retroUpdated.status;
+            } else {
+              status = prev && prev.retro && prev.retro.status;
+            }
 
-                    let itemsAvailable =
-                      (works && !!works.length) ||
-                      (improve && !!improve.length) ||
-                      (others && !!others.length);
+            if (status && currentStatus !== status) {
+              setStatus(status);
+            }
 
-                    let hasVotes = [...improve, ...others, ...works].some(
-                      ({ votes }) => !!votes
-                    );
-
-                    if (status === "initial") {
-                      setCansSwitchStatus(itemsAvailable);
-                    } else if (status === "review") {
-                      setCansSwitchStatus(hasVotes);
-                    } else {
-                      setCansSwitchStatus(true);
-                    }
-                  }
-
-                  const status = subscriptionData.data.retroUpdated
-                    ? subscriptionData.data.retroUpdated.status
-                    : prev.retro.status;
-
-                  if (status && currentStatus !== status) {
-                    setStatus(status);
-                  }
-
-                  return {
-                    retro: {
-                      ...prev.retro,
-                      status
-                    }
-                  };
-                }
-              });
-            }}
-          >
-            <StatusContext.Provider
-              value={{ cansSwitchStatus, status, nextStatus }}
-            >
-              {children}
-            </StatusContext.Provider>
-          </SubscribeToStatus>
-        );
+            return {
+              retro: {
+                ...prev.retro,
+                status
+              }
+            };
+          }
+        });
       }}
-    </StatusQuery>
+    >
+      <StatusContext.Provider value={{ cansSwitchStatus, status, nextStatus }}>
+        {children}
+      </StatusContext.Provider>
+    </SubscribeToStatus>
   );
 };
 

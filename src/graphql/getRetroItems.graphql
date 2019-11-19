@@ -1,0 +1,68 @@
+query getWorksItems($slug: String!) {
+  retro(slug: $slug) {
+    works {
+      id
+      hidden
+      title
+      ref
+      votes
+      similarItems {
+        id
+        title
+      }
+    }
+  }
+}
+
+query getImproveItems($slug: String!) {
+  retro(slug: $slug) {
+    improve {
+      id
+      hidden
+      title
+      ref
+      votes
+      similarItems {
+        id
+        title
+      }
+    }
+  }
+}
+
+query getOthersItems($slug: String!) {
+  retro(slug: $slug) {
+    others {
+      id
+      hidden
+      title
+      ref
+      votes
+      similarItems {
+        id
+        title
+      }
+    }
+  }
+}
+
+query getRetroItems($slug: String!) {
+  retro(slug: $slug) {
+    works {
+      id
+      title
+    }
+    improve {
+      id
+      title
+    }
+    others {
+      id
+      title
+    }
+    actionItems {
+      id
+      title
+    }
+  }
+}

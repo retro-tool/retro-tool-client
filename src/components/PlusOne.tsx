@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import { useAddVoteMutation } from "generated/graphql";
 import styled from "styled-components";
 import {
   borderColor,
@@ -15,6 +14,7 @@ import { ThumbUp } from "styled-icons/material/ThumbUp";
 interface PlusOneContainerProps extends SpaceProps {
   disabled: boolean;
 }
+
 const PlusOneContainer = styled.div<PlusOneContainerProps>`
   display: flex;
   align-items: center;
@@ -22,6 +22,7 @@ const PlusOneContainer = styled.div<PlusOneContainerProps>`
 
   ${space}
 `;
+
 PlusOneContainer.defaultProps = {
   ml: 3
 };
@@ -29,6 +30,7 @@ PlusOneContainer.defaultProps = {
 interface PlusOneButtonProps {
   disabled: boolean;
 }
+
 const PlusOneButton = styled.button<PlusOneButtonProps>`
   cursor: pointer;
   border: none;
@@ -49,6 +51,7 @@ const PlusOneButton = styled.button<PlusOneButtonProps>`
 `;
 
 type CountContainerProps = SpaceProps & BorderColorProps;
+
 const CountContainer = styled.div<CountContainerProps>`
   padding-left: 8px;
   min-width: 3ch;
@@ -57,53 +60,44 @@ const CountContainer = styled.div<CountContainerProps>`
   ${borderColor}
   ${space}
 `;
+
 CountContainer.defaultProps = {
   borderColor: "borderGrey"
 };
 
-const ADD_VOTE = gql`
-  mutation AddVote($id: String!) {
-    addVote(itemId: $id) {
-      id
-    }
-  }
-`;
-
 const statusWithVotes = ["review"];
-
-type PlusOneProps = {
-  id: string;
-  votes: number;
-};
 
 const ThumbUpIcon = styled(ThumbUp)`
   width: 16px;
   color: currentColor;
 `;
 
+type PlusOneProps = {
+  id: string;
+  votes: number;
+};
+
 const PlusOne = ({ id, votes }: PlusOneProps) => {
   const { status } = useContext(StatusContext);
-
+  const [addVote, { data }] = useAddVoteMutation();
   const disabled = statusWithVotes.indexOf(status) < 0;
 
   return (
-    <Mutation mutation={ADD_VOTE}>
-      {(addVote, { data }) => {
-        return (
-          <PlusOneContainer disabled={disabled}>
-            <PlusOneButton
-              onClick={() => addVote({ variables: { id } })}
-              disabled={disabled}
-            >
-              <ThumbUpIcon />
-            </PlusOneButton>
-            <CountContainer>
-              <Text color="grey">{(data && data.votes) || votes}</Text>
-            </CountContainer>
-          </PlusOneContainer>
-        );
-      }}
-    </Mutation>
+    <PlusOneContainer disabled={disabled}>
+      <PlusOneButton
+        onClick={() => addVote({ variables: { id } })}
+        disabled={disabled}
+      >
+        <ThumbUpIcon />
+      </PlusOneButton>
+      <CountContainer>
+        <Text color="grey">
+          {/*
+          //@ts-ignore: wtf why votes doesn't exist on this type? */}
+          {(data && data.votes) || votes}
+        </Text>
+      </CountContainer>
+    </PlusOneContainer>
   );
 };
 

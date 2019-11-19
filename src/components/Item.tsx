@@ -1,8 +1,7 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import styled from "styled-components/macro";
 import { themeGet, width, WidthProps } from "styled-system";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import { RetroItem, useDetachRetroItemMutation } from "generated/graphql";
 import {
   DeleteRetroItem,
   BaseItemContainer,
@@ -11,7 +10,6 @@ import {
   PlusOne
 } from "components";
 import { Text } from "components/Text";
-import { Item as ItemType } from "types";
 
 const DeleteItemButton = styled(DeleteRetroItem)`
   display: none;
@@ -51,17 +49,10 @@ const SimilarItems = styled.div`
   border-left: ${({ theme }) => `1px solid ${theme.colors.borderGrey}`};
 `;
 
-const DETACH_ITEM = gql`
-  mutation DetachItem($id: String!) {
-    detachItem(id: $id) {
-      id
-    }
-  }
-`;
-
 interface DetachItemButtonProps {
   onClick: () => void;
 }
+
 const DetachItemButton = styled(Text).attrs({
   as: "button",
   title: "Detach comment",
@@ -98,19 +89,17 @@ const DetachItemButton = styled(Text).attrs({
   }
 `;
 
-interface SimilarItemProps {
-  children: React.ReactChild;
+type SimilarItemProps = {
   id: string;
-}
+};
+
 const SimilarItem: React.FC<SimilarItemProps> = ({ children, id }) => {
+  const [detachItem] = useDetachRetroItemMutation();
+
   return (
-    <Mutation mutation={DETACH_ITEM}>
-      {detachItem => (
-        <DetachItemButton onClick={() => detachItem({ variables: { id } })}>
-          {children}
-        </DetachItemButton>
-      )}
-    </Mutation>
+    <DetachItemButton onClick={() => detachItem({ variables: { id } })}>
+      {children}
+    </DetachItemButton>
   );
 };
 
@@ -128,11 +117,11 @@ const FakeText = styled.div<FakeTextProps>`
   ${width}
 `;
 
-interface ItemProps {
-  children?: ReactNode;
-  item: ItemType;
-}
-const Item = ({
+type ItemProps = {
+  item: RetroItem;
+};
+
+const Item: React.FC<ItemProps> = ({
   item: { id, hidden, votes, similarItems, ref, title }
 }: ItemProps) => (
   <ItemContainer>
@@ -156,11 +145,15 @@ const Item = ({
     </ItemHeader>
     {similarItems.length > 0 && (
       <SimilarItems>
-        {similarItems.map(({ title, id }) => (
-          <SimilarItem key={id} id={id}>
-            {title}
-          </SimilarItem>
-        ))}
+        {similarItems.map(item => {
+          if (!item || !item.title || !item.id) return null;
+
+          return (
+            <SimilarItem key={item.id} id={item.id}>
+              {item.title}
+            </SimilarItem>
+          );
+        })}
       </SimilarItems>
     )}
   </ItemContainer>

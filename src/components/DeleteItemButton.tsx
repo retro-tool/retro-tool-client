@@ -1,6 +1,4 @@
 import React, { useContext } from "react";
-import { Mutation } from "react-apollo";
-import { DocumentNode } from "graphql";
 import styled from "styled-components";
 import { space, SpaceProps, themeGet } from "styled-system";
 import { StatusContext } from "components";
@@ -10,6 +8,7 @@ interface DeleteItemContainerProps extends SpaceProps {
   disabled: boolean;
   className?: string;
 }
+
 const DeleteItemContainer = styled.div.attrs({
   p: 1
 })<DeleteItemContainerProps>`
@@ -45,35 +44,29 @@ const DeleteItemButton = styled.button.attrs({
   }
 `;
 
-type DeleteItemProps = {
-  id: string;
-  mutation: DocumentNode;
-  className?: string;
-};
-
 const DeleteIcon = styled(Clear)`
   display: block;
   width: 12px;
   color: currentColor;
 `;
 
-const DeleteItem: React.FC<DeleteItemProps> = ({ className, id, mutation }) => {
-  const { status } = useContext(StatusContext);
+type Props = {
+  id: string;
+  mutation: Function;
+  className?: string;
+};
 
+const DeleteItem: React.FC<Props> = ({ className, id, mutation }) => {
+  const { status } = useContext(StatusContext);
   const disabled = status === "final";
+  const [removeItem] = mutation();
 
   return (
-    <Mutation mutation={mutation}>
-      {removeItem => {
-        return (
-          <DeleteItemContainer className={className} disabled={disabled}>
-            <DeleteItemButton onClick={() => removeItem({ variables: { id } })}>
-              <DeleteIcon />
-            </DeleteItemButton>
-          </DeleteItemContainer>
-        );
-      }}
-    </Mutation>
+    <DeleteItemContainer className={className} disabled={disabled}>
+      <DeleteItemButton onClick={() => removeItem({ variables: { id } })}>
+        <DeleteIcon />
+      </DeleteItemButton>
+    </DeleteItemContainer>
   );
 };
 

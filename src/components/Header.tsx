@@ -22,6 +22,7 @@ import { ChevronRight } from "styled-icons/material/ChevronRight";
 import { ArrowUpward } from "styled-icons/material/ArrowUpward";
 
 interface PageHeaderProps extends SpaceProps {}
+
 export const PageHeaderContainer = styled.div<PageHeaderProps>`
   position: relative;
   z-index: 1;
@@ -30,6 +31,7 @@ export const PageHeaderContainer = styled.div<PageHeaderProps>`
 `;
 
 interface HeaderProps extends SpaceProps {}
+
 const HeaderContainer = styled.div.attrs<HeaderProps>({
   pl: 4,
   pr: 4
@@ -43,6 +45,7 @@ const HeaderContainer = styled.div.attrs<HeaderProps>({
 `;
 
 interface SubheaderProps extends DisplayProps, SpaceProps {}
+
 const SubheaderContainer = styled.div.attrs<SubheaderProps>({
   display: ["none", null, null, "flex"],
   pl: 4,
@@ -61,6 +64,7 @@ const SubheaderContainer = styled.div.attrs<SubheaderProps>({
 interface BreadcrumbItemProps {
   active: boolean;
 }
+
 const BreadcrumbItem = styled.div<BreadcrumbItemProps>`
   position: relative;
   display: inline-flex;
@@ -99,6 +103,7 @@ const BreadcrumbsContainer = styled.div`
 interface BreadcrumbsProps {
   status: string;
 }
+
 const Breadcrumbs = ({ status }: BreadcrumbsProps) => {
   return (
     <BreadcrumbsContainer>
@@ -122,6 +127,7 @@ const StatusHelpContainer = styled.div`
 interface StatusHelpProps {
   status: string;
 }
+
 const StatusHelp = ({ status }: StatusHelpProps) => {
   return (
     <StatusHelpContainer>
@@ -154,6 +160,7 @@ const NextIcon = styled(ChevronRight)`
   width: 20px;
   ${iconStyles}
 `;
+
 const ExportIcon = styled(ArrowUpward)`
   width: 16px;
   margin-left: 6px;
@@ -249,5 +256,4 @@ const Header = () => {
   );
 };
 
-export { HeaderContainer };
-export default Header;
+export { Header as default, HeaderContainer };

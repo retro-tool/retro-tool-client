@@ -1,0 +1,17 @@
+subscription onStatusUpdated($slug: String!) {
+  retroUpdated(slug: $slug) {
+    status
+    works {
+      id
+      votes
+    }
+    improve {
+      id
+      votes
+    }
+    others {
+      id
+      votes
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import { subscriptionClient } from "services/api";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { useUserId } from "hooks";
 import { Header, Content, StatusProvider } from "components";
 import { RouteComponentProps } from "@reach/router";
@@ -19,10 +19,8 @@ const Main = (props: Props) => {
   return (
     <ApolloProvider client={subscriptionClient(uuid)}>
       <StatusProvider>
-        <>
-          <Header />
-          <Content />
-        </>
+        <Header />
+        <Content />
       </StatusProvider>
     </ApolloProvider>
   );

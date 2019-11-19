@@ -1,0 +1,5 @@
+mutation removeRetroItem($id: String!) {
+  removeItem(id: $id) {
+    id
+  }
+}

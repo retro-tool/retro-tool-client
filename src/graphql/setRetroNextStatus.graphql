@@ -1,0 +1,5 @@
+mutation setRetroNextStatus($slug: String!) {
+  nextStep(slug: $slug) {
+    status
+  }
+}

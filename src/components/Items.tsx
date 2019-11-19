@@ -1,60 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
 import c from "color";
 import styled from "styled-components/macro";
-import gql from "graphql-tag";
-import { Query, Mutation } from "react-apollo";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Item, LoadingCard, Topic, StatusContext } from "components";
 import { useSlug } from "components/Slug.context";
-import { Slug, Topic as TopicType, Item as ItemType } from "types";
+import { Topic as TopicType } from "types";
+import {
+  RetroItem,
+  useGetWorksItemsQuery,
+  useGetImproveItemsQuery,
+  useGetOthersItemsQuery,
+  OnWorksItemAddedDocument,
+  OnImproveItemAddedDocument,
+  OnOthersItemAddedDocument,
+  useCombineItemsMutation
+} from "generated/graphql";
 
-const getItems = (topic: TopicType) =>
-  gql`
-    query Retro($slug: String) {
-      retro(slug: $slug) {
-        ${topic} {
-          id
-          hidden
-          title
-          ref
-          votes
-          similarItems {
-            id
-            title
-          }
-        }
-      }
-    }
-  `;
+const getRetroItems = {
+  works: useGetWorksItemsQuery,
+  improve: useGetImproveItemsQuery,
+  others: useGetOthersItemsQuery
+};
 
-const getSubscribeItems = (topic: TopicType) =>
-  gql`
-    subscription onItemAdded($slug: String!) {
-      retroUpdated(slug: $slug) {
-        ${topic} {
-          id
-          hidden
-          title
-          votes
-          ref
-          similarItems {
-            id
-            title
-          }
-        }
-        status
-      }
-    }
-  `;
-
-interface Data {
-  retro: {
-    [key: string]: ItemType[];
-  };
-  retroUpdated?: {
-    [key: string]: ItemType[];
-  };
-}
+const getSubscribeRetroDocuments = {
+  works: OnWorksItemAddedDocument,
+  improve: OnImproveItemAddedDocument,
+  others: OnOthersItemAddedDocument
+};
 
 interface DraggableItemProps {
   combineWith?: string | null;
@@ -85,11 +57,11 @@ const DraggableItem = styled.div<DraggableItemProps>`
 `;
 
 interface ItemListProps {
-  items: ItemType[];
+  items: RetroItem[];
 }
 
 interface ReorderItemsParams {
-  items: ItemType[];
+  items: RetroItem[];
   startIndex: number;
   endIndex: number;
 }
@@ -98,7 +70,7 @@ const reorderItems = ({
   items,
   startIndex,
   endIndex
-}: ReorderItemsParams): ItemType[] => {
+}: ReorderItemsParams): RetroItem[] => {
   const result = Array.from(items);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -107,7 +79,7 @@ const reorderItems = ({
 };
 
 interface CombineItemsParams {
-  items: ItemType[];
+  items: RetroItem[];
   childIndex: number;
   parentId: string;
 }
@@ -116,7 +88,7 @@ const combineItems = ({
   items,
   childIndex,
   parentId
-}: CombineItemsParams): ItemType[] => {
+}: CombineItemsParams): RetroItem[] => {
   const combinedItems = items.map(item => {
     return item.id === parentId
       ? {
@@ -127,25 +99,18 @@ const combineItems = ({
       : item;
   });
   const filteredItems = combinedItems.filter(
-    (_item, index) => index !== childIndex
+    (_, index) => index !== childIndex
   );
 
   return filteredItems;
 };
 
-const COMBINE_ITEMS = gql`
-  mutation CombineItems($parentId: String!, $childId: String!) {
-    combineItems(parentId: $parentId, childId: $childId) {
-      id
-    }
-  }
-`;
-
 const ItemList = ({ items: itemsProp }: ItemListProps) => {
   const [items, setItems] = useState(itemsProp);
   const { status } = useContext(StatusContext);
+  const [combineItemsMutation] = useCombineItemsMutation();
 
-  const onDragEnd = (result, combineItemsMutation) => {
+  const onDragEnd = result => {
     if (result.destination) {
       const reorderedItems = reorderItems({
         items,
@@ -158,11 +123,13 @@ const ItemList = ({ items: itemsProp }: ItemListProps) => {
       const childId = result.draggableId;
 
       combineItemsMutation({ variables: { parentId, childId } });
+
       const combinedItems = combineItems({
         items,
         parentId,
         childIndex: result.source.index
       });
+
       setItems(combinedItems);
     }
   };
@@ -172,65 +139,53 @@ const ItemList = ({ items: itemsProp }: ItemListProps) => {
   }, [itemsProp]);
 
   return (
-    <Mutation mutation={COMBINE_ITEMS}>
-      {(combineItems, { data, loading }) => {
-        return (
-          <DragDropContext
-            onDragEnd={result => {
-              onDragEnd(result, combineItems);
-            }}
-          >
-            <Droppable droppableId="droppable" isCombineEnabled>
-              {provided => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {items.map((item, index) => {
-                    const dragIsDisabled =
-                      status === `initial` ||
-                      status === `actions` ||
-                      item.similarItems.length > 0;
-
-                    return (
-                      <Draggable
-                        key={item.id}
-                        draggableId={item.id}
-                        index={index}
-                        isDragDisabled={dragIsDisabled}
-                      >
-                        {(provided, snapshot) => (
-                          <DraggableItem
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            combineWith={snapshot.combineWith}
-                            combineTargetFor={snapshot.combineTargetFor}
-                            isDragging={snapshot.isDragging}
-                            style={{
-                              userSelect: "none",
-                              ...provided.draggableProps.style
-                            }}
-                          >
-                            <Item key={item.id} item={item} />
-                          </DraggableItem>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        );
+    <DragDropContext
+      onDragEnd={result => {
+        onDragEnd(result);
       }}
-    </Mutation>
+    >
+      <Droppable droppableId="droppable" isCombineEnabled>
+        {provided => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {items.map((item, index) => {
+              const dragIsDisabled =
+                status === `initial` ||
+                status === `actions` ||
+                item.similarItems.length > 0;
+
+              return (
+                <Draggable
+                  key={item.id}
+                  draggableId={item.id}
+                  index={index}
+                  isDragDisabled={dragIsDisabled}
+                >
+                  {(provided, snapshot) => (
+                    <DraggableItem
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      combineWith={snapshot.combineWith}
+                      combineTargetFor={snapshot.combineTargetFor}
+                      isDragging={snapshot.isDragging}
+                      style={{
+                        userSelect: "none",
+                        ...provided.draggableProps.style
+                      }}
+                    >
+                      <Item key={item.id} item={item} />
+                    </DraggableItem>
+                  )}
+                </Draggable>
+              );
+            })}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
-
-interface Variables {
-  slug: Slug;
-}
-
-class QueryItems extends Query<Data, Variables> {}
 
 type ItemsProps = {
   title: React.ReactNode;
@@ -240,40 +195,56 @@ type ItemsProps = {
 
 const Items = ({ title, topic, placeholder }: ItemsProps) => {
   const slug = useSlug();
+  const { subscribeToMore, data, loading, error } = getRetroItems[topic]({
+    variables: { slug }
+  });
+  const [newItems, setNewItems] = useState();
+  const [retroItems, setRetroItems] = useState();
+
+  // Note: the next side effect is performed in order to maintain a consistent list of
+  // retro items, because we query for retro items when the component is mounted and then
+  // we keep updating them through a graphql subscription
+  useEffect(() => {
+    if (newItems) {
+      setRetroItems(newItems);
+      return;
+    }
+
+    if (!loading && data && data.retro) {
+      setRetroItems(data.retro);
+    }
+  }, [loading, data, newItems]);
+
+  if (loading) return <LoadingCard />;
+  if (error) return null;
 
   return (
-    <QueryItems query={getItems(topic)} variables={{ slug }}>
-      {({ subscribeToMore, ...result }) => {
-        if (result.loading) return <LoadingCard />;
-        if (result.error) return null;
+    <Topic
+      title={title}
+      topic={topic}
+      placeholder={placeholder}
+      subscribeToNewItems={() =>
+        // @ts-ignore
+        subscribeToMore({
+          document: getSubscribeRetroDocuments[topic],
+          variables: { slug },
+          updateQuery: (prev, { subscriptionData }) => {
+            if (!subscriptionData.data) return prev;
 
-        return (
-          <Topic
-            title={title}
-            topic={topic}
-            placeholder={placeholder}
-            subscribeToNewItems={() =>
-              subscribeToMore({
-                document: getSubscribeItems(topic),
-                variables: { slug },
-                updateQuery: (prev, { subscriptionData }) => {
-                  if (!subscriptionData.data) return prev;
-                  const newItems = subscriptionData.data.retroUpdated
-                    ? subscriptionData.data.retroUpdated
-                    : prev.retro;
+            const newItems = subscriptionData.data.retroUpdated;
+            setNewItems(newItems);
 
-                  return {
-                    retro: newItems
-                  };
-                }
-              })
-            }
-          >
-            {result.data && <ItemList items={result.data.retro[topic]} />}
-          </Topic>
-        );
-      }}
-    </QueryItems>
+            return {
+              retro: newItems
+            };
+          }
+        })
+      }
+    >
+      {retroItems && retroItems[topic] && (
+        <ItemList items={retroItems[topic]} />
+      )}
+    </Topic>
   );
 };
 

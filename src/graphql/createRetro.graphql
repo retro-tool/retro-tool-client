@@ -1,0 +1,11 @@
+query createRetro {
+  retro(slug: null) {
+    slug
+  }
+}
+
+query createLinkedRetro($previousRetroId: Int!) {
+  retro(slug: null, previousRetroId: $previousRetroId) {
+    slug
+  }
+}

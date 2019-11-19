@@ -1,0 +1,7 @@
+mutation createActionItem($slug: String!, $title: String!) {
+  createActionItem(retroSlug: $slug, title: $title) {
+    completed
+    id
+    title
+  }
+}

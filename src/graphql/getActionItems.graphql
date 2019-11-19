@@ -1,0 +1,9 @@
+query getActionItems($slug: String!) {
+  retro(slug: $slug) {
+    actionItems {
+      completed
+      id
+      title
+    }
+  }
+}

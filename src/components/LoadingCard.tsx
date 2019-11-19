@@ -3,6 +3,7 @@ import { Card } from "components";
 import { minWidth, MinWidthProps, space, SpaceProps } from "styled-system";
 
 type LoadingCardProps = MinWidthProps & SpaceProps;
+
 const LoadingCard = styled(Card)<LoadingCardProps>`
   flex: 1;
 

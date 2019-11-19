@@ -1,97 +1,57 @@
 import React from "react";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
 import { ActionItem, LoadingCard, Topic } from "components";
+import {
+  useGetActionItemsQuery,
+  OnActionItemAddedDocument
+} from "generated/graphql";
 import { useSlug } from "components/Slug.context";
-import { Slug } from "types";
 
-const GET_ACTION_ITEMS = gql`
-  query Retro($slug: String) {
-    retro(slug: $slug) {
-      actionItems {
-        completed
-        id
-        title
-      }
-    }
-  }
-`;
-
-const SUBSCRIBE_ACTION_ITEMS = gql`
-  subscription onActionItemAdded($slug: String!) {
-    retroUpdated(slug: $slug) {
-      actionItems {
-        completed
-        id
-        title
-      }
-      status
-    }
-  }
-`;
-
-interface Data {
-  retro: {
-    [key: string]: Array<{
-      id: string;
-      completed: boolean;
-      title: string;
-    }>;
-  };
-}
-
-interface Variables {
-  slug: Slug;
-}
-
-class QueryActionItems extends Query<Data, Variables> {}
-
-type ActionItemsProps = {
+type Props = {
   title: React.ReactNode;
 };
 
-const ActionItems = ({ title }: ActionItemsProps) => {
+const ActionItems: React.FC<Props> = ({ title }) => {
   const slug = useSlug();
 
+  const { subscribeToMore, data, loading, error } = useGetActionItemsQuery({
+    variables: { slug }
+  });
+
+  if (loading) return <LoadingCard />;
+  if (error) return null;
+
   return (
-    <QueryActionItems query={GET_ACTION_ITEMS} variables={{ slug }}>
-      {({ subscribeToMore, ...result }) => {
-        if (result.loading) return <LoadingCard />;
-        if (result.error) return null;
+    <Topic
+      title={title}
+      subscribeToNewItems={() =>
+        subscribeToMore({
+          document: OnActionItemAddedDocument,
+          variables: { slug },
+          updateQuery: (prev, { subscriptionData }) => {
+            if (!subscriptionData.data) return prev;
+            // @ts-ignore
+            const newActionItems = subscriptionData.data.retroUpdated;
 
-        return (
-          <Topic
-            title={title}
-            subscribeToNewItems={() =>
-              subscribeToMore({
-                document: SUBSCRIBE_ACTION_ITEMS,
-                variables: { slug },
-                updateQuery: (prev, { subscriptionData }) => {
-                  if (!subscriptionData.data) return prev;
-                  // @ts-ignore
-                  const newActionItems = subscriptionData.data.retroUpdated;
+            return {
+              retro: newActionItems
+            };
+          }
+        })
+      }
+    >
+      {data &&
+        data.retro &&
+        data.retro.actionItems &&
+        data.retro.actionItems.map(item => {
+          if (!item) return null;
 
-                  return {
-                    retro: newActionItems
-                  };
-                }
-              })
-            }
-          >
-            {result.data &&
-              result.data.retro.actionItems.map(item => (
-                <ActionItem
-                  key={item.id}
-                  completed={item.completed}
-                  id={item.id}
-                >
-                  {item.title}
-                </ActionItem>
-              ))}
-          </Topic>
-        );
-      }}
-    </QueryActionItems>
+          return (
+            <ActionItem key={item.id} completed={item.completed} id={item.id}>
+              {item.title}
+            </ActionItem>
+          );
+        })}
+    </Topic>
   );
 };
 

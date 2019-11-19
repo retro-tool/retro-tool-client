@@ -1,0 +1,50 @@
+subscription onWorksItemAdded($slug: String!) {
+  retroUpdated(slug: $slug) {
+    works {
+      id
+      hidden
+      title
+      votes
+      ref
+      similarItems {
+        id
+        title
+      }
+    }
+    status
+  }
+}
+
+subscription onImproveItemAdded($slug: String!) {
+  retroUpdated(slug: $slug) {
+    improve {
+      id
+      hidden
+      title
+      votes
+      ref
+      similarItems {
+        id
+        title
+      }
+    }
+    status
+  }
+}
+
+subscription onOthersItemAdded($slug: String!) {
+  retroUpdated(slug: $slug) {
+    others {
+      id
+      hidden
+      title
+      votes
+      ref
+      similarItems {
+        id
+        title
+      }
+    }
+    status
+  }
+}

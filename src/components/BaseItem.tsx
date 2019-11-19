@@ -2,6 +2,7 @@ import styled from "styled-components/macro";
 import { space, SpaceProps } from "styled-system";
 
 type ItemContainerProps = SpaceProps;
+
 const BaseItemContainer = styled.div.attrs<ItemContainerProps>({
   pl: [3, null, null, null, 4],
   pr: [3, null, null, null, 4],
@@ -14,6 +15,7 @@ const BaseItemContainer = styled.div.attrs<ItemContainerProps>({
 `;
 
 type ItemLeftProps = SpaceProps;
+
 const ItemLeft = styled.div.attrs<ItemLeftProps>({
   mr: 1
 })`

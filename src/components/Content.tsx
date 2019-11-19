@@ -9,6 +9,7 @@ import { QuestionAnswer } from "styled-icons/material/QuestionAnswer";
 import { CheckBox } from "styled-icons/material/CheckBox";
 
 interface ContainerProps extends HeightProps, SpaceProps {}
+
 const ContentContainer = styled.div.attrs<ContainerProps>({
   height: ["calc(100vh - 50px)", null, null, "calc(100vh - 86px)"],
   px: [1, 2],

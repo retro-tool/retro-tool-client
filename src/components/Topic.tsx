@@ -53,7 +53,7 @@ const Topic = ({
 }: TopicProps) => {
   useEffect(() => {
     subscribeToNewItems();
-  });
+  }, [subscribeToNewItems]);
 
   const { status } = useContext(StatusContext);
   const statusesWithActions = ["actions", "final"];

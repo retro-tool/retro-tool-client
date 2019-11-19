@@ -23,6 +23,7 @@ type ItemProps = {
   id: string;
   completed: boolean;
 };
+
 const Item = ({ children, id }: ItemProps) => (
   <ItemContainer>
     <ItemText>

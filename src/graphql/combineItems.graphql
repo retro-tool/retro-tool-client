@@ -1,0 +1,5 @@
+mutation combineItems($parentId: String!, $childId: String!) {
+  combineItems(parentId: $parentId, childId: $childId) {
+    id
+  }
+}

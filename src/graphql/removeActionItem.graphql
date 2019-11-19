@@ -1,0 +1,5 @@
+mutation removeActionItem($id: String!) {
+  removeActionItem(id: $id) {
+    id
+  }
+}

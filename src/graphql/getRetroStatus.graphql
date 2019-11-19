@@ -1,0 +1,17 @@
+query getRetroStatus($slug: String!) {
+  retro(slug: $slug) {
+    status
+    works {
+      id
+      votes
+    }
+    improve {
+      id
+      votes
+    }
+    others {
+      id
+      votes
+    }
+  }
+}

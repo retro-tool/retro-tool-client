@@ -19,11 +19,8 @@ const LightboxOverlay = styled(DialogOverlay)`
 `;
 
 interface LightboxContentProps extends SpaceProps, WidthProps {}
-const LightboxContent = styled(DialogContent).attrs({
-  p: 5,
-  mt: "10vh",
-  mx: "auto"
-})<LightboxContentProps>`
+
+const LightboxContent = styled(DialogContent)<LightboxContentProps>`
   background: white;
   outline: none;
   border-radius: 6px;
@@ -32,7 +29,11 @@ const LightboxContent = styled(DialogContent).attrs({
   ${space}
   ${width}
 `;
+
 LightboxContent.defaultProps = {
+  mt: "10vh",
+  mx: "auto",
+  p: 5,
   width: ["95vw", null, "500px"]
 };
 

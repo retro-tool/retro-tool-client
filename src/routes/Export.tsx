@@ -2,55 +2,33 @@ import React from "react";
 import { HeaderContainer, Logo, Text } from "components";
 import { PageHeaderContainer } from "components/Header";
 import styled from "styled-components/macro";
-import { ApolloProvider, useQuery } from "@apollo/react-hooks";
+import { useGetRetroItemsQuery } from "generated/graphql";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { client } from "services/api";
 import { RouteComponentProps } from "@reach/router";
 import { Slug } from "types";
-import gql from "graphql-tag";
 
 const Content = styled.div`
   margin: 16px;
 `;
 
-const GET_ITEMS = gql`
-  query Retro($slug: String) {
-    retro(slug: $slug) {
-      works {
-        id
-        title
-      }
-      improve {
-        id
-        title
-      }
-      others {
-        id
-        title
-      }
-      actionItems {
-        id
-        title
-      }
-    }
-  }
-`;
-
-const Items = ({ slug }: Props) => {
-  const { error, loading, data } = useQuery(GET_ITEMS, {
+const Items = ({ slug }) => {
+  const { data, loading, error } = useGetRetroItemsQuery({
     variables: { slug }
   });
 
   if (loading || error) return null;
 
   const {
+    // @ts-ignore
     retro: { works, improve, others, actionItems }
   } = data;
 
   return (
     <Content>
-      <div>
-        <Text size="title">Works</Text>
-        {works.length && (
+      {works.length ? (
+        <div>
+          <Text size="title">Works</Text>
           <ul>
             {works.map(({ id, title }) => (
               <li key={id}>
@@ -58,11 +36,12 @@ const Items = ({ slug }: Props) => {
               </li>
             ))}
           </ul>
-        )}
-      </div>
-      <div>
-        <Text size="title">Improve</Text>
-        {improve.length && (
+        </div>
+      ) : null}
+
+      {improve.length ? (
+        <div>
+          <Text size="title">Improve</Text>
           <ul>
             {improve.map(({ id, title }) => (
               <li key={id}>
@@ -70,11 +49,12 @@ const Items = ({ slug }: Props) => {
               </li>
             ))}
           </ul>
-        )}
-      </div>
-      <div>
-        <Text size="title">Others</Text>
-        {others.length && (
+        </div>
+      ) : null}
+
+      {others.length ? (
+        <div>
+          <Text size="title">Others</Text>
           <ul>
             {others.map(({ id, title }) => (
               <li key={id}>
@@ -82,11 +62,12 @@ const Items = ({ slug }: Props) => {
               </li>
             ))}
           </ul>
-        )}
-      </div>
-      <div>
-        <Text size="title">Action Items</Text>
-        {actionItems.length && (
+        </div>
+      ) : null}
+
+      {actionItems.length ? (
+        <div>
+          <Text size="title">Action Items</Text>
           <ul>
             {actionItems.map(({ id, title }) => (
               <li key={id}>
@@ -94,8 +75,8 @@ const Items = ({ slug }: Props) => {
               </li>
             ))}
           </ul>
-        )}
-      </div>
+        </div>
+      ) : null}
     </Content>
   );
 };

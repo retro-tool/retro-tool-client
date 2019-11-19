@@ -55,6 +55,7 @@ const LogoImage = () => (
 );
 
 type LogoTitleProps = ColorProps & FontSizeProps & DisplayProps;
+
 const LogoTitle = styled.h1<LogoTitleProps>`
   vertical-align: bottom;
   margin: 12px 0 -2px 3px;
@@ -65,6 +66,7 @@ const LogoTitle = styled.h1<LogoTitleProps>`
   ${fontSize}
   ${display}
 `;
+
 LogoTitle.defaultProps = {
   color: "grey",
   fontSize: 2,
@@ -72,9 +74,11 @@ LogoTitle.defaultProps = {
 };
 
 type LogoContainerProps = SpaceProps;
+
 const LogoContainer = styled.div<LogoContainerProps>`
   ${space}
 `;
+
 LogoContainer.defaultProps = {
   mt: -2
 };

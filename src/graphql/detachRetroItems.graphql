@@ -1,0 +1,5 @@
+mutation detachRetroItem($id: String!) {
+  detachItem(id: $id) {
+    id
+  }
+}

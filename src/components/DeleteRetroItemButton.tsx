@@ -1,22 +1,18 @@
 import React from "react";
-import gql from "graphql-tag";
 import { DeleteItem } from "./DeleteItemButton";
+import { useRemoveRetroItemMutation } from "generated/graphql";
 
-const REMOVE_ITEM = gql`
-  mutation RemoveItem($id: String!) {
-    removeItem(id: $id) {
-      id
-    }
-  }
-`;
-
-type DeleteRetroItemProps = {
+type Props = {
   id: string;
   className?: string;
 };
 
-const DeleteRetroItem: React.FC<DeleteRetroItemProps> = ({ className, id }) => {
-  return <DeleteItem mutation={REMOVE_ITEM} className={className} id={id} />;
-};
+const DeleteRetroItem: React.FC<Props> = ({ className, id }) => (
+  <DeleteItem
+    mutation={useRemoveRetroItemMutation}
+    className={className}
+    id={id}
+  />
+);
 
 export { DeleteRetroItem };

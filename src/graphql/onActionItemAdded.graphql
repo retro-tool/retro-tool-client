@@ -1,0 +1,10 @@
+subscription onActionItemAdded($slug: String!) {
+  retroUpdated(slug: $slug) {
+    actionItems {
+      completed
+      id
+      title
+    }
+    status
+  }
+}

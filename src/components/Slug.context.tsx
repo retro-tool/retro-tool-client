@@ -26,10 +26,13 @@ const SlugProvider = (props: SlugProviderProps) => (
 
 const useSlug = () => {
   const context = React.useContext(SlugContext);
+
   if (!context) {
     throw new Error("useSlug must be used within a SlugProvider");
   }
+
   const { slug } = context;
+
   return slug;
 };
 

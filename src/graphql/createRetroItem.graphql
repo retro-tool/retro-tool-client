@@ -1,0 +1,29 @@
+mutation createWorksItem($slug: String!, $title: String!) {
+  createWorksItem(retroSlug: $slug, title: $title) {
+    id
+    hidden
+    title
+    userUuid
+    votes
+  }
+}
+
+mutation createImproveItem($slug: String!, $title: String!) {
+  createImproveItem(retroSlug: $slug, title: $title) {
+    id
+    hidden
+    title
+    userUuid
+    votes
+  }
+}
+
+mutation createOtherItem($slug: String!, $title: String!) {
+  createOtherItem(retroSlug: $slug, title: $title) {
+    id
+    hidden
+    title
+    userUuid
+    votes
+  }
+}
