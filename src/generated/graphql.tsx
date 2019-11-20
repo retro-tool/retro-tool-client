@@ -543,6 +543,19 @@ export type SetRetroNextStatusMutation = { __typename?: "RootMutationType" } & {
   nextStep: Maybe<{ __typename?: "Retro" } & Pick<Retro, "status">>;
 };
 
+export type ToggleCompletedMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type ToggleCompletedMutation = { __typename?: "RootMutationType" } & {
+  toggleCompleted: Maybe<
+    { __typename?: "ActionItem" } & Pick<
+      ActionItem,
+      "id" | "title" | "completed"
+    >
+  >;
+};
+
 export const AddVoteDocument = gql`
   mutation addVote($id: ID!) {
     addVote(itemId: $id) {
@@ -1820,4 +1833,56 @@ export type SetRetroNextStatusMutationResult = ApolloReactCommon.MutationResult<
 export type SetRetroNextStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<
   SetRetroNextStatusMutation,
   SetRetroNextStatusMutationVariables
+>;
+export const ToggleCompletedDocument = gql`
+  mutation toggleCompleted($id: ID!) {
+    toggleCompleted(actionItemId: $id) {
+      id
+      title
+      completed
+    }
+  }
+`;
+export type ToggleCompletedMutationFn = ApolloReactCommon.MutationFunction<
+  ToggleCompletedMutation,
+  ToggleCompletedMutationVariables
+>;
+
+/**
+ * __useToggleCompletedMutation__
+ *
+ * To run a mutation, you first call `useToggleCompletedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleCompletedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleCompletedMutation, { data, loading, error }] = useToggleCompletedMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useToggleCompletedMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ToggleCompletedMutation,
+    ToggleCompletedMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    ToggleCompletedMutation,
+    ToggleCompletedMutationVariables
+  >(ToggleCompletedDocument, baseOptions);
+}
+export type ToggleCompletedMutationHookResult = ReturnType<
+  typeof useToggleCompletedMutation
+>;
+export type ToggleCompletedMutationResult = ApolloReactCommon.MutationResult<
+  ToggleCompletedMutation
+>;
+export type ToggleCompletedMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ToggleCompletedMutation,
+  ToggleCompletedMutationVariables
 >;

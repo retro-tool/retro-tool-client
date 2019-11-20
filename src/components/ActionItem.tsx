@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import styled from "styled-components/macro";
 import { ItemText, ItemLeft, Text } from "components";
 import { BaseItemContainer } from "./BaseItem";
@@ -19,12 +19,10 @@ const ItemContainer = styled(BaseItemContainer)`
 `;
 
 type ItemProps = {
-  children?: ReactNode;
   id: string;
-  completed: boolean;
 };
 
-const Item = ({ children, id }: ItemProps) => (
+const Item: React.FC<ItemProps> = ({ children, id }) => (
   <ItemContainer>
     <ItemText>
       <ItemLeft>
