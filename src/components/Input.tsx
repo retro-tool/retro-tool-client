@@ -18,7 +18,7 @@ import Textarea, { TextareaAutosizeProps } from "react-textarea-autosize";
 
 const toShadow = (col: string): string =>
   c(col)
-    .alpha(0.2)
+    .alpha(0.25)
     .rgb()
     .string();
 
@@ -36,7 +36,8 @@ const Input = ({
   onSubmit,
   onChange,
   shouldFocus,
-  value
+  value,
+  ...rest
 }: InputProps) => {
   const inputEl = useRef<HTMLInputElement>(null);
 
@@ -66,6 +67,7 @@ const Input = ({
       value={value}
       // @ts-ignore
       inputRef={inputEl}
+      {...rest}
     />
   );
 };
@@ -79,8 +81,7 @@ type StyledInputProps = FlexProps &
   InputProps;
 
 const StyledInput = styled(Input)<StyledInputProps>`
-  background: ${themeGet("colors.contentGrey")};
-  border: 0;
+  border: 1px solid ${themeGet("colors.borderGrey")};
   border-radius: 3px;
   resize: none;
   overflow: hidden;
@@ -93,9 +94,13 @@ const StyledInput = styled(Input)<StyledInputProps>`
 
   &:focus {
     outline: none;
-    box-shadow: ${({ theme }) =>
-      `0 0 0 3px ${toShadow(theme.colors.lime)}, 0 0 0 1px rgba(0,0,0,.1)`};
-    background: white;
+    box-shadow: ${({ theme }) => `0 0 0 4px ${toShadow(theme.colors.lime)}`};
+    border-color: ${themeGet("colors.lime")};
+  }
+
+  &:disabled {
+    background: ${themeGet("colors.contentGrey")};
+    opacity: 0.8;
   }
 `;
 

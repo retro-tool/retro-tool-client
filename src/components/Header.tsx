@@ -1,4 +1,5 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import { client } from "services/api";
 import styled, { css } from "styled-components/macro";
 import {
   display,
@@ -7,7 +8,7 @@ import {
   SpaceProps,
   themeGet
 } from "styled-system";
-import { Redirect } from "@reach/router";
+import { Redirect, navigate } from "@reach/router";
 import { useSlug } from "components/Slug.context";
 import {
   About,
@@ -15,11 +16,16 @@ import {
   LightboxContent,
   LightboxOverlay,
   Logo,
-  StatusContext,
+  useStatus,
   Text
 } from "components";
 import { ChevronRight } from "styled-icons/material/ChevronRight";
+import { ChevronLeft } from "styled-icons/material/ChevronLeft";
 import { ArrowUpward } from "styled-icons/material/ArrowUpward";
+import {
+  useCreateLinkedRetroQuery,
+  GetRetroIdDocument
+} from "generated/graphql";
 
 interface PageHeaderProps extends SpaceProps {}
 
@@ -30,9 +36,9 @@ export const PageHeaderContainer = styled.div<PageHeaderProps>`
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
 `;
 
-interface HeaderProps extends SpaceProps {}
+interface HeaderContainerProps extends SpaceProps {}
 
-const HeaderContainer = styled.div.attrs<HeaderProps>({
+const HeaderContainer = styled.div.attrs<HeaderContainerProps>({
   pl: 4,
   pr: 4
 })`
@@ -161,6 +167,11 @@ const NextIcon = styled(ChevronRight)`
   ${iconStyles}
 `;
 
+const BackIcon = styled(ChevronLeft)`
+  width: 20px;
+  margin-left: -8px;
+`;
+
 const ExportIcon = styled(ArrowUpward)`
   width: 16px;
   margin-left: 6px;
@@ -172,11 +183,32 @@ const NextStatusContainer = styled.div`
   align-items: center;
 `;
 
-const Header = () => {
+type LinkedRetroProps = {
+  previousRetroId: number;
+};
+
+const CreateNewLinkedRetro = ({ previousRetroId }: LinkedRetroProps) => {
+  const { data, loading, error } = useCreateLinkedRetroQuery({
+    variables: { previousRetroId }
+  });
+
+  if (loading) return null;
+  if (error) return null;
+  if (!data || !data.retro) return null;
+
+  return <Redirect noThrow to={`/${data.retro.slug}`} />;
+};
+
+type HeaderProps = {
+  isExport?: boolean;
+};
+
+const Header: React.FC<HeaderProps> = ({ isExport }) => {
   const slug = useSlug();
-  const { cansSwitchStatus, status, nextStatus } = useContext(StatusContext);
+  const { cansSwitchStatus, status, nextStatus } = useStatus();
   const [confirm, setConfirm] = useState(false);
-  const [raw, setRaw] = useState(false);
+  const [triggerExport, setTriggerExport] = useState(false);
+  const [previousRetroId, setPreviousRetroId] = useState();
   const buttonRef = useRef(null);
 
   const headerActions = {
@@ -201,12 +233,24 @@ const Header = () => {
     final: {
       label: "Export",
       onClick: () => {
-        setRaw(true);
+        setTriggerExport(true);
       }
     }
   };
 
-  if (raw) return <Redirect noThrow to={`/${slug}/export`} />;
+  const getPreviousRetroId = async () => {
+    const { data } = await client.query({
+      query: GetRetroIdDocument,
+      variables: { slug }
+    });
+
+    setPreviousRetroId(data.retro.id);
+  };
+
+  if (triggerExport) return <Redirect noThrow to={`/${slug}/export`} />;
+  if (previousRetroId) {
+    return <CreateNewLinkedRetro previousRetroId={previousRetroId} />;
+  }
 
   return (
     <>
@@ -234,16 +278,43 @@ const Header = () => {
           <Logo />
           <NextStatusContainer>
             <About />
-            {status && (
+            {status !== "final" && (
               <Button
                 onClick={headerActions[status].onClick}
                 disabled={!cansSwitchStatus}
                 ml={3}
               >
                 {headerActions[status].label}
-                {status !== "final" && <NextIcon />}
-                {status === "final" && <ExportIcon />}
+                <NextIcon />
               </Button>
+            )}
+            {status === "final" && (
+              <>
+                <Button onClick={getPreviousRetroId} ml={3}>
+                  Start new retro
+                  <NextIcon />
+                </Button>
+                {isExport ? (
+                  <Button
+                    variant="secondary"
+                    onClick={() => navigate(`/${slug}`)}
+                    ml={3}
+                  >
+                    <BackIcon />
+                    Back
+                  </Button>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    onClick={headerActions[status].onClick}
+                    disabled={!cansSwitchStatus}
+                    ml={3}
+                  >
+                    {headerActions[status].label}
+                    <ExportIcon />
+                  </Button>
+                )}
+              </>
             )}
           </NextStatusContainer>
         </HeaderContainer>

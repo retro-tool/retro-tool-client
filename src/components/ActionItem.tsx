@@ -3,6 +3,8 @@ import styled from "styled-components/macro";
 import { ItemText, ItemLeft, Text } from "components";
 import { BaseItemContainer } from "./BaseItem";
 import { DeleteActionItem } from "components/DeleteActionItemButton";
+import { ActionItem, useToggleCompletedMutation } from "generated/graphql";
+import { space, SpaceProps } from "styled-system";
 
 const DeleteItemButton = styled(DeleteActionItem)`
   display: none;
@@ -18,19 +20,56 @@ const ItemContainer = styled(BaseItemContainer)`
   }
 `;
 
-type ItemProps = {
-  id: string;
-};
+type LabelProps = SpaceProps;
 
-const Item: React.FC<ItemProps> = ({ children, id }) => (
-  <ItemContainer>
-    <ItemText>
-      <ItemLeft>
-        <DeleteItemButton id={id} />
-      </ItemLeft>
-      <Text>{children}</Text>
-    </ItemText>
-  </ItemContainer>
-);
+const Label = styled.label<LabelProps>`
+  cursor: pointer;
+`;
+
+type CheckboxProps = SpaceProps;
+
+const Checkbox = styled.input.attrs<CheckboxProps>({ type: "checkbox", mr: 2 })`
+  ${space}
+  cursor: pointer;
+`;
+
+const Item: React.FC<ActionItem> = ({ children, id, completed, title }) => {
+  const [toggleComplete] = useToggleCompletedMutation();
+
+  return (
+    <ItemContainer>
+      <ItemText>
+        <ItemLeft>
+          <DeleteItemButton id={id} />
+        </ItemLeft>
+        <Text>
+          <Label>
+            <Checkbox
+              checked={completed}
+              onChange={() =>
+                // @ts-ignore
+                toggleComplete({
+                  variables: {
+                    id: id
+                  },
+                  optimisticResponse: {
+                    __typename: "Mutation",
+                    toggleCompleted: {
+                      id: id,
+                      __typename: "ActionItem",
+                      title: title,
+                      completed: !completed
+                    }
+                  }
+                })
+              }
+            />
+            {children}
+          </Label>
+        </Text>
+      </ItemText>
+    </ItemContainer>
+  );
+};
 
 export default Item;

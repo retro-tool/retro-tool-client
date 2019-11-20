@@ -13,7 +13,8 @@ import {
   lineHeight,
   LineHeightProps,
   space,
-  SpaceProps
+  SpaceProps,
+  themeGet
 } from "styled-system";
 import c from "color";
 
@@ -26,11 +27,18 @@ interface ButtonProps
     LineHeightProps,
     SpaceProps {
   disabled?: boolean;
+  variant?: string;
 }
 
-const Button = styled.button.attrs(({ disabled, theme }) => ({
-  background: disabled ? theme.colors.mediumGrey : theme.colors.lime
-}))<ButtonProps>`
+const Button = styled.button<ButtonProps>`
+  ${background};
+  ${color};
+  ${display};
+  ${fontSize};
+  ${fontWeight};
+  ${lineHeight};
+  ${space};
+
   display: inline-flex;
   vertical-align: middle;
   flex-wrap: nowrap;
@@ -41,14 +49,12 @@ const Button = styled.button.attrs(({ disabled, theme }) => ({
   border-radius: 3px;
   pointer-events: ${({ disabled }) => disabled && "none"};
   opacity: ${({ disabled }) => disabled && ".5"};
-
-  ${background};
-  ${color};
-  ${display};
-  ${fontSize};
-  ${fontWeight};
-  ${lineHeight};
-  ${space};
+  background: ${({ disabled, variant }) =>
+    disabled
+      ? themeGet("colors.mediumGrey")
+      : variant === "secondary"
+      ? themeGet("colors.secondaryGrey")
+      : themeGet("colors.lime")};
 
   &:focus {
     outline: none;
@@ -67,7 +73,8 @@ Button.defaultProps = {
   fontWeight: 1,
   pl: 4,
   pr: 4,
-  lineHeight: 5
+  lineHeight: 5,
+  variant: "primary"
 };
 
 export default Button;

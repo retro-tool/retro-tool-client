@@ -1,26 +1,18 @@
 import React from "react";
-import { ActionItem, LoadingCard, Topic } from "components";
 import styled from "styled-components";
-import { space, SpaceProps } from "styled-system";
-
+import { space, SpaceProps, themeGet } from "styled-system";
+import { ActionItem, LoadingCard, Topic, Text, useStatus } from "components";
 import {
   useGetActionItemsQuery,
-  OnActionItemAddedDocument,
-  useToggleCompletedMutation
+  OnActionItemAddedDocument
 } from "generated/graphql";
 import { useSlug } from "components/Slug.context";
 
-type LabelProps = SpaceProps;
+const Separator = styled.hr<SpaceProps>`
+  ${space};
 
-const Label = styled.label<LabelProps>`
-  cursor: pointer;
-`;
-
-type CheckboxProps = SpaceProps;
-
-const Checkbox = styled.input.attrs<CheckboxProps>({ type: "checkbox", mr: 2 })`
-  ${space}
-  cursor: pointer;
+  border: 0;
+  border-top: 1px solid ${themeGet("colors.borderGrey")};
 `;
 
 type Props = {
@@ -29,13 +21,33 @@ type Props = {
 
 const ActionItems: React.FC<Props> = ({ title }) => {
   const slug = useSlug();
+  const { status } = useStatus();
+
   const { subscribeToMore, data, loading, error } = useGetActionItemsQuery({
     variables: { slug }
   });
-  const [toggleComplete] = useToggleCompletedMutation();
 
   if (loading) return <LoadingCard />;
   if (error) return null;
+
+  const previousActionItems =
+    data &&
+    data.retro &&
+    data.retro.previousRetro &&
+    data.retro.previousRetro.actionItems;
+
+  const actionItems =
+    data && data.retro && data.retro.actionItems && data.retro.actionItems;
+
+  const renderItem = item => {
+    if (!item) return null;
+
+    return (
+      <ActionItem key={item.id} {...item}>
+        {item.title}
+      </ActionItem>
+    );
+  };
 
   return (
     <Topic
@@ -56,40 +68,17 @@ const ActionItems: React.FC<Props> = ({ title }) => {
         })
       }
     >
-      {data &&
-        data.retro &&
-        data.retro.actionItems &&
-        data.retro.actionItems.map(item => {
-          if (!item) return null;
-
-          return (
-            <ActionItem key={item.id} id={item.id}>
-              <Label>
-                <Checkbox
-                  checked={item.completed}
-                  onChange={() =>
-                    // @ts-ignore
-                    toggleComplete({
-                      variables: {
-                        id: item.id
-                      },
-                      optimisticResponse: {
-                        __typename: "Mutation",
-                        toggleCompleted: {
-                          id: item.id,
-                          __typename: "ActionItem",
-                          title: item.title,
-                          completed: !item.completed
-                        }
-                      }
-                    })
-                  }
-                />
-                {item.title}
-              </Label>
-            </ActionItem>
-          );
-        })}
+      <>
+        {status === "initial" && previousActionItems && (
+          <>
+            <Text color="secondaryGrey" mb={2} ml={9}>
+              Action items from previous retro
+            </Text>
+            {previousActionItems.map(renderItem)}
+          </>
+        )}
+        {actionItems && actionItems.map(renderItem)}
+      </>
     </Topic>
   );
 };

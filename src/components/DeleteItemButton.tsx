@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { space, SpaceProps, themeGet } from "styled-system";
-import { StatusContext } from "components";
+import { useStatus } from "components";
 import { Clear } from "styled-icons/material/Clear";
 
 interface DeleteItemContainerProps extends SpaceProps {
@@ -57,7 +57,7 @@ type Props = {
 };
 
 const DeleteItem: React.FC<Props> = ({ className, id, mutation }) => {
-  const { status } = useContext(StatusContext);
+  const { status } = useStatus();
   const disabled = status === "final";
   const [removeItem] = mutation();
 

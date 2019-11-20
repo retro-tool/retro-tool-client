@@ -1,0 +1,5 @@
+query getRetroId($slug: String!) {
+  retro(slug: $slug) {
+    id
+  }
+}

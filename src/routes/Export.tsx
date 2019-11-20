@@ -1,6 +1,5 @@
 import React from "react";
-import { HeaderContainer, Logo, Text } from "components";
-import { PageHeaderContainer } from "components/Header";
+import { Header, Text, StatusProvider } from "components";
 import styled from "styled-components/macro";
 import { useGetRetroItemsQuery } from "generated/graphql";
 import { ApolloProvider } from "@apollo/react-hooks";
@@ -88,16 +87,12 @@ interface Props
 
 const Export = ({ slug }: Props) => (
   <ApolloProvider client={client}>
-    <>
-      <PageHeaderContainer>
-        <HeaderContainer>
-          <Logo />
-        </HeaderContainer>
-      </PageHeaderContainer>
-      <div>
-        <Items slug={slug} />
-      </div>
-    </>
+    <StatusProvider>
+      <Header isExport />
+    </StatusProvider>
+    <div>
+      <Items slug={slug} />
+    </div>
   </ApolloProvider>
 );
 

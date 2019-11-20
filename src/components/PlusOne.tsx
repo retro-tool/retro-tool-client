@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useAddVoteMutation } from "generated/graphql";
 import styled from "styled-components";
 import {
@@ -8,7 +8,7 @@ import {
   SpaceProps,
   themeGet
 } from "styled-system";
-import { StatusContext, Text } from "components";
+import { useStatus, Text } from "components";
 import { ThumbUp } from "styled-icons/material/ThumbUp";
 
 interface PlusOneContainerProps extends SpaceProps {
@@ -78,7 +78,7 @@ type PlusOneProps = {
 };
 
 const PlusOne = ({ id, votes }: PlusOneProps) => {
-  const { status } = useContext(StatusContext);
+  const { status } = useStatus();
   const [addVote, { data }] = useAddVoteMutation();
   const disabled = statusWithVotes.indexOf(status) < 0;
 

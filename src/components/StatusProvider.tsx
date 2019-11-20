@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { client } from "services/api";
 import { useSlug } from "components/Slug.context";
 import {
   OnStatusUpdatedDocument,
   useGetRetroStatusQuery,
-  SetRetroNextStatusDocument
+  SetRetroNextStatusDocument,
+  GetActionItemsDocument,
+  CreateActionItemDocument
 } from "generated/graphql";
 
-const StatusContext = React.createContext({
-  cansSwitchStatus: false,
-  status: "",
-  nextStatus: () => {}
-});
+interface IStatusContext {
+  cansSwitchStatus: boolean;
+  status: string;
+  nextStatus: Function;
+}
+
+const StatusContext = React.createContext({} as IStatusContext);
 
 const SubscribeToStatus = ({ children, subscribeToStatus }) => {
   useEffect(() => {
@@ -19,6 +23,33 @@ const SubscribeToStatus = ({ children, subscribeToStatus }) => {
   }, [subscribeToStatus]);
 
   return children;
+};
+
+const copyPreviousActionItemsThatAreNotDone = slug => {
+  // retrieve all action items
+  client
+    .query({ query: GetActionItemsDocument, variables: { slug } })
+    .then(({ data }) => {
+      if (
+        data &&
+        data.retro &&
+        data.retro.previousRetro &&
+        data.retro.previousRetro.actionItems
+      ) {
+        // filter action items from previous retro that are not done
+        const previousActionItemsAlreadyDone = data.retro.previousRetro.actionItems.filter(
+          item => !item.completed
+        );
+
+        // re-create them within the current retro
+        previousActionItemsAlreadyDone.map(({ title }) =>
+          client.mutate({
+            mutation: CreateActionItemDocument,
+            variables: { slug, title }
+          })
+        );
+      }
+    });
 };
 
 const StatusProvider = ({ children }) => {
@@ -30,6 +61,11 @@ const StatusProvider = ({ children }) => {
   });
 
   const nextStatus = () => {
+    // When changing from `initial` to `review` we want to clone the previous action items that are not done
+    if (status === "initial") {
+      copyPreviousActionItemsThatAreNotDone(slug);
+    }
+
     client
       .mutate({ mutation: SetRetroNextStatusDocument, variables: { slug } })
       .then(({ data }) => setStatus(data.nextStep.status));
@@ -94,6 +130,7 @@ const StatusProvider = ({ children }) => {
               if (status === "initial") {
                 setCansSwitchStatus(itemsAvailable);
               } else if (status === "review") {
+                // TODO: do we really want to avoid going to the next step if there's no votes?
                 setCansSwitchStatus(hasVotes);
               } else {
                 setCansSwitchStatus(true);
@@ -131,4 +168,14 @@ const StatusProvider = ({ children }) => {
   );
 };
 
-export { StatusProvider, StatusContext };
+const useStatus = () => {
+  const context = useContext(StatusContext);
+
+  if (!context) {
+    throw new Error("useStatus must be used within a StatusProvider");
+  }
+
+  return context;
+};
+
+export { StatusProvider, useStatus };

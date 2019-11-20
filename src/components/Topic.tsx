@@ -1,12 +1,13 @@
-import React, { ReactNode, useContext, useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components/macro";
-import { CreateActionItem, CreateItem, StatusContext } from "components";
+import { CreateActionItem, CreateItem, useStatus } from "components";
 import { space, SpaceProps, minWidth, MinWidthProps } from "styled-system";
 import { Topic as TopicType } from "types";
 
 interface TopicContainerProps extends SpaceProps, MinWidthProps {
   disabled?: boolean;
 }
+
 export const TopicContainer = styled.div.attrs({
   m: [1, 2],
   minWidth: ["90%", "40%", null, null, 0]
@@ -23,6 +24,7 @@ export const TopicContainer = styled.div.attrs({
 `;
 
 type TitleProps = SpaceProps;
+
 const Title = styled.div.attrs<TitleProps>({
   p: [3, null, null, null, 4]
 })`
@@ -55,23 +57,24 @@ const Topic = ({
     subscribeToNewItems();
   }, [subscribeToNewItems]);
 
-  const { status } = useContext(StatusContext);
+  const { status } = useStatus();
+
   const statusesWithActions = ["actions", "final"];
   const statusesWithTopics = ["initial", "review", "actions"];
 
+  const topicDoesntExistInStatus =
+    topic && statusesWithTopics.indexOf(status) < 0;
+  const actionItemsShouldBeDisabled =
+    !topic && statusesWithActions.indexOf(status) < 0;
+
   return (
-    <TopicContainer
-      disabled={
-        (topic && statusesWithTopics.indexOf(status) < 0) ||
-        (!topic && statusesWithActions.indexOf(status) < 0)
-      }
-    >
+    <TopicContainer disabled={topicDoesntExistInStatus}>
       <Title>
         <TitleIcon>{title}</TitleIcon>
         {topic ? (
           <CreateItem topic={topic} placeholder={placeholder} />
         ) : (
-          <CreateActionItem />
+          <CreateActionItem disabled={actionItemsShouldBeDisabled} />
         )}
       </Title>
       {children}

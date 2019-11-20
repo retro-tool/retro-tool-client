@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import c from "color";
 import styled from "styled-components/macro";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Item, LoadingCard, Topic, StatusContext } from "components";
+import { Item, LoadingCard, Topic, useStatus } from "components";
 import { useSlug } from "components/Slug.context";
 import { Topic as TopicType } from "types";
 import {
@@ -107,7 +107,7 @@ const combineItems = ({
 
 const ItemList = ({ items: itemsProp }: ItemListProps) => {
   const [items, setItems] = useState(itemsProp);
-  const { status } = useContext(StatusContext);
+  const { status } = useStatus();
   const [combineItemsMutation] = useCombineItemsMutation();
 
   const onDragEnd = result => {

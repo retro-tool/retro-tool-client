@@ -262,8 +262,28 @@ export type GetActionItemsQuery = { __typename?: "RootQueryType" } & {
           >
         >
       >;
+      previousRetro: Maybe<
+        { __typename?: "Retro" } & {
+          actionItems: Array<
+            Maybe<
+              { __typename?: "ActionItem" } & Pick<
+                ActionItem,
+                "completed" | "id" | "title"
+              >
+            >
+          >;
+        }
+      >;
     }
   >;
+};
+
+export type GetRetroIdQueryVariables = {
+  slug: Scalars["String"];
+};
+
+export type GetRetroIdQuery = { __typename?: "RootQueryType" } & {
+  retro: Maybe<{ __typename?: "Retro" } & Pick<Retro, "id">>;
 };
 
 export type GetWorksItemsQueryVariables = {
@@ -1040,6 +1060,13 @@ export const GetActionItemsDocument = gql`
         id
         title
       }
+      previousRetro {
+        actionItems {
+          completed
+          id
+          title
+        }
+      }
     }
   }
 `;
@@ -1091,6 +1118,60 @@ export type GetActionItemsLazyQueryHookResult = ReturnType<
 export type GetActionItemsQueryResult = ApolloReactCommon.QueryResult<
   GetActionItemsQuery,
   GetActionItemsQueryVariables
+>;
+export const GetRetroIdDocument = gql`
+  query getRetroId($slug: String!) {
+    retro(slug: $slug) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useGetRetroIdQuery__
+ *
+ * To run a query within a React component, call `useGetRetroIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRetroIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRetroIdQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetRetroIdQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetRetroIdQuery,
+    GetRetroIdQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<GetRetroIdQuery, GetRetroIdQueryVariables>(
+    GetRetroIdDocument,
+    baseOptions
+  );
+}
+export function useGetRetroIdLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetRetroIdQuery,
+    GetRetroIdQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetRetroIdQuery,
+    GetRetroIdQueryVariables
+  >(GetRetroIdDocument, baseOptions);
+}
+export type GetRetroIdQueryHookResult = ReturnType<typeof useGetRetroIdQuery>;
+export type GetRetroIdLazyQueryHookResult = ReturnType<
+  typeof useGetRetroIdLazyQuery
+>;
+export type GetRetroIdQueryResult = ApolloReactCommon.QueryResult<
+  GetRetroIdQuery,
+  GetRetroIdQueryVariables
 >;
 export const GetWorksItemsDocument = gql`
   query getWorksItems($slug: String!) {

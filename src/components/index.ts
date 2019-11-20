@@ -17,6 +17,6 @@ export { LightboxOverlay, LightboxContent } from "./Lightbox";
 export { default as LoadingCard } from "./LoadingCard";
 export { default as Logo } from "./Logo";
 export { default as PlusOne } from "./PlusOne";
-export { StatusProvider, StatusContext } from "./StatusProvider";
+export * from "./StatusProvider";
 export { Text } from "./Text";
 export { default as Topic } from "./Topic";

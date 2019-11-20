@@ -5,5 +5,12 @@ query getActionItems($slug: String!) {
       id
       title
     }
+    previousRetro {
+      actionItems {
+        completed
+        id
+        title
+      }
+    }
   }
 }
