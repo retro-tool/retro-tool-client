@@ -69,7 +69,7 @@ const ActionItems: React.FC<Props> = ({ title }) => {
       }
     >
       <>
-        {status === "initial" && previousActionItems && (
+        {(status === "initial" || status === "review") && previousActionItems && (
           <>
             <Text color="secondaryGrey" mb={2} ml={9}>
               Action items from previous retro

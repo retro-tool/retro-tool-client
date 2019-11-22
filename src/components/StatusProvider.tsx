@@ -61,8 +61,8 @@ const StatusProvider = ({ children }) => {
   });
 
   const nextStatus = () => {
-    // When changing from `initial` to `review` we want to clone the previous action items that are not done
-    if (status === "initial") {
+    // When changing from `review` to `action` we want to clone the previous action items that are not done
+    if (status === "review") {
       copyPreviousActionItemsThatAreNotDone(slug);
     }
 
