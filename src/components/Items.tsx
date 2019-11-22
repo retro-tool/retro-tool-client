@@ -38,7 +38,7 @@ const DraggableItem = styled.div<DraggableItemProps>`
   position: relative;
   background: ${({ combineTargetFor, theme }) =>
     combineTargetFor
-      ? c(theme.colors.lime)
+      ? c(theme.colors.violet)
           .alpha(0.2)
           .rgb()
           .string()
@@ -48,7 +48,7 @@ const DraggableItem = styled.div<DraggableItemProps>`
     isDragging && "0 0 1px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.15)"};
   border-radius: ${({ isDragging }) => isDragging && "3px"};
   outline: ${({ combineTargetFor, theme }) =>
-    combineTargetFor ? `2px dashed ${theme.colors.lime}` : "none"};
+    combineTargetFor ? `2px dashed ${theme.colors.violet}` : "none"};
   z-index: ${({ combineTargetFor }) => combineTargetFor && 2};
 
   &:hover {

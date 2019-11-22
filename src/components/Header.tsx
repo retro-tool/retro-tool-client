@@ -1,13 +1,8 @@
 import React, { useRef, useState } from "react";
 import { client } from "services/api";
 import styled, { css } from "styled-components/macro";
-import {
-  display,
-  DisplayProps,
-  space,
-  SpaceProps,
-  themeGet
-} from "styled-system";
+import { display, DisplayProps, space, SpaceProps } from "styled-system";
+import themeGet from "@styled-system/theme-get";
 import { Redirect, navigate } from "@reach/router";
 import { useSlug } from "components/Slug.context";
 import {
@@ -22,29 +17,20 @@ import {
 import { ChevronRight } from "styled-icons/material/ChevronRight";
 import { ChevronLeft } from "styled-icons/material/ChevronLeft";
 import { ArrowUpward } from "styled-icons/material/ArrowUpward";
+import { Box, BoxType, Flex } from "./UI";
 import {
   useCreateLinkedRetroQuery,
   GetRetroIdDocument
 } from "generated/graphql";
 
-interface PageHeaderProps extends SpaceProps {}
-
-export const PageHeaderContainer = styled.div<PageHeaderProps>`
-  position: relative;
-  z-index: 1;
-  background: white;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
-`;
-
 interface HeaderContainerProps extends SpaceProps {}
 
 const HeaderContainer = styled.div.attrs<HeaderContainerProps>({
-  pl: 4,
-  pr: 4
+  py: 3,
+  px: 4
 })`
   display: flex;
   align-items: center;
-  height: 48px;
   justify-content: space-between;
 
   ${space}
@@ -67,16 +53,16 @@ const SubheaderContainer = styled.div.attrs<SubheaderProps>({
   ${space}
 `;
 
-interface BreadcrumbItemProps {
+type BreadcrumbItemProps = BoxType & {
   active: boolean;
-}
+};
 
-const BreadcrumbItem = styled.div<BreadcrumbItemProps>`
+const BreadcrumbItem = styled(Box).attrs({
+  mr: 7
+})<BreadcrumbItemProps>`
   position: relative;
   display: inline-flex;
   align-items: center;
-  margin-right: ${themeGet("space.7")}px;
-  font-size: ${themeGet("fontSizes.2")}px;
   color: ${({ active, theme: { colors } }) =>
     active ? colors.dark : colors.mediumGrey};
 
@@ -88,7 +74,7 @@ const BreadcrumbItem = styled.div<BreadcrumbItemProps>`
     left: 0;
     right: 0;
     height: 3px;
-    background: ${themeGet("colors.lime")};
+    background: ${themeGet("colors.violet")};
   }
 
   &:not(:last-child)::after {
@@ -102,24 +88,20 @@ const BreadcrumbItem = styled.div<BreadcrumbItemProps>`
   }
 `;
 
-const BreadcrumbsContainer = styled.div`
-  display: flex;
-`;
-
 interface BreadcrumbsProps {
   status: string;
 }
 
 const Breadcrumbs = ({ status }: BreadcrumbsProps) => {
   return (
-    <BreadcrumbsContainer>
+    <Flex fontSize={1}>
       <BreadcrumbItem active={status === "initial"}>Brainstorm</BreadcrumbItem>
       <BreadcrumbItem active={status === "review"}>Group & vote</BreadcrumbItem>
       <BreadcrumbItem active={status === "actions"}>
         Add action items
       </BreadcrumbItem>
       <BreadcrumbItem active={status === "final"}>Done</BreadcrumbItem>
-    </BreadcrumbsContainer>
+    </Flex>
   );
 };
 
@@ -273,7 +255,7 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
           </Button>
         </LightboxContent>
       </LightboxOverlay>
-      <PageHeaderContainer>
+      <Box position="relative" zIndex={1} bg="white" boxShadow={0}>
         <HeaderContainer>
           <Logo />
           <NextStatusContainer>
@@ -322,7 +304,7 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
           <Breadcrumbs status={status} />
           <StatusHelp status={status} />
         </SubheaderContainer>
-      </PageHeaderContainer>
+      </Box>
     </>
   );
 };

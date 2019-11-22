@@ -1,7 +1,7 @@
-# xing-retro-client
-Client for the XING Retro tool
+# retro-tool-client
+Client for the Retro tool
 
 ## Run it locally
 
-1. Start the API following this: https://source.xing.com/xing-retro/xing-retro-api
+1. Start the API following this: https://github.com/retro-tool/retro-tool-api
 2. `yarn && yarn generateTypes && yarn start`

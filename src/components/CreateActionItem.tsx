@@ -14,8 +14,6 @@ const CreateItem = ({ disabled }: Props) => {
 
   return (
     <Input
-      ml={2}
-      flex="1 1 auto"
       placeholder="We need to do..."
       onSubmit={title => {
         if (!title) return;

@@ -17,7 +17,10 @@ const createItemMutations = {
 type Props = {
   topic: Topic;
   placeholder?: string;
+  tabIndex?: number;
 };
+
+const tabIndexOrder = ["works", "improve", "others"];
 
 const CreateItem = ({ topic, placeholder }: Props) => {
   const [value, setValue] = useState("");
@@ -26,9 +29,8 @@ const CreateItem = ({ topic, placeholder }: Props) => {
 
   return (
     <Input
-      ml={2}
-      flex="1 1 auto"
       placeholder={placeholder}
+      tabIndex={tabIndexOrder.indexOf(topic) + 1}
       onSubmit={title => {
         if (!title) return;
         createItem({ variables: { slug: slug, title } });
