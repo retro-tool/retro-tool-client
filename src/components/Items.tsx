@@ -149,9 +149,7 @@ const ItemList = ({ items: itemsProp }: ItemListProps) => {
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {items.map((item, index) => {
               const dragIsDisabled =
-                status === `initial` ||
-                status === `actions` ||
-                item.similarItems.length > 0;
+                status !== `review` || item.similarItems.length > 0;
 
               return (
                 <Draggable
@@ -169,7 +167,7 @@ const ItemList = ({ items: itemsProp }: ItemListProps) => {
                       combineTargetFor={snapshot.combineTargetFor}
                       isDragging={snapshot.isDragging}
                       style={{
-                        userSelect: "none",
+                        ...(status === `review` && { userSelect: "none" }),
                         ...provided.draggableProps.style
                       }}
                     >

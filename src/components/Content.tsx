@@ -28,10 +28,6 @@ const sharedIconStyles = css`
   width: 24px;
   color: ${({ theme }) => theme.colors.mediumGrey};
   transition: color 0.2s ease;
-
-  ${TopicContainer}:hover & {
-    color: ${({ theme }) => theme.colors.grey};
-  }
 `;
 
 const WorksIcon = styled(SmileyHappy)`
