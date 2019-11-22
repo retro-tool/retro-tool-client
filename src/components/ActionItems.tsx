@@ -1,19 +1,10 @@
 import React from "react";
-import styled from "styled-components";
-import { space, SpaceProps, themeGet } from "styled-system";
 import { ActionItem, LoadingCard, Topic, Text, useStatus } from "components";
 import {
   useGetActionItemsQuery,
   OnActionItemAddedDocument
 } from "generated/graphql";
 import { useSlug } from "components/Slug.context";
-
-const Separator = styled.hr<SpaceProps>`
-  ${space};
-
-  border: 0;
-  border-top: 1px solid ${themeGet("colors.borderGrey")};
-`;
 
 type Props = {
   title: React.ReactNode;

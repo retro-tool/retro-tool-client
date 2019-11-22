@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components/macro";
 import { ActionItems, Items } from "components";
-import { TopicContainer } from "components/Topic";
 import { height, HeightProps, space, SpaceProps } from "styled-system";
 import { SmileyHappy } from "styled-icons/boxicons-solid/SmileyHappy";
 import { SmileySad } from "styled-icons/boxicons-solid/SmileySad";
