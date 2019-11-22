@@ -1,44 +1,23 @@
 import styled from "styled-components/macro";
-import {
-  background,
-  BackgroundProps,
-  color,
-  ColorProps,
-  display,
-  DisplayProps,
-  fontSize,
-  FontSizeProps,
-  fontWeight,
-  FontWeightProps,
-  lineHeight,
-  LineHeightProps,
-  space,
-  SpaceProps,
-  themeGet
-} from "styled-system";
+import themeGet from "@styled-system/theme-get";
 import c from "color";
+import { Box, BoxType } from "./UI";
 
-interface ButtonProps
-  extends BackgroundProps,
-    ColorProps,
-    DisplayProps,
-    FontSizeProps,
-    FontWeightProps,
-    LineHeightProps,
-    SpaceProps {
+interface ButtonProps extends BoxType {
   disabled?: boolean;
   variant?: string;
 }
 
-const Button = styled.button<ButtonProps>`
-  ${background};
-  ${color};
-  ${display};
-  ${fontSize};
-  ${fontWeight};
-  ${lineHeight};
-  ${space};
-
+const Button = styled(Box).attrs({
+  as: "button",
+  borderRadius: 0,
+  color: "white",
+  fontSize: 2,
+  lineHeight: 5,
+  pl: 4,
+  pr: 4,
+  variant: "primary"
+})<ButtonProps>`
   display: inline-flex;
   vertical-align: middle;
   flex-wrap: nowrap;
@@ -46,7 +25,6 @@ const Button = styled.button<ButtonProps>`
   cursor: pointer;
   border: none;
   height: 36px;
-  border-radius: 3px;
   pointer-events: ${({ disabled }) => disabled && "none"};
   opacity: ${({ disabled }) => disabled && ".5"};
   background: ${({ disabled, variant }) =>
@@ -54,27 +32,18 @@ const Button = styled.button<ButtonProps>`
       ? themeGet("colors.mediumGrey")
       : variant === "secondary"
       ? themeGet("colors.secondaryGrey")
-      : themeGet("colors.lime")};
+      : themeGet("colors.violet")};
 
   &:focus {
     outline: none;
     box-shadow: 0 0 0 1px white,
       0 0 0 4px
         ${({ theme }) =>
-          c(theme.colors.blue)
-            .alpha(0.3)
+          c(theme.colors.violet)
+            .alpha(0.25)
             .rgb()
             .string()};
   }
 `;
-
-Button.defaultProps = {
-  fontSize: 2,
-  fontWeight: 1,
-  pl: 4,
-  pr: 4,
-  lineHeight: 5,
-  variant: "primary"
-};
 
 export default Button;

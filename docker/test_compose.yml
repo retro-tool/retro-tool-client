@@ -1,5 +1,0 @@
-version: '2.1'
-services:
-  main:
-    image: quay.dc.xing.com/xing-retro/xing-retro-client:$TAG
-    command: sh -c 'exit 0'

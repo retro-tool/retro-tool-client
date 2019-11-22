@@ -1,15 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
-import {
-  color,
-  ColorProps,
-  fontSize,
-  FontSizeProps,
-  display,
-  DisplayProps,
-  space,
-  SpaceProps
-} from "styled-system";
+import { ReactComponent as RetroToolLogo } from "../assets/retrotool_compact.svg";
+import { Flex, Box, BoxType } from "./UI";
 import theme from "theme";
 
 const LogoSVG = styled.svg.attrs({
@@ -54,40 +46,29 @@ const LogoImage = () => (
   </LogoSVG>
 );
 
-type LogoTitleProps = ColorProps & FontSizeProps & DisplayProps;
-
-const LogoTitle = styled.h1<LogoTitleProps>`
+const LogoTitle = styled(Box).attrs({
+  as: "h1",
+  color: "grey",
+  fontSize: 2,
+  display: ["none", "inline-block"]
+})<BoxType>`
   vertical-align: bottom;
   margin: 12px 0 -2px 3px;
   font-weight: normal;
   line-height: 1;
-
-  ${color}
-  ${fontSize}
-  ${display}
 `;
 
-LogoTitle.defaultProps = {
-  color: "grey",
-  fontSize: 2,
-  display: ["none", "inline-block"]
-};
-
-type LogoContainerProps = SpaceProps;
-
-const LogoContainer = styled.div<LogoContainerProps>`
-  ${space}
-`;
-
-LogoContainer.defaultProps = {
-  mt: -2
-};
-
-const Logo = () => (
-  <LogoContainer>
-    <LogoImage />
-    <LogoTitle>Retro</LogoTitle>
-  </LogoContainer>
+const Logo = props => (
+  <Flex {...props}>
+    {process.env.REACT_APP_ENV === "XING" ? (
+      <>
+        <LogoImage />
+        <LogoTitle>Retro</LogoTitle>
+      </>
+    ) : (
+      <RetroToolLogo width="32" height="32" />
+    )}
+  </Flex>
 );
 
 export default Logo;

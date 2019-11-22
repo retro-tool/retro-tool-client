@@ -1,5 +1,5 @@
 {
-  "name": "xing-retro-client",
+  "name": "retro-tool-client",
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
@@ -16,7 +16,7 @@
     "@types/react-dom": "16.8.4",
     "@types/react-textarea-autosize": "4.3.4",
     "@types/styled-components": "4.1.15",
-    "@types/styled-system": "4.2.1",
+    "@types/styled-system": "^5.1.4",
     "husky": "2.3.0",
     "lint-staged": "8.1.7",
     "prettier": "1.17.1",
@@ -28,6 +28,7 @@
     "@reach/dialog": "0.2.8",
     "@reach/router": "1.2.1",
     "@rehooks/local-storage": "1.4.0",
+    "@styled-system/theme-get": "^5.1.2",
     "apollo-boost": "^0.4.4",
     "apollo-link": "^1.2.13",
     "color": "3.1.1",
@@ -43,7 +44,7 @@
     "styled-components": "4.2.0",
     "styled-icons": "7.15.1",
     "styled-map": "3.3.0",
-    "styled-system": "4.2.2",
+    "styled-system": "^5.1.4",
     "use-debounce": "^3.1.0"
   },
   "scripts": {

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { space, SpaceProps, themeGet } from "styled-system";
+import { space, SpaceProps } from "styled-system";
+import themeGet from "@styled-system/theme-get";
 import { useStatus } from "components";
 import { Clear } from "styled-icons/material/Clear";
 

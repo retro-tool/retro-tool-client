@@ -1,41 +1,23 @@
 import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components/macro";
 import { CreateActionItem, CreateItem, useStatus } from "components";
-import { space, SpaceProps, minWidth, MinWidthProps } from "styled-system";
 import { Topic as TopicType } from "types";
+import { Box, BoxType, Flex } from "./UI";
 
-interface TopicContainerProps extends SpaceProps, MinWidthProps {
+interface TopicContainerProps extends BoxType {
   disabled?: boolean;
 }
 
-export const TopicContainer = styled.div.attrs({
+export const TopicContainer = styled(Box).attrs({
   m: [1, 2],
-  minWidth: ["90%", "40%", null, null, 0]
+  minWidth: ["90%", "40%", null, null, 0],
+  boxShadow: 0,
+  borderRadius: 1,
+  bg: "white"
 })<TopicContainerProps>`
   flex: 1;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16);
-  background: white;
-  border-radius: 4px;
   opacity: ${({ disabled }) => disabled && ".4"};
   pointer-events: ${({ disabled }) => disabled && "none"};
-
-  ${minWidth};
-  ${space};
-`;
-
-type TitleProps = SpaceProps;
-
-const Title = styled.div.attrs<TitleProps>({
-  p: [3, null, null, null, 4]
-})`
-  display: flex;
-  align-items: flex-start;
-
-  ${space}
-`;
-
-const TitleIcon = styled.div`
-  margin-top: 2px;
 `;
 
 interface TopicProps {
@@ -69,14 +51,14 @@ const Topic = ({
 
   return (
     <TopicContainer disabled={topicDoesntExistInStatus}>
-      <Title>
-        <TitleIcon>{title}</TitleIcon>
+      <Flex p={[3, null, null, null, 4]} alignItems="center">
         {topic ? (
           <CreateItem topic={topic} placeholder={placeholder} />
         ) : (
           <CreateActionItem disabled={actionItemsShouldBeDisabled} />
         )}
-      </Title>
+        <Flex order={-1}>{title}</Flex>
+      </Flex>
       {children}
     </TopicContainer>
   );

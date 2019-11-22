@@ -8,9 +8,9 @@ import {
   borderColor,
   BorderColorProps,
   space,
-  SpaceProps,
-  themeGet
+  SpaceProps
 } from "styled-system";
+import themeGet from "@styled-system/theme-get";
 import { useStatus, Text } from "components";
 
 interface PlusOneContainerProps extends SpaceProps {
@@ -55,8 +55,7 @@ const PlusOneButton = styled.button<PlusOneButtonProps>`
 type CountContainerProps = SpaceProps & BorderColorProps;
 
 const CountContainer = styled.div<CountContainerProps>`
-  padding-left: 8px;
-  min-width: 3ch;
+  width: 2ch;
   text-align: center;
 
   ${borderColor}

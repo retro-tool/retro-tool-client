@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
-import { themeGet, width, WidthProps } from "styled-system";
+import { width, WidthProps } from "styled-system";
+import themeGet from "@styled-system/theme-get";
 import { RetroItem, useDetachRetroItemMutation } from "generated/graphql";
 import {
   DeleteRetroItem,
@@ -15,15 +16,18 @@ import { Text } from "components/Text";
 const DeleteItemButton = styled(DeleteRetroItem)`
   display: none;
   position: absolute;
-  top: -4px;
+  top: -2px;
   left: 0;
   transform: rotate(45deg);
 `;
 
-const Ref = styled(Text)`
+const Ref = styled(Text).attrs({
+  fontSize: 1,
+  color: "secondaryGrey",
+  mr: 1,
+  mt: "2px"
+})`
   flex: 0 0 28px;
-  color: ${themeGet("colors.secondaryGrey")};
-  margin-right: ${themeGet("space.1")}px;
 `;
 
 const ItemContainer = styled(BaseItemContainer)`
