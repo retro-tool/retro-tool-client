@@ -7,7 +7,8 @@ import {
   BaseItemContainer,
   ItemText,
   ItemLeft,
-  PlusOne
+  PlusOne,
+  useStatus
 } from "components";
 import { Text } from "components/Text";
 
@@ -51,6 +52,7 @@ const SimilarItems = styled.div`
 
 interface DetachItemButtonProps {
   onClick: () => void;
+  disabled: boolean;
 }
 
 const DetachItemButton = styled(Text).attrs({
@@ -62,7 +64,7 @@ const DetachItemButton = styled(Text).attrs({
 })<DetachItemButtonProps>`
   display: block;
   position: relative;
-  cursor: pointer;
+  cursor: ${({ disabled }) => !disabled && "pointer"};
   border: none;
   padding: 0;
   background: transparent;
@@ -72,21 +74,25 @@ const DetachItemButton = styled(Text).attrs({
     outline: none;
   }
 
-  &:hover {
-    color: ${themeGet("colors.grey")};
+  ${({ disabled }) =>
+    !disabled &&
+    `
+    &:hover {
+      color: ${themeGet("colors.grey")};
 
-    &::before {
-      content: "↤";
-      font-size: 18px;
-      line-height: 13px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform: translate(-130%, -10%);
-      background: white;
-      padding: 3px 0px;
+      &::before {
+        content: "↤";
+        font-size: 18px;
+        line-height: 13px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(-130%, -10%);
+        background: white;
+        padding: 3px 0px;
+      }
     }
-  }
+    `}
 `;
 
 type SimilarItemProps = {
@@ -94,10 +100,17 @@ type SimilarItemProps = {
 };
 
 const SimilarItem: React.FC<SimilarItemProps> = ({ children, id }) => {
+  const { status } = useStatus();
   const [detachItem] = useDetachRetroItemMutation();
 
   return (
-    <DetachItemButton onClick={() => detachItem({ variables: { id } })}>
+    <DetachItemButton
+      as={status === "review" ? "button" : "div"}
+      disabled={status !== "review"}
+      onClick={() => {
+        status === "review" && detachItem({ variables: { id } });
+      }}
+    >
       {children}
     </DetachItemButton>
   );
