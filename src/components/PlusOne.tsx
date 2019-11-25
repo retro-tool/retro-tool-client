@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAddVoteMutation } from "generated/graphql";
+import { useDebouncedCallback } from "use-debounce";
+import Lottie from "react-lottie";
+import animationData from "lotties/thumb-up.json";
 import styled from "styled-components";
 import {
   borderColor,
@@ -9,7 +12,6 @@ import {
   themeGet
 } from "styled-system";
 import { useStatus, Text } from "components";
-import { ThumbUp } from "styled-icons/material/ThumbUp";
 
 interface PlusOneContainerProps extends SpaceProps {
   disabled: boolean;
@@ -65,13 +67,6 @@ CountContainer.defaultProps = {
   borderColor: "borderGrey"
 };
 
-const statusWithVotes = ["review"];
-
-const ThumbUpIcon = styled(ThumbUp)`
-  width: 16px;
-  color: currentColor;
-`;
-
 type PlusOneProps = {
   id: string;
   votes: number;
@@ -80,15 +75,35 @@ type PlusOneProps = {
 const PlusOne = ({ id, votes }: PlusOneProps) => {
   const { status } = useStatus();
   const [addVote, { data }] = useAddVoteMutation();
-  const disabled = statusWithVotes.indexOf(status) < 0;
+  const [isStoped, setIsStoped] = useState(false);
+  const votingIsDisabled = status !== "review";
+  const [debouncedClick] = useDebouncedCallback(() => {
+    if (votingIsDisabled) return;
+
+    addVote({ variables: { id } });
+    setIsStoped(true);
+  }, 250);
+
+  const defaultOptions = {
+    loop: false,
+    autoplay: false,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
 
   return (
-    <PlusOneContainer disabled={disabled}>
-      <PlusOneButton
-        onClick={() => addVote({ variables: { id } })}
-        disabled={disabled}
-      >
-        <ThumbUpIcon />
+    <PlusOneContainer disabled={votingIsDisabled}>
+      <PlusOneButton onClick={debouncedClick} disabled={votingIsDisabled}>
+        <Lottie
+          options={defaultOptions}
+          height={24}
+          width={24}
+          isClickToPauseDisabled
+          isPaused={!isStoped}
+          style={{ opacity: 0.5 }}
+        />
       </PlusOneButton>
       <CountContainer>
         <Text color="grey">
