@@ -1,0 +1,29 @@
+version: '3'
+services:
+  api:
+    image: retrotool/api:latest
+    environment:
+      - SECRET_KEY_BASE=d4EfFMlODxDJgUtdMad7BzW6lChp7NJiBlFthgaRH3s5/PWIpebJ5NepcyMGp6gH
+      - DB_HOST=postgres
+      - DB_NAME=xrt_dev
+      - DB_USER=postgres
+      - DB_PASSWORD=xrt_dev
+      - MIX_ENV=dev
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    ports:
+      - 4000:4000
+  postgres:
+    image: postgres:12-alpine
+    volumes:
+      - 'pg:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_DB: xrt_dev
+      POSTGRES_PASSWORD: xrt_dev
+    ports:
+      - "5432:5432"
+
+volumes:
+  pg:
