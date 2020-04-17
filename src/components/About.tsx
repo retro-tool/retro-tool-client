@@ -62,8 +62,9 @@ const About = () => {
             Developed by{" "}
             <a href="https://twitter.com/uesteibar">Unai Esteibar</a>,{" "}
             <a href="https://twitter.com/marciobarrios">Marcio Barrios</a>,{" "}
-            <a href="https://twitter.com/andrzej_trzaska">Andrzej Trzaska</a>{" "}
-            and <a href="https://twitter.com/Rude">Rude Ayelo</a> during several{" "}
+            <a href="https://twitter.com/andrzej_trzaska">Andrzej Trzaska</a>,{" "}
+            <a href="https://twitter.com/iamsilesc">Christian Siles</a> and{" "}
+            <a href="https://twitter.com/Rude">Rude Ayelo</a> during several{" "}
             <a href="https://medium.com/xing-hackweek">Hackweeks</a> at{" "}
             <a href="https://www.xing.com/">XING</a>.
           </Text>
