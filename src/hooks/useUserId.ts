@@ -1,4 +1,4 @@
-import { writeStorage, useLocalStorage } from "@rehooks/local-storage";
+import useSessionStorage from "react-use/lib/useSessionStorage";
 import { useSlug } from "components/Slug.context";
 import { client } from "services/api";
 import gql from "graphql-tag";
@@ -7,7 +7,7 @@ type Uuid = string;
 
 const useUserId = (): Uuid | null => {
   const slug = useSlug();
-  const [uuid] = useLocalStorage("uuid");
+  const [uuid, setUuid] = useSessionStorage("uuid");
 
   const getUuid = async () => {
     const { data } = await client.query({
@@ -20,7 +20,7 @@ const useUserId = (): Uuid | null => {
       `
     });
 
-    writeStorage("uuid", data.currentUser.uuid);
+    setUuid(data.currentUser.uuid);
   };
 
   !uuid && getUuid();
