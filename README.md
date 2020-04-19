@@ -4,5 +4,5 @@ Client for the Retro tool
 ## Run it locally
 
     docker-compose up
-    docker-compose exec api mix ecto.migrate
+    docker-compose run api migrate
     yarn && yarn generateTypes && yarn start
