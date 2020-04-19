@@ -52,7 +52,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generateTypes": "graphql-codegen --config codegen.yml"
+    "generateTypes": "graphql-codegen --config codegen.yml",
+    "postinstall": "yarn generateTypes"
   },
   "proxy": "http://localhost:4000",
   "browserslist": [
