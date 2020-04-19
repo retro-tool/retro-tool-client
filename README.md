@@ -5,4 +5,4 @@ Client for the Retro tool
 
     docker-compose up
     docker-compose run api migrate
-    yarn && yarn generateTypes && yarn start
+    yarn && yarn start
