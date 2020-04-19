@@ -4,6 +4,8 @@ services:
     image: retrotool/api:latest
     environment:
       - SECRET_KEY_BASE=d4EfFMlODxDJgUtdMad7BzW6lChp7NJiBlFthgaRH3s5/PWIpebJ5NepcyMGp6gH
+      - SECRET_SALT=E17CDB72F827ABD91543B2167D855
+      - ADMIN_PASSWORD=admin
       - DB_HOST=postgres
       - DB_NAME=xrt_dev
       - DB_USER=postgres
