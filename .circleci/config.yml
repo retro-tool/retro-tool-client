@@ -1,0 +1,28 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/app
+    docker:
+      - image: circleci/node:13
+      - image: postgres:12-alpine
+        environment:
+          POSTGRES_DB: xrt_test
+          POSTGRES_PASSWORD: postgres
+      - image: retrotool/api:latest
+        environment:
+          SECRET_KEY_BASE: d4EfFMlODxDJgUtdMad7BzW6lChp7NJiBlFthgaRH3s5/PWIpebJ5NepcyMGp6gH
+          SECRET_SALT: E17CDB72F827ABD91543B2167D855
+          DASHBOARD_USER: admin
+          DASHBOARD_PASSWORD: admin
+          DASHBOARD_REALM: dashboard
+          DB_HOST: localhost
+          DB_NAME: xrt_test
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          MIX_ENV: test
+    steps:
+      - checkout
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run: dockerize -wait tcp://localhost:4000 -timeout 1m
+      - run: yarn
+      - run: yarn test --passWithNoTests
