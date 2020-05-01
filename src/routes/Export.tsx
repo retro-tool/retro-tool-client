@@ -27,7 +27,7 @@ const Items = ({ slug }) => {
     <Content>
       {works.length ? (
         <div>
-          <Text size="title">Works</Text>
+          <Text textStyle="title">Works</Text>
           <ul>
             {works.map(({ id, title }) => (
               <li key={id}>
@@ -40,7 +40,7 @@ const Items = ({ slug }) => {
 
       {improve.length ? (
         <div>
-          <Text size="title">Improve</Text>
+          <Text textStyle="title">Improve</Text>
           <ul>
             {improve.map(({ id, title }) => (
               <li key={id}>
@@ -53,7 +53,7 @@ const Items = ({ slug }) => {
 
       {others.length ? (
         <div>
-          <Text size="title">Others</Text>
+          <Text textStyle="title">Others</Text>
           <ul>
             {others.map(({ id, title }) => (
               <li key={id}>
@@ -66,7 +66,7 @@ const Items = ({ slug }) => {
 
       {actionItems.length ? (
         <div>
-          <Text size="title">Action Items</Text>
+          <Text textStyle="title">Action Items</Text>
           <ul>
             {actionItems.map(({ id, title }) => (
               <li key={id}>

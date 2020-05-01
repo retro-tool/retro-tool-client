@@ -242,7 +242,7 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
         initialFocusRef={buttonRef}
       >
         <LightboxContent>
-          <Text size="title">Are you sure?</Text>
+          <Text textStyle="title">Are you sure?</Text>
           <Text mt={3} mb={6}>
             Everyone will see all comments and this can't be undone.
           </Text>

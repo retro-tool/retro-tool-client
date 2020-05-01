@@ -2,21 +2,19 @@ import styled from "styled-components/macro";
 import themeGet from "@styled-system/theme-get";
 import c from "color";
 import { Box, BoxType } from "./UI";
+import { buttonStyle } from "styled-system";
+import { buttons } from "theme";
+
+type ButtonVariant = keyof typeof buttons;
 
 interface ButtonProps extends BoxType {
   disabled?: boolean;
-  variant?: string;
+  variant?: ButtonVariant;
 }
 
 const Button = styled(Box).attrs({
   as: "button",
-  borderRadius: 0,
-  color: "white",
-  fontSize: 2,
-  lineHeight: 5,
-  pl: 4,
-  pr: 4,
-  variant: "primary"
+  lineHeight: 5
 })<ButtonProps>`
   display: inline-flex;
   vertical-align: middle;
@@ -25,16 +23,9 @@ const Button = styled(Box).attrs({
   cursor: pointer;
   border: none;
   height: 36px;
-  pointer-events: ${({ disabled }) => disabled && "none"};
-  opacity: ${({ disabled }) => disabled && ".5"};
-  background: ${({ disabled, variant }) =>
-    disabled
-      ? themeGet("colors.mediumGrey")
-      : variant === "secondary"
-      ? themeGet("colors.secondaryGrey")
-      : themeGet("colors.violet")};
 
-  &:focus {
+  :hover,
+  :focus {
     outline: none;
     box-shadow: 0 0 0 1px white,
       0 0 0 4px
@@ -44,6 +35,20 @@ const Button = styled(Box).attrs({
             .rgb()
             .string()};
   }
+
+  :hover {
+    text-decoration: none;
+  }
+
+  ${buttonStyle};
+
+  pointer-events: ${({ disabled }) => disabled && "none"};
+  opacity: ${({ disabled }) => disabled && ".5"};
+  background: ${({ disabled }) => disabled && themeGet("colors.mediumGrey")};
 `;
+
+Button.defaultProps = {
+  variant: "primary"
+};
 
 export default Button;
