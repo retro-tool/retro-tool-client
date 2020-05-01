@@ -3,12 +3,17 @@ import theme from "./theme";
 import { Router } from "@reach/router";
 import { createGlobalStyle, ThemeProvider } from "styled-components/macro";
 import { SlugProvider } from "components/Slug.context";
-import { CreateRetro, Export, Main } from "routes";
+import { CreateRetro, Export, Main, Landing } from "routes";
+import c from "color";
 
 const GlobalStyle = createGlobalStyle`
   html, body { padding: 0; margin: 0; }
 
-  * { box-sizing: border-box; }
+  * {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizelegibility;
+  }
 
   body {
     font-family: ${theme.fontFamily};
@@ -20,12 +25,29 @@ const GlobalStyle = createGlobalStyle`
     font-family: ${theme.fontFamily};
   }
 
+  ul, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
   a {
     color: ${theme.colors.link};
     text-decoration: none;
 
-    &:hover {
+    :hover {
       text-decoration: underline;
+    }
+
+    :focus {
+      outline: none;
+      border-radius: ${theme.radii[0]};
+      box-shadow: 0 0 0 3px white,
+        0 0 0 6px
+          ${c(theme.colors.violet)
+            .alpha(0.25)
+            .rgb()
+            .string()};
     }
   }
 `;
@@ -37,8 +59,10 @@ export default () => {
       <ThemeProvider theme={theme}>
         <SlugProvider>
           <Router>
+            <Landing path="/" />
             <Main path="/:slug" />
             <Export path="/:slug/export" />
+            <CreateRetro path="/new" />
             <CreateRetro default />
           </Router>
         </SlugProvider>

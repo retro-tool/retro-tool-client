@@ -12,23 +12,22 @@ import {
   LineHeightProps,
   space,
   SpaceProps,
-  variant
+  textStyle,
+  TextStyleProps
 } from "styled-system";
 import { Size } from "types";
-
-const size = variant({
-  key: "text",
-  prop: "size"
-});
 
 export type TextProps = ColorProps &
   DisplayProps &
   FontSizeProps &
   FontWeightProps &
   LineHeightProps &
-  SpaceProps & {
+  SpaceProps &
+  TextStyleProps & {
     size?: Size;
     obfuscate?: boolean;
+    textTransform?: string;
+    letterSpacing?: number;
   };
 
 const Text = styled.div<TextProps>`
@@ -36,8 +35,11 @@ const Text = styled.div<TextProps>`
   padding: 0;
   filter: ${({ obfuscate }) => obfuscate && "blur(5px)"};
 
-  ${size};
+  text-transform: ${({ textTransform }) => textTransform};
+  letter-spacing: ${({ letterSpacing }) =>
+    letterSpacing !== 0 && `${letterSpacing}px`};
 
+  ${textStyle};
   ${color};
   ${display};
   ${fontSize};
@@ -47,7 +49,8 @@ const Text = styled.div<TextProps>`
 `;
 
 Text.defaultProps = {
-  size: "base"
+  textStyle: "base",
+  letterSpacing: 0
 };
 
 export { Text };
