@@ -60,14 +60,7 @@ const LogoTitle = styled(Box).attrs({
 
 const Logo = props => (
   <Flex {...props}>
-    {process.env.REACT_APP_ENV === "XING" ? (
-      <>
-        <LogoImage />
-        <LogoTitle>Retro</LogoTitle>
-      </>
-    ) : (
-      <RetroToolLogo width="32" height="32" />
-    )}
+    <RetroToolLogo width="32" height="32" />
   </Flex>
 );
 

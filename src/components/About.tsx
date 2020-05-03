@@ -38,47 +38,25 @@ const About = () => {
       >
         <LightboxContent width={["95vw", null, "400px"]}>
           <Box textAlign="center" mb={4}>
-            <RetroToolLogo />
+            <RetroToolLogo color="grey" />
           </Box>
           <Text mb={3}>
             <b>Retro tool</b> is totally anonymous and doesn't track or store
             any personal information.
           </Text>
-          {process.env.REACT_APP_ENV === "XING" && (
-            <Text mb={3}>
-              If you have any feedback or feature request, please address
-              yourself to our dedicated <i>Slack</i> channel{" "}
-              <b>
-                <a href="https://nw-all.slack.com/messages/CGVSU7D9D">
-                  #nw-xing-retro-help
-                </a>
-              </b>{" "}
-              where we'll politely disagree with your ideas and completely
-              ignore them. Or we might just like it and implement them right
-              away. I don't know just give it a try.
-            </Text>
-          )}
           <Text mb={3}>
             Developed by{" "}
             <a href="https://twitter.com/uesteibar">Unai Esteibar</a>,{" "}
             <a href="https://twitter.com/marciobarrios">Marcio Barrios</a>,{" "}
             <a href="https://twitter.com/andrzej_trzaska">Andrzej Trzaska</a>,{" "}
             <a href="https://twitter.com/iamsilesc">Christian Siles</a> and{" "}
-            <a href="https://twitter.com/Rude">Rude Ayelo</a> during several{" "}
-            <a href="https://medium.com/xing-hackweek">Hackweeks</a> at{" "}
-            <a href="https://www.xing.com/">XING</a>.
+            <a href="https://twitter.com/Rude">Rude Ayelo</a>.
           </Text>
           <Text mb={3}>
             This tool is free and open source:{" "}
-            {process.env.REACT_APP_ENV === "XING" ? (
-              <a href="https://source.xing.com/xing-retro/">
-                https://source.xing.com/xing-retro/
-              </a>
-            ) : (
-              <a href="https://github.com/retro-tool">
-                https://github.com/retro-tool
-              </a>
-            )}
+            <a href="https://github.com/retro-tool">
+              https://github.com/retro-tool
+            </a>
           </Text>
           <Box textAlign="center">
             <Button

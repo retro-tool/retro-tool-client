@@ -257,7 +257,7 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
       </LightboxOverlay>
       <Box position="relative" zIndex={1} bg="white" boxShadow={0}>
         <HeaderContainer>
-          <Logo />
+          <Logo color="grey" />
           <NextStatusContainer>
             <About />
             {status !== "final" && (
