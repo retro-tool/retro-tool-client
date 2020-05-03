@@ -128,7 +128,7 @@ const Landing: React.FC<Props> = () => (
               tabIndex={1}
               px={[4, null, 7]}
             >
-              Create a new retro
+              Start a new retro
             </Button>
             {/*
             // @ts-ignore */}
@@ -152,7 +152,7 @@ const Landing: React.FC<Props> = () => (
           >
             Already{" "}
             <Text fontSize="inherit" color="dark" as="span" fontWeight="bold">
-              1.259 retros
+              672 retros
             </Text>{" "}
             and counting.
           </Text>
@@ -177,7 +177,7 @@ const Landing: React.FC<Props> = () => (
                   doesn't even need a tutorial.
                 </Text>
                 <Text textStyle="landingHighlightsText" mt={4}>
-                  Did we say already that it's free?
+                  Did we already say that it's free?
                 </Text>
               </Box>
               <Box
@@ -193,8 +193,8 @@ const Landing: React.FC<Props> = () => (
                   We don't track or store any personal information.
                 </Text>
                 <Text textStyle="landingHighlightsText" mt={4}>
-                  And the code is open source so you can always check what we
-                  are doing.
+                  The code is open source so you can always check what we are
+                  doing.
                 </Text>
               </Box>
               <Box maxWidth={["100%", null, "45%", "20%"]} mb={[9, 0]}>
@@ -206,8 +206,8 @@ const Landing: React.FC<Props> = () => (
                   Every change from your colleagues is shown instantly.
                 </Text>
                 <Text textStyle="landingHighlightsText" mt={4}>
-                  You can see how others add topics (but you can't read them
-                  until the voting step).
+                  You can see how others add topics, but you can only read your
+                  own until the voting phase.
                 </Text>
               </Box>
               <Box maxWidth={["100%", null, "45%", "20%"]}>
@@ -220,7 +220,7 @@ const Landing: React.FC<Props> = () => (
                   ask for your name or email!
                 </Text>
                 <Text textStyle="landingHighlightsText" mt={4}>
-                  And if you want to keep a retro secret, passwords are coming.
+                  Password protected retros are coming soon.
                 </Text>
               </Box>
             </Flex>
@@ -241,7 +241,7 @@ const Landing: React.FC<Props> = () => (
               maxWidth="100%"
               margin={["auto", null, null, null, null, 0]}
             >
-              <Text as="h2" fontSize={[6, null, 7, 8]} fontWeight="bold">
+              <Text as="h2" fontSize={[6, null, 7, 8]}>
                 How to use Retro tool
               </Text>
               <Text fontSize={[4, null, 5]} color="grey" my={4}>
@@ -250,8 +250,8 @@ const Landing: React.FC<Props> = () => (
                 mobile, in that case the UI will adapt).
               </Text>
               <Text fontSize={[4, null, 5]} color="grey" mb={[8, null, 10]}>
-                A retro consists in 4 simple guided steps, you can always see
-                the current step in the breadcrumb and you can advance to the
+                A retro consists of 4 simple guided steps, you can always see
+                the phase you're in the breadcrumb and you can advance to the
                 next step with the button placed in the header.
               </Text>
 
@@ -268,7 +268,7 @@ const Landing: React.FC<Props> = () => (
               <RetroSteps>Group &amp; vote</RetroSteps>
               <Text textStyle="landingBase" mt={1} mb={8}>
                 This step is to <strong>group and vote</strong> so you know what
-                are the most important topics for your team. Usually this step
+                the most important topics are for your team. Usually this step
                 and the following are done synchronously with your team.
               </Text>
 
@@ -276,23 +276,22 @@ const Landing: React.FC<Props> = () => (
               <Text textStyle="landingBase" mt={1} mb={8}>
                 This step is where your team{" "}
                 <strong>discusses the prioritized topics</strong> and where you
-                can add action items to improve them.
+                can add action items to address those topics after the retro.
               </Text>
 
               <RetroSteps>Done</RetroSteps>
               <Text textStyle="landingBase" mt={1}>
-                The last step is just to finish a retro, and at this point you
-                can <strong>export all the topics</strong> in plain text or{" "}
+                The last step is ending the retro, and at this point you can{" "}
+                <strong>export all the topics</strong> in plain text or{" "}
                 <strong>create a linked retro</strong>.
               </Text>
               <Text textStyle="landingBase" mt={4}>
                 <strong>Tip:</strong> You can create a retro with a{" "}
-                <strong>custom name</strong> just writing it in the url, and if
-                you choose this pattern{" "}
-                <em>https://retrotool.app/any-name-here-1</em>, when you create
-                a new retro in the last step it will create the retro{" "}
-                <em>https://retrotool.app/my-awesome-retro-2</em> and it will
-                show all the previous action items).
+                <strong>custom name</strong> by writing it in the url. If you
+                choose this pattern <em>https://retrotool.app/any-name-1</em>,
+                when you create a linked retro in the last step it will create
+                the retro <em>https://retrotool.app/any-name-2</em> and it will
+                show all the previous action items.
               </Text>
             </Box>
           </Box>
