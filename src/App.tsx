@@ -15,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
     text-rendering: optimizelegibility;
   }
 
+  h1, h2, h3 {
+    font-weight: normal;
+  }
+
   body {
     font-family: ${theme.fontFamily};
     background: ${theme.colors.contentGrey};
