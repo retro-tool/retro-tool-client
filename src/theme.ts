@@ -27,7 +27,7 @@ const space = [0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 88, 100];
 const breakpoints = ["640px", "768px", "1024px", "1200px", "1400px"];
 
 const fontFamily =
-  '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+  'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 
 const fontSizes = [0, 12, 14, 16, 18, 22, 26, 36, 46, 56, 66];
 
