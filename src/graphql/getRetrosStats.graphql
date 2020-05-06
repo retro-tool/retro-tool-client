@@ -1,0 +1,7 @@
+query getRetrosStats {
+  stats {
+    retros {
+      count
+    }
+  }
+}
