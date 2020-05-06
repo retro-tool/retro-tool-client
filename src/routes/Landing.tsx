@@ -87,7 +87,7 @@ const Landing: React.FC<Props> = () => {
           <Logo />
           <Flex>
             <Text mr={3}>
-              <a href="https://twitter.com/retro_tool" tabIndex={3}>
+              <a href="mailto:hi@retrotool.app" tabIndex={3}>
                 Contact us
               </a>
             </Text>
