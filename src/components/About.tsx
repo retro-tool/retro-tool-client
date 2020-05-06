@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components/macro";
 import themeGet from "@styled-system/theme-get";
+import { Link } from "@reach/router";
 import { Button, LightboxContent, LightboxOverlay, Text } from "components";
 import { Clear } from "styled-icons/material/Clear";
 import { Help } from "styled-icons/material/Help";
@@ -42,7 +43,8 @@ const About = () => {
           </Box>
           <Text mb={3}>
             <b>Retro tool</b> is totally anonymous and doesn't track or store
-            any personal information.
+            any personal information. You can read more about it in our{" "}
+            <Link to="/">landing page</Link>.
           </Text>
           <Text mb={3}>
             Developed by{" "}
