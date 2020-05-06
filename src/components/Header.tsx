@@ -3,7 +3,7 @@ import { client } from "services/api";
 import styled, { css } from "styled-components/macro";
 import { display, DisplayProps, space, SpaceProps } from "styled-system";
 import themeGet from "@styled-system/theme-get";
-import { Redirect, navigate } from "@reach/router";
+import { Redirect, navigate, Link } from "@reach/router";
 import { useSlug } from "components/Slug.context";
 import {
   About,
@@ -257,7 +257,9 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
       </LightboxOverlay>
       <Box position="relative" zIndex={1} bg="white" boxShadow={0}>
         <HeaderContainer>
-          <Logo color="grey" />
+          <Link to="/">
+            <Logo color="grey" />
+          </Link>
           <NextStatusContainer>
             <About />
             {status !== "final" && (
