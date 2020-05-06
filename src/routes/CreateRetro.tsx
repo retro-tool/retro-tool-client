@@ -1,11 +1,9 @@
 import React from "react";
-import { client } from "services/api";
-import { ApolloProvider } from "@apollo/react-hooks";
 import { useCreateRetroQuery } from "generated/graphql";
 import { Redirect } from "@reach/router";
 import { RouteComponentProps } from "@reach/router";
 
-const RedirectToRetro = () => {
+const CreateRetro: React.FC<RouteComponentProps> = () => {
   const { data, loading, error } = useCreateRetroQuery();
 
   if (loading) return null;
@@ -14,11 +12,5 @@ const RedirectToRetro = () => {
 
   return <Redirect noThrow to={`/${data.retro.slug}`} />;
 };
-
-const CreateRetro = (props: RouteComponentProps) => (
-  <ApolloProvider client={client}>
-    <RedirectToRetro />
-  </ApolloProvider>
-);
 
 export default CreateRetro;

@@ -2,8 +2,6 @@ import React from "react";
 import { Header, Text, StatusProvider } from "components";
 import styled from "styled-components/macro";
 import { useGetRetroItemsQuery } from "generated/graphql";
-import { ApolloProvider } from "@apollo/react-hooks";
-import { client } from "services/api";
 import { RouteComponentProps } from "@reach/router";
 import { Slug } from "types";
 
@@ -86,14 +84,14 @@ interface Props
   }> {}
 
 const Export = ({ slug }: Props) => (
-  <ApolloProvider client={client}>
+  <>
     <StatusProvider>
       <Header isExport />
     </StatusProvider>
     <div>
       <Items slug={slug} />
     </div>
-  </ApolloProvider>
+  </>
 );
 
 export default Export;
