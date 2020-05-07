@@ -1,0 +1,7 @@
+query getNextRetro($slug: String!) {
+  retro(slug: $slug) {
+    nextRetro {
+      slug
+    }
+  }
+}
