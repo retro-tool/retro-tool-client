@@ -2,7 +2,7 @@
 FROM node:10-alpine as builder
 WORKDIR /usr/src/app
 COPY . ./
-RUN yarn
+RUN SCHEMA_PATH=https://retrotool.app/api/graph yarn
 RUN yarn build
 
 # Stage 2 - the production environment
