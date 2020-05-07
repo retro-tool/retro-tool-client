@@ -20,7 +20,8 @@ import { ArrowUpward } from "styled-icons/material/ArrowUpward";
 import { Box, BoxType, Flex } from "./UI";
 import {
   useCreateLinkedRetroQuery,
-  GetRetroIdDocument
+  GetRetroIdDocument,
+  useGetNextRetroQuery
 } from "generated/graphql";
 
 interface HeaderContainerProps extends SpaceProps {}
@@ -229,6 +230,9 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
     setPreviousRetroId(data.retro.id);
   };
 
+  const { data } = useGetNextRetroQuery({ variables: { slug: slug } });
+  const nextRetro = data && data.retro && data.retro.nextRetro;
+
   if (triggerExport) return <Redirect noThrow to={`/${slug}/export`} />;
   if (previousRetroId) {
     return <CreateNewLinkedRetro previousRetroId={previousRetroId} />;
@@ -274,10 +278,17 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
             )}
             {status === "final" && (
               <>
-                <Button onClick={getPreviousRetroId} ml={3}>
-                  Start new retro
-                  <NextIcon />
-                </Button>
+                {nextRetro ? (
+                  <Button onClick={() => navigate(`/${nextRetro.slug}`)} ml={3}>
+                    See next retro
+                    <NextIcon />
+                  </Button>
+                ) : (
+                  <Button onClick={getPreviousRetroId} ml={3}>
+                    Start new retro
+                    <NextIcon />
+                  </Button>
+                )}
                 {isExport ? (
                   <Button
                     variant="secondary"
