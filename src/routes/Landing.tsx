@@ -43,17 +43,17 @@ const Underline = styled(Box)`
   background-repeat: repeat-x;
   background-position: center bottom;
   background-size: 200px 8px;
-  animation: ${underlineAnimation} 0.3s 3s ease-in-out forwards;
+  animation: ${underlineAnimation} 0.3s 2s ease-in-out forwards;
 `;
 
 const Screenshot = styled(Box)`
   position: absolute;
   left: 80ch;
   bottom: -20px;
-  width: 1275px
+  width: 1275px;
   height: 670px;
   background: url(${retrotoolScreenshot}) no-repeat;
-  filter: drop-shadow(0 0 1px rgba(0,0,0,.5));
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
 `;
 
 const RetroSteps = styled(Text).attrs({
@@ -121,7 +121,11 @@ const Landing: React.FC<Props> = () => {
                 by a simple workflow. And for free!
               </Text>
             </Box>
-            <Flex mb={2} justifyContent="center" textAlign="center">
+            <Flex
+              mb={2}
+              justifyContent={["start", null, "center"]}
+              textAlign="center"
+            >
               {/*
               // @ts-ignore */}
               <Button
@@ -285,12 +289,22 @@ const Landing: React.FC<Props> = () => {
                 <Text as="h2" fontSize={[6, null, 7, 8]}>
                   How to use Retro tool
                 </Text>
-                <Text fontSize={[4, null, 5]} color="grey" my={4}>
+                <Text
+                  fontSize={[4, null, 5]}
+                  lineHeight={1}
+                  color="grey"
+                  my={4}
+                >
                   The main and only screen is a 4 columns layout where you can
                   add different topics and action items (unless you are on
                   tablet or mobile, in that case the UI will adapt).
                 </Text>
-                <Text fontSize={[4, null, 5]} color="grey" mb={[8, null, 10]}>
+                <Text
+                  fontSize={[4, null, 5]}
+                  lineHeight={1}
+                  color="grey"
+                  mb={[8, null, 10]}
+                >
                   A retro consists of 4 simple guided steps, you can always see
                   the phase you're in the breadcrumb and you can advance to the
                   next step with the button placed in the header.

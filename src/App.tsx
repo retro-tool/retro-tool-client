@@ -9,12 +9,16 @@ import { CreateRetro, Export, Main, Landing } from "routes";
 import c from "color";
 
 const GlobalStyle = createGlobalStyle`
-  html, body { padding: 0; margin: 0; }
+  html, body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    padding: 0;
+    margin: 0;
+  }
 
   * {
     box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizelegibility;
   }
 
   h1, h2, h3 {
