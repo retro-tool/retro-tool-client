@@ -91,6 +91,7 @@ StyledInput.defaultProps = {
   as: Input,
   borderRadius: 1,
   borderWidth: 2,
+  borderStyle: "solid",
   borderColor: "borderGrey",
   type: "text",
   fontSize: 2,
