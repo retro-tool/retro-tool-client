@@ -2,6 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import * as Sentry from "@sentry/browser";
+import { getConfig } from "./config";
+
+const config = getConfig();
+Sentry.init(config.sentry);
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
