@@ -1,6 +1,28 @@
 version: 2.1
+
+orbs:
+  slack: circleci/slack@3.4.2
+
+workflows:
+  version: 2
+
+  test-and-build:
+    jobs:
+      - test
+      - build:
+          context: docker-login
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+      - notify_build:
+          requires:
+            - build
+
 jobs:
-  build:
+  test:
     working_directory: ~/app
     docker:
       - image: circleci/node:13
@@ -26,3 +48,29 @@ jobs:
       - run: dockerize -wait tcp://localhost:4000 -timeout 1m
       - run: yarn
       - run: yarn test --passWithNoTests
+
+  build:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: docker build -t retrotool/client:$CIRCLE_SHA1 -t retrotool/client:latest .
+      - run:
+          name: Login to DockerHub
+          command: docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
+      - run:
+          name: Push commit image to DockerHub
+          command: docker push retrotool/client:$CIRCLE_SHA1
+      - run:
+          name: Push latest image to DockerHub
+          command: docker push retrotool/client:latest
+  notify_build:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - slack/notify:
+          message: ":rocket: Docker image built -> retrotool/client:latest"
