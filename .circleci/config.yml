@@ -44,10 +44,18 @@ jobs:
           MIX_ENV: test
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-dependency-cache-{{ checksum "yarn.lock" }}
+            - v1-dependency-cache
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: dockerize -wait tcp://localhost:4000 -timeout 1m
       - run: yarn
       - run: yarn test --passWithNoTests
+      - save_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
 
   build:
     working_directory: /app
