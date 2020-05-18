@@ -166,7 +166,7 @@ const Landing: React.FC<Props> = () => {
                   as="span"
                   fontWeight="bold"
                 >
-                  {data.stats.retros.count} retros
+                  {data.stats.retros.count.toLocaleString()} retros
                 </Text>{" "}
                 and counting.
               </Text>
