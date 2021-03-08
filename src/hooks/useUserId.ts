@@ -7,7 +7,7 @@ type Uuid = string;
 
 const useUserId = (): Uuid | null => {
   const slug = useSlug();
-  const [uuid, setUuid] = useSessionStorage("uuid");
+  const [uuid, setUuid] = useSessionStorage<Uuid | null>("uuid");
 
   const getUuid = async () => {
     const { data } = await client.query({

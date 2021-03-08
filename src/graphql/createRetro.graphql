@@ -4,8 +4,8 @@ query createRetro {
   }
 }
 
-query createLinkedRetro($previousRetroId: Int!) {
-  retro(slug: null, previousRetroId: $previousRetroId) {
+query createLinkedRetro($previousRetroId: Int!, $password: String) {
+  retro(slug: null, password: $password, previousRetroId: $previousRetroId) {
     slug
   }
 }

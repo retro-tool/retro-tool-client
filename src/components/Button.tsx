@@ -4,6 +4,7 @@ import c from "color";
 import { Box, BoxType } from "./UI";
 import { buttonStyle } from "styled-system";
 import { buttons } from "theme";
+import { ButtonHTMLAttributes } from "react";
 
 type ButtonVariant = keyof typeof buttons;
 
@@ -15,7 +16,7 @@ interface ButtonProps extends BoxType {
 const Button = styled(Box).attrs({
   as: "button",
   lineHeight: 5
-})<ButtonProps>`
+})<ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>>`
   display: inline-flex;
   vertical-align: middle;
   flex-wrap: nowrap;
@@ -48,7 +49,8 @@ const Button = styled(Box).attrs({
 `;
 
 Button.defaultProps = {
-  variant: "primary"
+  variant: "primary",
+  type: "button"
 };
 
 export default Button;

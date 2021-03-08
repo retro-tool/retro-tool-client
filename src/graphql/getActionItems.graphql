@@ -1,5 +1,5 @@
-query getActionItems($slug: String!) {
-  retro(slug: $slug) {
+query getActionItems($slug: String!, $password: String) {
+  retro(slug: $slug, password: $password) {
     actionItems {
       completed
       id

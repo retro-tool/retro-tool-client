@@ -193,8 +193,10 @@ type ItemsProps = {
 
 const Items = ({ title, topic, placeholder }: ItemsProps) => {
   const slug = useSlug();
+  const { password } = useStatus();
+
   const { subscribeToMore, data, loading, error } = getRetroItems[topic]({
-    variables: { slug }
+    variables: { slug, password }
   });
   const [newItems, setNewItems] = useState();
   const [retroItems, setRetroItems] = useState();
@@ -225,7 +227,7 @@ const Items = ({ title, topic, placeholder }: ItemsProps) => {
         // @ts-ignore
         subscribeToMore({
           document: getSubscribeRetroDocuments[topic],
-          variables: { slug },
+          variables: { slug, password },
           updateQuery: (prev, { subscriptionData }) => {
             if (!subscriptionData.data) return prev;
 

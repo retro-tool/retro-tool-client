@@ -1,5 +1,5 @@
-query getNextRetro($slug: String!) {
-  retro(slug: $slug) {
+query getNextRetro($slug: String!, $password: String) {
+  retro(slug: $slug, password: $password) {
     nextRetro {
       slug
     }

@@ -2,21 +2,21 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components/macro";
 import themeGet from "@styled-system/theme-get";
 import { Link } from "@reach/router";
-import { Button, LightboxContent, LightboxOverlay, Text } from "components";
-import { Clear } from "styled-icons/material/Clear";
-import { Help } from "styled-icons/material/Help";
+import Button from "components/Button";
+import { Text } from "components/Text";
+import {
+  CloseIcon,
+  LightboxContent,
+  LightboxOverlay
+} from "components/Lightbox";
+import { HelpOutline } from "styled-icons/material/HelpOutline";
 import { Box } from "./UI";
 import { ReactComponent as RetroToolLogo } from "../assets/retrotool_compact.svg";
 
-const CloseIcon = styled(Clear)`
-  width: ${themeGet("space.5")}px;
-  margin-right: -8px;
-  margin-left: 6px;
-`;
-
-const HelpIcon = styled(Help)`
-  height: ${themeGet("space.5")}px;
-  width: ${themeGet("space.5")}px;
+const HelpIcon = styled(HelpOutline).attrs({
+  size: 24,
+  title: "More info about Retro tool"
+})`
   color: ${themeGet("colors.secondaryGrey")};
 
   &:hover {
@@ -30,7 +30,7 @@ const About = () => {
   const buttonRef = useRef(null);
 
   return (
-    <>
+    <Box ml={2} mr={3}>
       <HelpIcon onClick={() => setOpen(true)} />
       <LightboxOverlay
         isOpen={open}
@@ -73,7 +73,7 @@ const About = () => {
           </Box>
         </LightboxContent>
       </LightboxOverlay>
-    </>
+    </Box>
   );
 };
 

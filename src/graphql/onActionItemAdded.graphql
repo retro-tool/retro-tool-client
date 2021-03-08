@@ -1,5 +1,5 @@
-subscription onActionItemAdded($slug: String!) {
-  retroUpdated(slug: $slug) {
+subscription onActionItemAdded($slug: String!, $password: String) {
+  retroUpdated(slug: $slug, password: $password) {
     actionItems {
       completed
       id

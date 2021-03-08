@@ -1,5 +1,5 @@
-subscription onStatusUpdated($slug: String!) {
-  retroUpdated(slug: $slug) {
+subscription onStatusUpdated($slug: String!, $password: String) {
+  retroUpdated(slug: $slug, password: $password) {
     status
     works {
       id

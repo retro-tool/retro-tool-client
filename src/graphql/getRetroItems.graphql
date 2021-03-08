@@ -1,5 +1,5 @@
-query getWorksItems($slug: String!) {
-  retro(slug: $slug) {
+query getWorksItems($slug: String!, $password: String) {
+  retro(slug: $slug, password: $password) {
     works {
       id
       hidden
@@ -14,8 +14,8 @@ query getWorksItems($slug: String!) {
   }
 }
 
-query getImproveItems($slug: String!) {
-  retro(slug: $slug) {
+query getImproveItems($slug: String!, $password: String) {
+  retro(slug: $slug, password: $password) {
     improve {
       id
       hidden
@@ -30,8 +30,8 @@ query getImproveItems($slug: String!) {
   }
 }
 
-query getOthersItems($slug: String!) {
-  retro(slug: $slug) {
+query getOthersItems($slug: String!, $password: String) {
+  retro(slug: $slug, password: $password) {
     others {
       id
       hidden
@@ -46,8 +46,8 @@ query getOthersItems($slug: String!) {
   }
 }
 
-query getRetroItems($slug: String!) {
-  retro(slug: $slug) {
+query getRetroItems($slug: String!, $password: String) {
+  retro(slug: $slug, password: $password) {
     works {
       id
       title
