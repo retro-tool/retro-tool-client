@@ -115,4 +115,4 @@ const PlusOne = ({ id, votes }: PlusOneProps) => {
   );
 };
 
-export default PlusOne;
+export { PlusOne };
