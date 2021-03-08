@@ -18,6 +18,7 @@ const ItemLeft = styled(Flex).attrs<FlexType>({
 
 const ItemText = styled(Flex)<FlexType>`
   flex: 1;
+  min-width: 0;
 `;
 
 export { BaseItemContainer, ItemLeft, ItemText };

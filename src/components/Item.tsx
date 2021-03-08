@@ -3,15 +3,11 @@ import styled from "styled-components/macro";
 import { width, WidthProps } from "styled-system";
 import themeGet from "@styled-system/theme-get";
 import { RetroItem, useDetachRetroItemMutation } from "generated/graphql";
-import {
-  DeleteRetroItem,
-  BaseItemContainer,
-  ItemText,
-  ItemLeft,
-  PlusOne,
-  useStatus
-} from "components";
-import { Text } from "components/Text";
+import { DeleteRetroItem } from "./DeleteRetroItemButton";
+import { BaseItemContainer, ItemText, ItemLeft } from "./BaseItem";
+import { PlusOne } from "./PlusOne";
+import { useStatus } from "./StatusProvider";
+import { Text, TruncatedText } from "./Text";
 
 const DeleteItemButton = styled(DeleteRetroItem)`
   display: none;
@@ -155,7 +151,7 @@ const Item: React.FC<ItemProps> = ({
             <Ref>#{ref}</Ref>
             <DeleteItemButton id={id} />
           </ItemLeft>
-          <Text>{title}</Text>
+          <TruncatedText>{title}</TruncatedText>
         </ItemText>
       )}
       <PlusOne id={id} votes={votes} />

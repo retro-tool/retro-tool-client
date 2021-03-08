@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components/macro";
-import { ItemText, ItemLeft, Text } from "components";
-import { Box, Flex, FlexType } from "./UI";
-import { BaseItemContainer } from "./BaseItem";
-import { DeleteActionItem } from "components/DeleteActionItemButton";
+import { TruncatedText } from "./Text";
+import { Flex, FlexType } from "./UI";
+import { BaseItemContainer, ItemText, ItemLeft } from "./BaseItem";
+import { DeleteActionItem } from "./DeleteActionItemButton";
 import { ActionItem, useToggleCompletedMutation } from "generated/graphql";
 import { space, SpaceProps } from "styled-system";
 
@@ -23,6 +23,7 @@ const ItemContainer = styled(BaseItemContainer)`
 
 const Label = styled(Flex).attrs({ as: "label" })<FlexType>`
   cursor: pointer;
+  min-width: 0;
 `;
 
 const Checkbox = styled.input.attrs<SpaceProps>({ type: "checkbox", mr: 2 })`
@@ -39,7 +40,7 @@ const Item: React.FC<ActionItem> = ({ children, id, completed, title }) => {
         <ItemLeft>
           <DeleteItemButton id={id} />
         </ItemLeft>
-        <Text>
+        <ItemText>
           <Label>
             <Checkbox
               checked={completed}
@@ -61,9 +62,9 @@ const Item: React.FC<ActionItem> = ({ children, id, completed, title }) => {
                 })
               }
             />
-            <Box mt="-2px">{children}</Box>
+            <TruncatedText mt="-2px">{children}</TruncatedText>
           </Label>
-        </Text>
+        </ItemText>
       </ItemText>
     </ItemContainer>
   );
