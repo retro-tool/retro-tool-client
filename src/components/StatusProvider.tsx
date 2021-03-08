@@ -88,14 +88,8 @@ const StatusProvider = ({ children }) => {
           let itemsAvailable =
             !!works.length || !!improve.length || !!others.length;
 
-          let hasVotes = [...improve, ...others, ...works].some(
-            ({ votes }) => !!votes
-          );
-
           if (status === "initial") {
             setCansSwitchStatus(itemsAvailable);
-          } else if (status === "review") {
-            setCansSwitchStatus(hasVotes);
           } else {
             setCansSwitchStatus(true);
           }
@@ -123,15 +117,8 @@ const StatusProvider = ({ children }) => {
                 (improve && !!improve.length) ||
                 (others && !!others.length);
 
-              let hasVotes = [...improve, ...others, ...works].some(
-                ({ votes }) => !!votes
-              );
-
               if (status === "initial") {
                 setCansSwitchStatus(itemsAvailable);
-              } else if (status === "review") {
-                // TODO: do we really want to avoid going to the next step if there's no votes?
-                setCansSwitchStatus(hasVotes);
               } else {
                 setCansSwitchStatus(true);
               }
