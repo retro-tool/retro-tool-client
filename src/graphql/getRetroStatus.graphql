@@ -1,5 +1,5 @@
-query getRetroStatus($slug: String!) {
-  retro(slug: $slug) {
+query getRetroStatus($slug: String!, $password: String) {
+  retro(slug: $slug, password: $password) {
     status
     works {
       id

@@ -1,31 +1,61 @@
 import React, { useRef, useState } from "react";
-import { client } from "services/api";
 import styled, { css } from "styled-components/macro";
 import { display, DisplayProps, space, SpaceProps } from "styled-system";
 import themeGet from "@styled-system/theme-get";
 import { Redirect, navigate, Link } from "@reach/router";
-import { useSlug } from "components/Slug.context";
-import {
-  About,
-  Button,
-  LightboxContent,
-  LightboxOverlay,
-  Logo,
-  useStatus,
-  Text
-} from "components";
 import { ChevronRight } from "styled-icons/material/ChevronRight";
 import { ChevronLeft } from "styled-icons/material/ChevronLeft";
 import { ArrowUpward } from "styled-icons/material/ArrowUpward";
+
+import { client } from "services/api";
+import { useSlug } from "components/Slug.context";
+import { About } from "components/About";
+import Button from "components/Button";
+import { LightboxContent, LightboxOverlay } from "components/Lightbox";
+import Logo from "components/Logo";
+import { useStatus } from "components/StatusProvider";
+import { Text } from "components/Text";
+import { Settings } from "components/Settings";
 import { Box, BoxType, Flex } from "./UI";
+import { HeaderSkeleton } from "components/Skeleton";
+
 import {
   useCreateLinkedRetroQuery,
   GetRetroIdDocument,
   useGetNextRetroQuery
 } from "generated/graphql";
+import { Status } from "types";
 
+/**
+ * TYPES
+ */
 interface HeaderContainerProps extends SpaceProps {}
 
+interface SubheaderProps extends DisplayProps, SpaceProps {}
+
+type BreadcrumbItemProps = BoxType & {
+  active: boolean;
+};
+
+interface BreadcrumbsProps {
+  status: string;
+}
+
+type LinkedRetroProps = {
+  previousRetroId: number;
+};
+
+interface StatusHelpProps {
+  status: string;
+}
+
+type HeaderProps = {
+  isExport?: boolean;
+};
+
+/**
+ * STYLES
+ */
 const HeaderContainer = styled.div.attrs<HeaderContainerProps>({
   py: 3,
   px: 4
@@ -36,8 +66,6 @@ const HeaderContainer = styled.div.attrs<HeaderContainerProps>({
 
   ${space}
 `;
-
-interface SubheaderProps extends DisplayProps, SpaceProps {}
 
 const SubheaderContainer = styled.div.attrs<SubheaderProps>({
   display: ["none", null, null, "flex"],
@@ -53,10 +81,6 @@ const SubheaderContainer = styled.div.attrs<SubheaderProps>({
   ${display}
   ${space}
 `;
-
-type BreadcrumbItemProps = BoxType & {
-  active: boolean;
-};
 
 const BreadcrumbItem = styled(Box).attrs({
   mr: 7
@@ -89,57 +113,12 @@ const BreadcrumbItem = styled(Box).attrs({
   }
 `;
 
-interface BreadcrumbsProps {
-  status: string;
-}
-
-const Breadcrumbs = ({ status }: BreadcrumbsProps) => {
-  return (
-    <Flex fontSize={1}>
-      <BreadcrumbItem active={status === "initial"}>Brainstorm</BreadcrumbItem>
-      <BreadcrumbItem active={status === "review"}>Group & vote</BreadcrumbItem>
-      <BreadcrumbItem active={status === "actions"}>
-        Add action items
-      </BreadcrumbItem>
-      <BreadcrumbItem active={status === "final"}>Done</BreadcrumbItem>
-    </Flex>
-  );
-};
-
 const StatusHelpContainer = styled.div`
   display: flex;
   align-items: center;
 
   ${display}
 `;
-
-interface StatusHelpProps {
-  status: string;
-}
-
-const StatusHelp = ({ status }: StatusHelpProps) => {
-  return (
-    <StatusHelpContainer>
-      {status === "initial" && (
-        <Text fontSize={1} color="secondaryGrey">
-          Add your comments below, you won't be able to see your peers' until
-          next step
-        </Text>
-      )}
-      {status === "review" && (
-        <Text fontSize={1} color="secondaryGrey">
-          Drag and drop comments to group them together and vote for the ones
-          you'd like to discuss about
-        </Text>
-      )}
-      {status === "actions" && (
-        <Text fontSize={1} color="secondaryGrey">
-          Add action items, you can no longer group or vote comments
-        </Text>
-      )}
-    </StatusHelpContainer>
-  );
-};
 
 const iconStyles = css`
   margin-right: -8px;
@@ -166,8 +145,44 @@ const NextStatusContainer = styled.div`
   align-items: center;
 `;
 
-type LinkedRetroProps = {
-  previousRetroId: number;
+/**
+ * MISC COMPONENTS
+ */
+const Breadcrumbs = ({ status }: BreadcrumbsProps) => {
+  return (
+    <Flex fontSize={1}>
+      <BreadcrumbItem active={status === "initial"}>Brainstorm</BreadcrumbItem>
+      <BreadcrumbItem active={status === "review"}>Group & vote</BreadcrumbItem>
+      <BreadcrumbItem active={status === "actions"}>
+        Add action items
+      </BreadcrumbItem>
+      <BreadcrumbItem active={status === "final"}>Done</BreadcrumbItem>
+    </Flex>
+  );
+};
+
+const StatusHelp = ({ status }: StatusHelpProps) => {
+  return (
+    <StatusHelpContainer>
+      {status === "initial" && (
+        <Text fontSize={1} color="secondaryGrey">
+          Add your comments below, you won't be able to see your peers' until
+          next step
+        </Text>
+      )}
+      {status === "review" && (
+        <Text fontSize={1} color="secondaryGrey">
+          Drag and drop comments to group them together and vote for the ones
+          you'd like to discuss about
+        </Text>
+      )}
+      {status === "actions" && (
+        <Text fontSize={1} color="secondaryGrey">
+          Add action items, you can no longer group or vote comments
+        </Text>
+      )}
+    </StatusHelpContainer>
+  );
 };
 
 const CreateNewLinkedRetro = ({ previousRetroId }: LinkedRetroProps) => {
@@ -182,19 +197,19 @@ const CreateNewLinkedRetro = ({ previousRetroId }: LinkedRetroProps) => {
   return <Redirect noThrow to={`/${data.retro.slug}`} />;
 };
 
-type HeaderProps = {
-  isExport?: boolean;
-};
-
+/**
+ * MAIN COMPONENT
+ */
 const Header: React.FC<HeaderProps> = ({ isExport }) => {
   const slug = useSlug();
-  const { cansSwitchStatus, status, nextStatus } = useStatus();
+  const { cansSwitchStatus, status, nextStatus, password } = useStatus();
   const [confirm, setConfirm] = useState(false);
   const [triggerExport, setTriggerExport] = useState(false);
   const [previousRetroId, setPreviousRetroId] = useState();
   const buttonRef = useRef(null);
 
-  const headerActions = {
+  const headerActions: Record<Status, any> = {
+    "password-protected": {},
     initial: {
       label: "Group & vote comments",
       onClick: () => {
@@ -224,18 +239,21 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
   const getPreviousRetroId = async () => {
     const { data } = await client.query({
       query: GetRetroIdDocument,
-      variables: { slug }
+      variables: { slug, password }
     });
 
     setPreviousRetroId(data.retro.id);
   };
 
-  const { data } = useGetNextRetroQuery({ variables: { slug: slug } });
+  const { data } = useGetNextRetroQuery({ variables: { slug, password } });
   const nextRetro = data && data.retro && data.retro.nextRetro;
 
+  if (status === "password-protected") {
+    return <HeaderSkeleton />;
+  }
   if (triggerExport) return <Redirect noThrow to={`/${slug}/export`} />;
   if (previousRetroId) {
-    return <CreateNewLinkedRetro previousRetroId={previousRetroId} />;
+    return <CreateNewLinkedRetro previousRetroId={previousRetroId!} />;
   }
 
   return (
@@ -265,12 +283,12 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
             <Logo color="grey" />
           </Link>
           <NextStatusContainer>
+            <Settings />
             <About />
             {status !== "final" && (
               <Button
                 onClick={headerActions[status].onClick}
                 disabled={!cansSwitchStatus}
-                ml={3}
               >
                 {headerActions[status].label}
                 <NextIcon />
@@ -279,12 +297,12 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
             {status === "final" && (
               <>
                 {nextRetro ? (
-                  <Button onClick={() => navigate(`/${nextRetro.slug}`)} ml={3}>
+                  <Button onClick={() => navigate(`/${nextRetro.slug}`)}>
                     See next retro
                     <NextIcon />
                   </Button>
                 ) : (
-                  <Button onClick={getPreviousRetroId} ml={3}>
+                  <Button onClick={getPreviousRetroId}>
                     Start new retro
                     <NextIcon />
                   </Button>
@@ -293,7 +311,6 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
                   <Button
                     variant="secondary"
                     onClick={() => navigate(`/${slug}`)}
-                    ml={3}
                   >
                     <BackIcon />
                     Back
@@ -303,7 +320,6 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
                     variant="secondary"
                     onClick={headerActions[status].onClick}
                     disabled={!cansSwitchStatus}
-                    ml={3}
                   >
                     {headerActions[status].label}
                     <ExportIcon />
@@ -322,4 +338,4 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
   );
 };
 
-export { Header as default, HeaderContainer };
+export { Header, HeaderContainer };

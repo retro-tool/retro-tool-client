@@ -1,13 +1,16 @@
 import React from "react";
 import styled, { css } from "styled-components/macro";
-import { ActionItems, Items } from "components";
 import { SmileyHappy } from "styled-icons/boxicons-solid/SmileyHappy";
 import { SmileySad } from "styled-icons/boxicons-solid/SmileySad";
 import { QuestionAnswer } from "styled-icons/material/QuestionAnswer";
 import { CheckBox } from "styled-icons/material/CheckBox";
-import { Flex } from "./UI";
 
-const ContentContainer = styled(Flex).attrs({
+import { Flex } from "./UI";
+import { ActionItems, Items } from "components";
+import { useStatus } from "components/StatusProvider";
+import { ContentSkeleton } from "components/Skeleton";
+
+export const ContentContainer = styled(Flex).attrs({
   height: ["calc(100vh - 60px)", null, null, "calc(100vh - 96px)"],
   px: [1, 2],
   py: [1, 2]
@@ -24,41 +27,49 @@ const sharedIconStyles = css`
   transition: color 0.2s ease;
 `;
 
-const WorksIcon = styled(SmileyHappy)`
+export const WorksIcon = styled(SmileyHappy)`
   ${sharedIconStyles}
 `;
 
-const ImproveIcon = styled(SmileySad)`
+export const ImproveIcon = styled(SmileySad)`
   ${sharedIconStyles}
 `;
 
-const OthersIcon = styled(QuestionAnswer)`
+export const OthersIcon = styled(QuestionAnswer)`
   ${sharedIconStyles}
 `;
 
-const ActionItemsIcon = styled(CheckBox)`
+export const ActionItemsIcon = styled(CheckBox)`
   ${sharedIconStyles}
 `;
 
-const Content = () => (
-  <ContentContainer>
-    <Items
-      topic="works"
-      title={<WorksIcon />}
-      placeholder="It worked well that..."
-    />
-    <Items
-      topic="improve"
-      title={<ImproveIcon />}
-      placeholder="We could improve..."
-    />
-    <Items
-      topic="others"
-      title={<OthersIcon />}
-      placeholder="I want to ask about..."
-    />
-    <ActionItems title={<ActionItemsIcon />} />
-  </ContentContainer>
-);
+const Content = () => {
+  const { status } = useStatus();
+
+  if (status === "password-protected") {
+    return <ContentSkeleton />;
+  }
+
+  return (
+    <ContentContainer>
+      <Items
+        topic="works"
+        title={<WorksIcon />}
+        placeholder="It worked well that..."
+      />
+      <Items
+        topic="improve"
+        title={<ImproveIcon />}
+        placeholder="We could improve..."
+      />
+      <Items
+        topic="others"
+        title={<OthersIcon />}
+        placeholder="I want to ask about..."
+      />
+      <ActionItems title={<ActionItemsIcon />} />
+    </ContentContainer>
+  );
+};
 
 export default Content;

@@ -1,7 +1,9 @@
 import styled from "styled-components/macro";
 import { space, SpaceProps, width, WidthProps } from "styled-system";
+import themeGet from "@styled-system/theme-get";
 import c from "color";
 import { DialogContent, DialogOverlay } from "@reach/dialog";
+import { Clear } from "styled-icons/material/Clear";
 
 const LightboxOverlay = styled(DialogOverlay)`
   background: ${({ theme }) =>
@@ -37,4 +39,10 @@ LightboxContent.defaultProps = {
   width: ["95vw", null, "500px"]
 };
 
-export { LightboxOverlay, LightboxContent };
+const CloseIcon = styled(Clear)`
+  width: ${themeGet("space.5")}px;
+  margin-right: -8px;
+  margin-left: 6px;
+`;
+
+export { LightboxOverlay, LightboxContent, CloseIcon };

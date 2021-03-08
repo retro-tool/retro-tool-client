@@ -1,5 +1,5 @@
-subscription onWorksItemAdded($slug: String!) {
-  retroUpdated(slug: $slug) {
+subscription onWorksItemAdded($slug: String!, $password: String) {
+  retroUpdated(slug: $slug, password: $password) {
     works {
       id
       hidden
@@ -15,8 +15,8 @@ subscription onWorksItemAdded($slug: String!) {
   }
 }
 
-subscription onImproveItemAdded($slug: String!) {
-  retroUpdated(slug: $slug) {
+subscription onImproveItemAdded($slug: String!, $password: String) {
+  retroUpdated(slug: $slug, password: $password) {
     improve {
       id
       hidden
@@ -32,8 +32,8 @@ subscription onImproveItemAdded($slug: String!) {
   }
 }
 
-subscription onOthersItemAdded($slug: String!) {
-  retroUpdated(slug: $slug) {
+subscription onOthersItemAdded($slug: String!, $password: String) {
+  retroUpdated(slug: $slug, password: $password) {
     others {
       id
       hidden

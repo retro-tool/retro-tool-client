@@ -1,0 +1,9 @@
+mutation updateRetro(
+  $input: UpdateRetroInput!
+  $password: String
+  $slug: String!
+) {
+  updateRetro(input: $input, password: $password, slug: $slug) {
+    id
+  }
+}

@@ -5,6 +5,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { client } from "services/api";
 import { Router } from "@reach/router";
 import { SlugProvider } from "components/Slug.context";
+import { Toaster } from "react-hot-toast";
 import { CreateRetro, Export, Main, Landing } from "routes";
 import c from "color";
 
@@ -65,6 +66,7 @@ const GlobalStyle = createGlobalStyle`
 export default () => (
   <>
     <GlobalStyle />
+    <Toaster />
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
         <SlugProvider>

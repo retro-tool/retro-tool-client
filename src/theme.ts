@@ -54,6 +54,7 @@ const textStyles = {
   },
   landingHighlightsTitle: {
     fontSize: fontSizes[5],
+    fontWeights: fontWeights[1],
     letterSpacing: "-0.4px"
   },
   landingHighlightsText: {
@@ -82,7 +83,7 @@ export const buttons = {
   },
   secondary: {
     color: colors.white,
-    background: colors.mediumGrey,
+    background: colors.secondaryGrey,
     fontSize: fontSizes[2],
     borderRadius: radii[0],
     height: 36,

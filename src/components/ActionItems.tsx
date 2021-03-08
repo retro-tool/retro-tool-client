@@ -12,10 +12,10 @@ type Props = {
 
 const ActionItems: React.FC<Props> = ({ title }) => {
   const slug = useSlug();
-  const { status } = useStatus();
+  const { status, password } = useStatus();
 
   const { subscribeToMore, data, loading, error } = useGetActionItemsQuery({
-    variables: { slug }
+    variables: { slug, password }
   });
 
   if (loading) return <LoadingCard />;
@@ -46,7 +46,7 @@ const ActionItems: React.FC<Props> = ({ title }) => {
       subscribeToNewItems={() =>
         subscribeToMore({
           document: OnActionItemAddedDocument,
-          variables: { slug },
+          variables: { slug, password },
           updateQuery: (prev, { subscriptionData }) => {
             if (!subscriptionData.data) return prev;
             // @ts-ignore

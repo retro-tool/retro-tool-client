@@ -1,9 +1,13 @@
 import React from "react";
-import { Header, Text, StatusProvider } from "components";
 import styled from "styled-components/macro";
-import { useGetRetroItemsQuery } from "generated/graphql";
 import { RouteComponentProps } from "@reach/router";
+
+import { Header } from "components/Header";
+import { Text } from "components/Text";
+import { StatusProvider } from "components/StatusProvider";
+
 import { Slug } from "types";
+import { useGetRetroItemsQuery } from "generated/graphql";
 
 const Content = styled.div`
   margin: 16px;

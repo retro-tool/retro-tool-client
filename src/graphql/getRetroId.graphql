@@ -1,5 +1,5 @@
-query getRetroId($slug: String!) {
-  retro(slug: $slug) {
+query getRetroId($slug: String!, $password: String) {
+  retro(slug: $slug, password: $password) {
     id
   }
 }

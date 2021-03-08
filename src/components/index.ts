@@ -1,7 +1,7 @@
 // Reusable components
 export { default as Button } from "./Button";
 export { default as Card } from "./Card";
-export { default as Input } from "./Input";
+export * from "./Input";
 export { LightboxOverlay, LightboxContent } from "./Lightbox";
 export { default as Logo } from "./Logo";
 export * from "./Text";
@@ -17,9 +17,9 @@ export { default as CreateActionItem } from "./CreateActionItem";
 export { default as CreateItem } from "./CreateItem";
 export { DeleteRetroItem } from "./DeleteRetroItemButton";
 export { DeleteActionItem } from "./DeleteActionItemButton";
-export { default as Header, HeaderContainer } from "./Header";
 export { default as Item } from "./Item";
 export { default as Items } from "./Items";
 export { default as LoadingCard } from "./LoadingCard";
 export * from "./StatusProvider";
 export { default as Topic } from "./Topic";
+export * from "./Settings";
