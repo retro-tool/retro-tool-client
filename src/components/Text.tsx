@@ -30,10 +30,7 @@ export type TextProps = ColorProps &
     letterSpacing?: number;
   };
 
-const Text = styled.div.attrs({
-  textStyle: "base",
-  letterSpacing: 0
-})<TextProps>`
+const Text = styled.div<TextProps>`
   margin: 0;
   padding: 0;
   filter: ${({ obfuscate }) => obfuscate && "blur(5px)"};
@@ -50,6 +47,11 @@ const Text = styled.div.attrs({
   ${lineHeight};
   ${space};
 `;
+
+Text.defaultProps = {
+  textStyle: "base",
+  letterSpacing: 0
+};
 
 const TruncatedText = styled(Text)`
   text-overflow: ellipsis;
