@@ -185,8 +185,8 @@ const Landing: React.FC<Props> = () => {
               <Flex justifyContent="space-between" flexWrap="wrap">
                 <Box
                   maxWidth={["100%", null, "45%", "20%"]}
-                  mb={[9, 0]}
-                  height={["auto", 250, "auto"]}
+                  mb={[9, 9, 0]}
+                  height={["auto", "auto", 250, "auto"]}
                 >
                   <Mobile height={32} />
                   <Text
@@ -205,11 +205,7 @@ const Landing: React.FC<Props> = () => {
                     Did we already say that it's free?
                   </Text>
                 </Box>
-                <Box
-                  maxWidth={["100%", null, "45%", "20%"]}
-                  mb={[9, 0]}
-                  height={["auto", "auto", 260]}
-                >
+                <Box maxWidth={["100%", null, "45%", "20%"]} mb={[9, 9, 0]}>
                   <LocationOff height={32} />
                   <Text
                     as="h3"
@@ -227,7 +223,7 @@ const Landing: React.FC<Props> = () => {
                     doing.
                   </Text>
                 </Box>
-                <Box maxWidth={["100%", null, "45%", "20%"]} mb={[9, 0]}>
+                <Box maxWidth={["100%", null, "45%", "20%"]} mb={[9, 9, 0]}>
                   <Cached height={32} />
                   <Text
                     as="h3"
@@ -253,14 +249,15 @@ const Landing: React.FC<Props> = () => {
                     mb={4}
                     textStyle="landingHighlightsTitle"
                   >
-                    No login required
+                    No login &amp; private
                   </Text>
                   <Text textStyle="landingHighlightsText">
-                    A retro is just a url, nothing else is needed. We don't even
-                    ask for your name or email!
+                    A retro is just a url, we don't even ask for your name or
+                    email!
                   </Text>
                   <Text textStyle="landingHighlightsText" mt={4}>
-                    Password protected retros are coming soon.
+                    Also you can make any retro private adding a password, and
+                    still no login required.
                   </Text>
                 </Box>
               </Flex>
