@@ -4,7 +4,7 @@ import { RouteComponentProps } from "@reach/router";
 
 import { Header } from "components/Header";
 import { Text } from "components/Text";
-import { StatusProvider } from "components/StatusProvider";
+import { StatusProvider, useStatus } from "components/StatusProvider";
 
 import { Slug } from "types";
 import { useGetRetroItemsQuery } from "generated/graphql";
@@ -14,8 +14,10 @@ const Content = styled.div`
 `;
 
 const Items = ({ slug }) => {
+  const { password } = useStatus();
+
   const { data, loading, error } = useGetRetroItemsQuery({
-    variables: { slug }
+    variables: { slug, password }
   });
 
   if (loading || error) return null;
@@ -91,10 +93,10 @@ const Export = ({ slug }: Props) => (
   <>
     <StatusProvider>
       <Header isExport />
+      <div>
+        <Items slug={slug} />
+      </div>
     </StatusProvider>
-    <div>
-      <Items slug={slug} />
-    </div>
   </>
 );
 

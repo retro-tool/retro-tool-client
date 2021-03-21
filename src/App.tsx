@@ -36,7 +36,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: ${theme.fontFamily};
   }
 
-  ul, ol {
+  ul.unstyled, ol.unstyled {
     list-style: none;
     margin: 0;
     padding: 0;

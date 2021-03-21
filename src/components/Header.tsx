@@ -311,6 +311,7 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
                   <Button
                     variant="secondary"
                     onClick={() => navigate(`/${slug}`)}
+                    ml={2}
                   >
                     <BackIcon />
                     Back
@@ -320,6 +321,7 @@ const Header: React.FC<HeaderProps> = ({ isExport }) => {
                     variant="secondary"
                     onClick={headerActions[status].onClick}
                     disabled={!cansSwitchStatus}
+                    ml={2}
                   >
                     {headerActions[status].label}
                     <ExportIcon />
