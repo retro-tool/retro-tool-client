@@ -6,13 +6,21 @@ orbs:
 workflows:
   version: 2
 
-  test-and-build:
+  test-build-deploy:
     jobs:
       - test
       - build:
           context: docker-login
           requires:
             - test
+          filters:
+            branches:
+              only:
+                - master
+      - deploy:
+          context: ssh-login
+          requires:
+            - build
           filters:
             branches:
               only:
@@ -76,6 +84,15 @@ jobs:
       - run:
           name: Push latest image to DockerHub
           command: docker push retrotool/client:latest
+
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Deploy Over SSH
+          command: ssh $SSH_USER@$SSH_SERVER "./deploy.sh"
+
   notify_build:
     docker:
       - image: circleci/node:latest
