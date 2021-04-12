@@ -125,7 +125,7 @@ const usePassword = (slug: Slug) => {
   const removePassword = useCallback(() => {
     if (thisRetroHasPasswordStored) {
       delete passwords[slug];
-      setRetroPassword(passwords);
+      setRetroPassword({ ...passwords });
     }
   }, [thisRetroHasPasswordStored, passwords, slug, setRetroPassword]);
 
