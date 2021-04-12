@@ -173,7 +173,7 @@ const StatusProvider = ({ children }) => {
 
   useEffect(() => {
     if (!loading && isPasswordProtectedRetro && thisRetroHasPasswordStored) {
-      // Should I remove the wrong password from sessionstorage?
+      // TODO: Should I remove the wrong password from sessionstorage?
       toast.error("Wrong password, try again.");
     }
   }, [

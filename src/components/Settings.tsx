@@ -74,10 +74,8 @@ export const Settings = () => {
       setOpen(false);
 
       if (thisRetroHasPasswordStored) {
-        // update password
         toast.success("Password updated successfully");
       } else {
-        // new password
         toast.success("Password set successfully");
       }
     },
