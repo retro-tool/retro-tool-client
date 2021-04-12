@@ -7,3 +7,9 @@ mutation updateRetro(
     id
   }
 }
+
+mutation makeRetroPublic($password: String, $slug: String!) {
+  updateRetro(input: { password: null }, password: $password, slug: $slug) {
+    id
+  }
+}

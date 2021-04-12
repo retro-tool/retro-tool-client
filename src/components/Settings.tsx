@@ -8,16 +8,16 @@ import { LockOpen } from "styled-icons/material/LockOpen";
 import { Lock } from "styled-icons/material/Lock";
 import toast from "react-hot-toast";
 
-import {
-  Button,
-  LightboxContent,
-  LightboxOverlay,
-  Password,
-  Text
-} from "components";
-import { Flex } from "./UI";
+import Button from "components/Button";
+import { Text } from "components/Text";
+import { Password } from "components/Input";
+import { LightboxContent, LightboxOverlay } from "components/Lightbox";
+import { Box, Flex } from "./UI";
 
-import { useUpdateRetroMutation } from "generated/graphql";
+import {
+  useUpdateRetroMutation,
+  useMakeRetroPublicMutation
+} from "generated/graphql";
 
 /**
  * STYLES
@@ -61,37 +61,65 @@ export const Settings = () => {
   const [open, setOpen] = useState(false);
 
   const [updateRetro] = useUpdateRetroMutation({
+    variables: {
+      input: {
+        password: pass
+      },
+      slug,
+      password
+    },
     onCompleted: () => {
-      if (thisRetroHasPasswordStored) {
-        // update password
-        toast.success("Password updated successfully");
-      } else if (pass) {
-        // new password
-        toast.success("Password set successfully");
-      }
-
       setPassword(pass);
       setPass("");
       setOpen(false);
+
+      if (thisRetroHasPasswordStored) {
+        // update password
+        toast.success("Password updated successfully");
+      } else {
+        // new password
+        toast.success("Password set successfully");
+      }
     },
-    onError: graphqlError => {
-      console.log({ graphqlError });
-      toast.error("Error trying to set a password");
+    onError: () => {
+      if (thisRetroHasPasswordStored) {
+        toast.error("Error trying to update the password");
+      } else {
+        toast.error("Error trying to set a password");
+      }
+    }
+  });
+
+  const [makeRetroPublic] = useMakeRetroPublicMutation({
+    variables: {
+      slug,
+      password: pass
+    },
+    onCompleted: () => {
+      removePassword();
+      setPass("");
+      setOpen(false);
+
+      toast.success(
+        "Password removed successfully, this retro is public again"
+      );
+    },
+    onError: () => {
+      toast.error(
+        "You need to enter the current password to make the retro public again"
+      );
     }
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    updateRetro({
-      variables: {
-        input: {
-          password: pass
-        },
-        slug,
-        password
-      }
-    });
+    if (password === pass) {
+      setPass("");
+      return toast.error("The new password must be different from the old one");
+    }
+
+    updateRetro();
   };
 
   return (
@@ -108,9 +136,13 @@ export const Settings = () => {
               <Text as="h1" mb={2} fontSize={3} fontWeight={1}>
                 This retro is protected with a password
               </Text>
-              <Text mb={5}>
+              <Text>
                 Anyone with access to this retro can change or remove the
                 password (that would make the retro public again).
+              </Text>
+              <Text mt={3} mb={5}>
+                To remove a password you need to enter the current retro
+                password.
               </Text>
             </>
           ) : (
@@ -132,7 +164,7 @@ export const Settings = () => {
               width="100%"
               ml={0}
               mb={5}
-              placeholder="Set a password for this retro"
+              placeholder="Write password..."
               value={pass}
               onChange={pass => setPass(pass)}
               required
@@ -152,29 +184,26 @@ export const Settings = () => {
                   <>
                     <Button
                       variant="secondary"
-                      onClick={() => {
-                        // updateRetro({
-                        //   variables: {
-                        //     input: {
-                        //       password: null,
-                        //     },
-                        //     slug,
-                        //     password,
-                        //   },
-                        // });
-                        removePassword();
-                        setOpen(false);
-                      }}
+                      onClick={() => makeRetroPublic()}
                     >
-                      Remove password
+                      Remove{" "}
+                      <Box as="span" display={["none", "inline"]}>
+                        Password
+                      </Box>
                     </Button>
-                    <Button type="submit" ml={2} name="update-password">
-                      Update Password
+                    <Button type="submit" ml={2}>
+                      Update{" "}
+                      <Box as="span" display={["none", "inline"]}>
+                        Password
+                      </Box>
                     </Button>
                   </>
                 ) : (
-                  <Button type="submit" name="set-password">
-                    Set Password
+                  <Button type="submit">
+                    Set{" "}
+                    <Box as="span" display={["none", "inline"]}>
+                      Password
+                    </Box>
                   </Button>
                 )}
               </div>
