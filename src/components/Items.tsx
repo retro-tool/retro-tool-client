@@ -94,7 +94,7 @@ const combineItems = ({
       ? {
           ...item,
           similarItems: item.similarItems,
-          votes: item.votes + items[childIndex].votes
+          votes: item.votes + (items[childIndex] ? items[childIndex].votes : 0)
         }
       : item;
   });
