@@ -81,7 +81,7 @@ const PlusOne = ({ id, votes }: PlusOneProps) => {
 
     addVote({ variables: { id } });
     setIsStoped(true);
-  }, 1000);
+  }, 500);
 
   const defaultOptions = {
     loop: false,
