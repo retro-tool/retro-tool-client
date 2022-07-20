@@ -1,5 +1,5 @@
 # Stage 1 - the build process
-FROM node:12-alpine as builder
+FROM node:10-alpine as builder
 WORKDIR /usr/src/app
 COPY . ./
 RUN SCHEMA_PATH=https://www.retrotool.app/api/graph yarn
